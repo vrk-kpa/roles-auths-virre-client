@@ -1,6 +1,6 @@
-# roles-auths-vtj-client
+# roles-auths-virre-client
 
-VTJ client for requesting Roles and authorizations related data over Xroad from VTJ. 
+VIRRE client for requesting Organizational roles over Xroad from VIRRE. 
 
 ## Getting Started
 Maven commands: 
@@ -8,4 +8,4 @@ Maven commands:
 * mvn spring-boot:run
 
 ## Start standalone jar
-java -Dserver.port=8005 -jar target/roles-auths-vtj-client.jar
+java -Dserver.port=8003 -jar target/roles-auths-virre-client.jar

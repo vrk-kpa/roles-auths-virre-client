@@ -1,4 +1,4 @@
-package fi.vm.kapa.rova.soap.vtj;
+package fi.vm.kapa.rova.soap.virre;
 
 import javax.xml.bind.ValidationEvent;
 import javax.xml.bind.ValidationEventHandler;
@@ -7,7 +7,7 @@ import fi.vm.kapa.rova.logging.Logger;
 
 public class CustomValidationEventHandler implements ValidationEventHandler {
 
-    private static Logger LOG = Logger.getLogger(CustomValidationEventHandler.class, Logger.VTJ_CLIENT);
+    private static Logger LOG = Logger.getLogger(CustomValidationEventHandler.class, Logger.VIRRE_CLIENT);
 
     @Override
     public boolean handleEvent(ValidationEvent event) {
@@ -16,7 +16,6 @@ public class CustomValidationEventHandler implements ValidationEventHandler {
             LOG.debug("Unexpected element found: " + event);
         } else {
             LOG.debug("Validation event: " + event + " " + event.getMessage());
-//			System.out.println("Validation event: " + event + " " + event.getMessage());
         }
         return true;
     }

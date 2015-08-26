@@ -3,10 +3,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>fi.vm.kapa.rova</groupId>
-    <artifactId>roles-auths-vtj-client</artifactId>
+    <artifactId>roles-auths-virre-client</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-    <name>roles-auths-vtj-client</name>
+    <name>roles-auths-virre-client</name>
     <properties>
         <jersey.version>2.15</jersey.version>
         <cxf.version>2.2.3</cxf.version>
@@ -198,27 +198,6 @@
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.jvnet.jax-ws-commons</groupId>
-                <artifactId>jaxws-maven-plugin</artifactId>
-                <version>2.1</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>wsimport</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <XadditionalHeaders>true</XadditionalHeaders>
-                    <packageName>fi.vrk.xml.rova.vtj</packageName>
-                    <wsdlLocation>../../../../../wsdl/vtj.wsdl</wsdlLocation>
-                    <wsdlUrls>
-                        <wsdlUrl>${basedir}/src/main/resources/wsdl/vtj.wsdl</wsdlUrl>
-                    </wsdlUrls>
-                    <verbose>true</verbose>
                 </configuration>
             </plugin>
             <plugin>

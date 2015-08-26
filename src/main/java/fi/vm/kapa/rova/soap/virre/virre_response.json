@@ -1,0 +1,55 @@
+{
+"socialSec": "hetu",
+  "roles": [
+  {
+  "businessId": "1234567‐8",
+"companyName": "Perhe Testaajat Oy",
+"exceptionStatus": null,
+  "extendedRoleInfos": [
+  {
+"roleName": "J",
+"bodyType": "HAL",
+"startDate": "2008‐05‐23T00:00:00.000+03:00",
+"expirationDate": "‐‐"
+}
+],
+"representations": [ ],
+  "legalRepresentations": [
+  {
+"header": "LAKIMÄÄRÄINEN EDUSTAMINEN",
+"text": "Yhtiötä edustaa osakeyhtiölain nojalla hallitus. ",
+"signingcode": null
+},
+  {
+"header": "ASEMAAN SIDOTTU EDUSTAMINEN",
+"text": "Yhtiöjärjestyksen mukaan yhtiötä edustavat hallituksen jäsenet kaksi yhdessä.",
+"signingcode": "NIMA04"
+}
+],
+  "bodies": [
+  {
+"bodyType": "HAL",
+"bodyDescription": "Hallitus",
+  "naturalPersons": [
+  {
+"hetu": "hetu",
+"firstName": "Timo",
+"lastName": "Testaaja"
+},
+  {
+"hetu": "hetu",
+"firstName": "Tiina",
+"lastName": "Testaaja"
+},
+  {
+"hetu": "hetu",
+"firstName": "Tarmo",
+"lastName": "Testaaja"
+}
+],
+"juristicPersons": [ ]
+}
+]
+}
+]
+}
