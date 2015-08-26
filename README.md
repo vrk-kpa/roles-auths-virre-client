@@ -9,3 +9,4 @@ Maven commands:
 
 ## Start standalone jar
 java -Dserver.port=8003 -jar target/roles-auths-virre-client.jar
+# roles-auths-virre-client
