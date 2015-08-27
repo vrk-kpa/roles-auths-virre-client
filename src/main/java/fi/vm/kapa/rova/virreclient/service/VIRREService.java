@@ -30,15 +30,13 @@ public class VIRREService {
     private VIRREClient client;
 
     public OrganizationalPerson getOrganizationalPerson(String hetu) throws VIRREServiceException {
-        
         OrganizationalPerson person = new OrganizationalPerson();
         
         try {
             long startTime = System.currentTimeMillis();
             VIRREResponseMessage response=client.getResponse(hetu);
             LOG.info("duration=" + (System.currentTimeMillis() - startTime));
-           
-            
+                      
             person.setPersonId(response.getSocialSec());
             
             List<OrganizationalRole> orgRoles=new ArrayList<OrganizationalRole>();
