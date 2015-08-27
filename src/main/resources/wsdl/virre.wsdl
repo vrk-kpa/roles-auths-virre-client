@@ -5,10 +5,10 @@
                   xmlns:xrd="http://x-road.eu/xsd/xroad.xsd"
                   xmlns:xsd="http://www.w3.org/2001/XMLSchema"
                   xmlns:id="http://x-road.eu/xsd/identifiers"
+                  xmlns:items="http://xml.vrk.fi/ws/Rova/Virre/Entities"
                   name="provider-gateway" targetNamespace="http://prh-test.x-road.fi/producer">
     <wsdl:types>
-     <!--  -->
-     
+        
         <!-- Schema for identifiers (reduced) -->
         <xsd:schema elementFormDefault="qualified"
                     targetNamespace="http://x-road.eu/xsd/identifiers" 
@@ -95,41 +95,41 @@
         <xsd:schema xmlns="http://www.w3.org/2001/XMLSchema"
                     targetNamespace="http://x-road.eu/xsd/xroad.xsd"
                     elementFormDefault="qualified">
-	       
+           
             <xsd:element name="client" type="id:XRoadClientIdentifierType" />
             <xsd:element name="service" type="id:XRoadServiceIdentifierType" />
             <xsd:element name="userId" type="xsd:string" />
             <xsd:element name="id" type="xsd:string" />
             <xsd:element name="issue" type="xsd:string" />
             <xsd:element name="protocolVersion" type="xsd:string" />
-        </xsd:schema>	     
-			     
-        <!-- Schema for requests -->
-        <xsd:schema targetNamespace="http://prh-test.x-road.fi/producer">
-			<xsd:element name="RoVaRoles">
-                <xsd:complexType>
-                    <xsd:sequence>
-                        <xsd:element name="request">
-                            <xsd:complexType>
+        </xsd:schema>        
+          
+        <xsd:schema xmlns:tns="http://xml.vrk.fi/ws/Rova/Virre/Entities"
+                    xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://xml.vrk.fi/ws/Rova/Virre/Entities">
+                    <xsd:complexType name="Request">
                                 <xsd:sequence>
                                     <xsd:element name="hetu" type="xsd:string" />
                                 </xsd:sequence>
                             </xsd:complexType>
-                        </xsd:element>
+                    
+        </xsd:schema>
+                 
+        <!-- Schema for requests -->
+        <xsd:schema targetNamespace="http://prh-test.x-road.fi/producer">
+            <xsd:element name="RoVaRoles">
+                <xsd:complexType id="Request">
+                    <xsd:sequence>
+                        <xsd:element name="request" type="items:Request" />
                     </xsd:sequence>
                 </xsd:complexType>
             </xsd:element>
             <xsd:element name="RoVaRolesResponse">
                 <xsd:complexType>
                     <xsd:sequence>
-                        <xsd:element name="request">
-                            <xsd:complexType>
-                                <xsd:sequence>
-                                    <xsd:element name="hetu" type="xsd:string" />
-                                </xsd:sequence>
-                            </xsd:complexType>
-                        </xsd:element>
-                        <xsd:element name="response">
+                       <xsd:sequence>
+                          <xsd:element name="request" type="items:Request" />
+                       </xsd:sequence>
+                       <xsd:element name="response">
                             <xsd:complexType>
                                 <xsd:sequence>
                                     <xsd:any />
@@ -198,3 +198,4 @@
         </wsdl:port>
     </wsdl:service>
 </wsdl:definitions>
+
