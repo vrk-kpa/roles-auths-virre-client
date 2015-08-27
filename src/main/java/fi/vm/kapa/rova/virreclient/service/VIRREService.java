@@ -29,7 +29,7 @@ public class VIRREService {
     @Autowired
     private VIRREClient client;
 
-    public OrganizationalPerson getOrganizationalPerson(String hetu, String schema, String origUserId, String origRequestId) throws VIRREServiceException {
+    public OrganizationalPerson getOrganizationalPerson(String hetu) throws VIRREServiceException {
         
         OrganizationalPerson person = new OrganizationalPerson();
         

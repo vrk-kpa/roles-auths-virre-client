@@ -28,13 +28,10 @@ public class VIRREResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/person/{hetu}/{organizationid")
-    public Response getOrganizationalPerson(@PathParam("hetu") String hetu,
-            @PathParam("organizationid") String organizationid,
-            @QueryParam("endUserId") String endUserId,
-            @QueryParam("requestId") String requestId) {
+    @Path("/person/{hetu}")
+    public Response getOrganizationalPerson(@PathParam("hetu") String hetu) {
         try {
-            OrganizationalPerson organizationalPerson = service.getOrganizationalPerson(hetu, organizationid, endUserId, requestId);
+            OrganizationalPerson organizationalPerson = service.getOrganizationalPerson(hetu);
             return Response.ok().entity(organizationalPerson).build();
         } catch (VIRREServiceException e) {
             ResponseBuilder responseBuilder = Response.serverError();
