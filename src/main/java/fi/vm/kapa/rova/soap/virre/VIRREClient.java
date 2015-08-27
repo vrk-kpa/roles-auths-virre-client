@@ -53,10 +53,6 @@ public class VIRREClient implements SpringPropertyNames {
     @Autowired
     private HttpServletRequest request;
     
-    @Value(VIRRE_USERNAME)
-    private String vtjUsername;
-    @Value(VIRRE_PASSWORD)
-    private String vtjPassword;
     @Value(XROAD_ENDPOINT)
     private String xrdEndPoint;
 

@@ -28,7 +28,7 @@ public class VIRREResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/roles/{hetu}/{organizationid")
+    @Path("/roles/{hetu}")
     public Response getOrganizationalRoles(@PathParam("hetu") String hetu) {
         try {
             OrganizationalPerson organizationalPerson = service.getOrganizationalPerson(hetu);

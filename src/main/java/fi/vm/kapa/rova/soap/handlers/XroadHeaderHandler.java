@@ -1,6 +1,6 @@
 package fi.vm.kapa.rova.soap.handlers;
 
-import java.util.Collections;
+import java.util .Collections;
 import java.util.Set;
 import java.util.UUID;
 
@@ -73,6 +73,8 @@ public class XroadHeaderHandler implements SOAPHandler<SOAPMessageContext>, Spri
 
     @Value(SERVICE_SERVICE_CODE)
     private String serviceServiceCode;
+    
+    
 
     public boolean handleMessage(SOAPMessageContext messageContext) {
         Boolean outboundProperty = (Boolean) messageContext
@@ -105,10 +107,17 @@ public class XroadHeaderHandler implements SOAPHandler<SOAPMessageContext>, Spri
                     origRequestId = "";
                 }
 
+                JAXBElement<String> protocolversion = factory.createProtocolVersion("4.0");
+                SOAPHeaderElement pvHeaderElement = header.addHeaderElement(protocolversion.getName());
+                pvHeaderElement.addTextNode((String) protocolversion.getValue());
+
+                
                 JAXBElement<String> issueElement = factory.createIssue(origRequestId);
                 SOAPHeaderElement issueHeaderElement = header.addHeaderElement(issueElement.getName());
                 issueHeaderElement.addTextNode((String) issueElement.getValue());
 
+                
+                
                 XRoadClientIdentifierType client = factory.createXRoadClientIdentifierType();
                 JAXBElement<XRoadClientIdentifierType> clientElement = factory.createClient(client);
                 client.setObjectType(XRoadObjectType.fromValue(this.clientObjectType));
@@ -129,6 +138,8 @@ public class XroadHeaderHandler implements SOAPHandler<SOAPMessageContext>, Spri
                 service.setMemberCode(this.serviceMemberCode);
                 service.setSubsystemCode(this.serviceSubsystemCode);
                 service.setServiceCode(this.serviceServiceCode);
+                service.setServiceVersion("v1");
+                
 
                 marshaller = JAXBContext.newInstance(XRoadServiceIdentifierType.class).createMarshaller();
                 marshaller.marshal(serviceElement, header);
