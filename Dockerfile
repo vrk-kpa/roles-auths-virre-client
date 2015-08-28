@@ -27,9 +27,9 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # Deploy project
-RUN mkdir -p /opt/rova/roles-auths-vtj-client/
-ADD target/roles-auths-vtj-client.jar /opt/rova/roles-auths-vtj-client/
-WORKDIR /opt/rova/roles-auths-vtj-client/
+RUN mkdir -p /opt/rova/roles-auths-virre-client/
+ADD target/roles-auths-virre-client.jar /opt/rova/roles-auths-virre-client/
+WORKDIR /opt/rova/roles-auths-virre-client/
 
 EXPOSE 8080
-ENTRYPOINT ["java", "-Dlogback.configurationFile=config/logback.xml", "-jar", "roles-auths-vtj-client.jar"]
+ENTRYPOINT ["java", "-Dlogging.config=config/logback.xml", "-jar", "roles-auths-virre-client.jar"]
