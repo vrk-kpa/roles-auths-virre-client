@@ -41,6 +41,7 @@ public class VIRREService {
         
         try {
             long startTime = System.currentTimeMillis();
+
             //TODO: must use correct VirreClient
             //VIRREResponseMessage response=client.getResponse(hetu); 
             VIRREResponseMessage response=getResponse(); 

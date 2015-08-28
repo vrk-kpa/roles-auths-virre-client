@@ -4,6 +4,7 @@ import java.util .Collections;
 import java.util.Set;
 import java.util.UUID;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.Marshaller;
@@ -16,26 +17,27 @@ import javax.xml.ws.handler.MessageContext;
 import javax.xml.ws.handler.soap.SOAPHandler;
 import javax.xml.ws.handler.soap.SOAPMessageContext;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import fi.vm.kapa.rova.config.SpringPropertyNames;
 import fi.vm.kapa.rova.logging.Logger;
+import fi.vm.kapa.rova.rest.identification.RequestIdentificationFilter;
 import fi.vrk.xml.rova.virre.ObjectFactory;
 import fi.vrk.xml.rova.virre.XRoadClientIdentifierType;
 import fi.vrk.xml.rova.virre.XRoadObjectType;
 import fi.vrk.xml.rova.virre.XRoadServiceIdentifierType;
 
-
 @Component
 public class XroadHeaderHandler implements SOAPHandler<SOAPMessageContext>, SpringPropertyNames {
 
-    private static Logger LOG = Logger.getLogger(XroadHeaderHandler.class, Logger.VTJ_CLIENT);
+    private static Logger LOG = Logger.getLogger(XroadHeaderHandler.class, Logger.VIRRE_CLIENT);
 
     private ObjectFactory factory = new ObjectFactory();
 
-    public static final String ORIG_USERID_HEADER = "origUserId";
-    public static final String ORIG_REQUEST_ID_HEADER = "origRequestId";
+    @Autowired
+    private HttpServletRequest request;
 
     public Set<QName> getHeaders() {
         return Collections.emptySet();
@@ -74,6 +76,8 @@ public class XroadHeaderHandler implements SOAPHandler<SOAPMessageContext>, Spri
     @Value(SERVICE_SERVICE_CODE)
     private String serviceServiceCode;
     
+    @Value(SERVICE_VERSION)
+    private String serviceVersion;
     
 
     public boolean handleMessage(SOAPMessageContext messageContext) {
@@ -94,15 +98,17 @@ public class XroadHeaderHandler implements SOAPHandler<SOAPMessageContext>, Spri
                 SOAPHeaderElement idHeaderElement = header.addHeaderElement(idElement.getName());
                 idHeaderElement.addTextNode((String) idElement.getValue());
 
-                String origUserId = (String) messageContext.get(ORIG_USERID_HEADER);
+                String origUserId = request.getHeader(RequestIdentificationFilter.XROAD_END_USER);
                 if (origUserId == null) {
                     origUserId = "rova-end-user-unknown";
                 }
+                
                 JAXBElement<String> userIdElement = factory.createUserId(origUserId);
                 SOAPHeaderElement uidHeaderElement = header.addHeaderElement(userIdElement.getName());
                 uidHeaderElement.addTextNode((String) userIdElement.getValue());
 
-                String origRequestId = (String) messageContext.get(ORIG_REQUEST_ID_HEADER);
+                
+                String origRequestId = request.getHeader(RequestIdentificationFilter.XROAD_REQUEST_IDENTIFIER);;
                 if (origRequestId == null) {
                     origRequestId = "";
                 }
@@ -116,8 +122,6 @@ public class XroadHeaderHandler implements SOAPHandler<SOAPMessageContext>, Spri
                 SOAPHeaderElement issueHeaderElement = header.addHeaderElement(issueElement.getName());
                 issueHeaderElement.addTextNode((String) issueElement.getValue());
 
-                
-                
                 XRoadClientIdentifierType client = factory.createXRoadClientIdentifierType();
                 JAXBElement<XRoadClientIdentifierType> clientElement = factory.createClient(client);
                 client.setObjectType(XRoadObjectType.fromValue(this.clientObjectType));
@@ -138,8 +142,7 @@ public class XroadHeaderHandler implements SOAPHandler<SOAPMessageContext>, Spri
                 service.setMemberCode(this.serviceMemberCode);
                 service.setSubsystemCode(this.serviceSubsystemCode);
                 service.setServiceCode(this.serviceServiceCode);
-                service.setServiceVersion("v1");
-                
+                service.setServiceVersion(serviceVersion);
 
                 marshaller = JAXBContext.newInstance(XRoadServiceIdentifierType.class).createMarshaller();
                 marshaller.marshal(serviceElement, header);
