@@ -2,8 +2,6 @@ package fi.vm.kapa.rova.soap.virre;
 
 public interface SpringPropertyNames {
 
-    String VIRRE_USERNAME = "${virre_username}"; // virre-palvelun käyttäjätunnus
-    String VIRRE_PASSWORD = "${virre_password}"; // virre-palvelun salasana
     String VIRRE_USERID = "${userId}"; // xroad-kutsun userId
     String VIRRE_ID = "${id}"; // xroad-kutsun id
     String VIRRE_ISSUE = "${virre_issue}"; // xroad-kutsun issue
