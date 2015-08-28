@@ -29,7 +29,6 @@ import fi.vrk.xml.rova.virre.XRoadClientIdentifierType;
 import fi.vrk.xml.rova.virre.XRoadObjectType;
 import fi.vrk.xml.rova.virre.XRoadServiceIdentifierType;
 
-
 @Component
 public class XroadHeaderHandler implements SOAPHandler<SOAPMessageContext>, SpringPropertyNames {
 
@@ -77,6 +76,8 @@ public class XroadHeaderHandler implements SOAPHandler<SOAPMessageContext>, Spri
     @Value(SERVICE_SERVICE_CODE)
     private String serviceServiceCode;
     
+    @Value(SERVICE_VERSION)
+    private String serviceVersion;
     
 
     public boolean handleMessage(SOAPMessageContext messageContext) {
@@ -121,8 +122,6 @@ public class XroadHeaderHandler implements SOAPHandler<SOAPMessageContext>, Spri
                 SOAPHeaderElement issueHeaderElement = header.addHeaderElement(issueElement.getName());
                 issueHeaderElement.addTextNode((String) issueElement.getValue());
 
-                
-                
                 XRoadClientIdentifierType client = factory.createXRoadClientIdentifierType();
                 JAXBElement<XRoadClientIdentifierType> clientElement = factory.createClient(client);
                 client.setObjectType(XRoadObjectType.fromValue(this.clientObjectType));
@@ -143,8 +142,7 @@ public class XroadHeaderHandler implements SOAPHandler<SOAPMessageContext>, Spri
                 service.setMemberCode(this.serviceMemberCode);
                 service.setSubsystemCode(this.serviceSubsystemCode);
                 service.setServiceCode(this.serviceServiceCode);
-                service.setServiceVersion("v1");
-                
+                service.setServiceVersion(serviceVersion);
 
                 marshaller = JAXBContext.newInstance(XRoadServiceIdentifierType.class).createMarshaller();
                 marshaller.marshal(serviceElement, header);

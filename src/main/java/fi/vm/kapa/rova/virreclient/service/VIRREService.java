@@ -34,37 +34,39 @@ public class VIRREService {
         
         try {
             long startTime = System.currentTimeMillis();
-            VIRREResponseMessage response=client.getResponse(hetu);
+            String response=client.getResponse(hetu);
             LOG.info("duration=" + (System.currentTimeMillis() - startTime));
                       
-            person.setPersonId(response.getSocialSec());
+            
+            
+            //person.setPersonId(response.getSocialSec());
             
             List<OrganizationalRole> orgRoles=new ArrayList<OrganizationalRole>();
             DateTimeFormatter formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
-            List<Role> roles= response.getRoles();         
-            for (Role role : roles) {
-                OrganizationalRole orgRole=new OrganizationalRole();
-                orgRole.setOrganizationId(role.getBusinessId());
-                orgRole.setOrganizationName(role.getCompanyName());
-                
-                for (ExtendedRoleInfo e : role.getExtendedRoleInfos()) {
-                    OrganizationalRoleInfo roleInfo=new OrganizationalRoleInfo();
-                    roleInfo.setBodyType(e.getBodyType());
-                    LocalDateTime startDate = LocalDateTime.parse(e.getStartDate(), formatter);
-                    roleInfo.setStartDate(startDate);
-                    LocalDateTime expDate = LocalDateTime.parse(e.getExpirationDate(), formatter);
-                    roleInfo.setExpirationDate(expDate);
-                    roleInfo.setRoleName(e.getRoleName());
-                    orgRole.getRoleInfos().add(roleInfo);
-                }
-                
-                for (LegalRepresentation l : role.getLegalRepresentations()) {
-                    OrganizationalRepresentation lRepr=new OrganizationalRepresentation();
-                    lRepr.setSigningcode(l.getSigningcode());
-                    orgRole.getRepresentations().add(lRepr);
-                } 
-                orgRoles.add(orgRole);
-            }
+//            List<Role> roles = response.getRoles();         
+//            for (Role role : roles) {
+//                OrganizationalRole orgRole=new OrganizationalRole();
+//                orgRole.setOrganizationId(role.getBusinessId());
+//                orgRole.setOrganizationName(role.getCompanyName());
+//                
+//                for (ExtendedRoleInfo e : role.getExtendedRoleInfos()) {
+//                    OrganizationalRoleInfo roleInfo=new OrganizationalRoleInfo();
+//                    roleInfo.setBodyType(e.getBodyType());
+//                    LocalDateTime startDate = LocalDateTime.parse(e.getStartDate(), formatter);
+//                    roleInfo.setStartDate(startDate);
+//                    LocalDateTime expDate = LocalDateTime.parse(e.getExpirationDate(), formatter);
+//                    roleInfo.setExpirationDate(expDate);
+//                    roleInfo.setRoleName(e.getRoleName());
+//                    orgRole.getRoleInfos().add(roleInfo);
+//                }
+//                
+//                for (LegalRepresentation l : role.getLegalRepresentations()) {
+//                    OrganizationalRepresentation lRepr=new OrganizationalRepresentation();
+//                    lRepr.setSigningcode(l.getSigningcode());
+//                    orgRole.getRepresentations().add(lRepr);
+//                } 
+//                orgRoles.add(orgRole);
+//            }
            person.setOrgRoles(orgRoles);
       
         } catch (Throwable e) {

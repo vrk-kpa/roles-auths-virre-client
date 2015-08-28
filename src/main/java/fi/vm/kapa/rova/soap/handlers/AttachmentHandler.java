@@ -32,13 +32,11 @@ public class AttachmentHandler implements SOAPHandler<SOAPMessageContext>, Sprin
             Iterator<AttachmentPart> it =  context.getMessage().getAttachments();
             while (it.hasNext()) {
                 AttachmentPart ap = it.next();
-                System.out.println("ATTACHMENT content");
                 try {
                     request.setAttribute(ATTACHMENT_ATTRIBUTE, (String)ap.getContent());
                     System.out.println((String)ap.getContent());
                 } catch (SOAPException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+                    LOG.error("Virre attachment handling error: " +  e);
                 }
             }
         return false;
@@ -46,7 +44,7 @@ public class AttachmentHandler implements SOAPHandler<SOAPMessageContext>, Sprin
 
         @Override
         public boolean handleFault(SOAPMessageContext context) {
-            return false;
+            return true;
         }
 
         @Override
