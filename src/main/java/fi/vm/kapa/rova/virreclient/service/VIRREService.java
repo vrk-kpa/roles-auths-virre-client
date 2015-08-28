@@ -16,7 +16,6 @@ import fi.vm.kapa.rova.soap.virre.model.ExtendedRoleInfo;
 import fi.vm.kapa.rova.soap.virre.model.LegalRepresentation;
 import fi.vm.kapa.rova.soap.virre.model.Role;
 import fi.vm.kapa.rova.soap.virre.model.VIRREResponseMessage;
-import fi.vm.kapa.rova.utils.OrgDataConverter;
 import fi.vm.kapa.rova.virre.model.OrganizationalRepresentation;
 import fi.vm.kapa.rova.virre.model.OrganizationalRoleInfo;
 import fi.vm.kapa.rova.virre.model.OrganizationalPerson;
@@ -29,21 +28,15 @@ public class VIRREService {
 
     @Autowired
     private VIRREClient client;
-    
-    public List<fi.vm.kapa.rova.engine.model.OrganizationalRole> getOrganizationalRoles(String hetu, String schema, String origUserId, String origRequestId) throws VIRREServiceException {
-        return OrgDataConverter.convertVirreToApi(this.getOrganizationalPerson(hetu, schema, origUserId, origRequestId));
-    }
 
-    private OrganizationalPerson getOrganizationalPerson(String hetu, String schema, String origUserId, String origRequestId) throws VIRREServiceException {
-        
+    public OrganizationalPerson getOrganizationalPerson(String hetu) throws VIRREServiceException {
         OrganizationalPerson person = new OrganizationalPerson();
         
         try {
             long startTime = System.currentTimeMillis();
             VIRREResponseMessage response=client.getResponse(hetu);
             LOG.info("duration=" + (System.currentTimeMillis() - startTime));
-           
-            
+                      
             person.setPersonId(response.getSocialSec());
             
             List<OrganizationalRole> orgRoles=new ArrayList<OrganizationalRole>();

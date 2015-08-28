@@ -2,9 +2,6 @@ package fi.vm.kapa.rova.config;
 
 public interface SpringPropertyNames {
 
-    String VIRRE_USERNAME = "${virre_username}"; // virre-palvelun käyttäjätunnus
-    String VIRRE_PASSWORD = "${virre_password}"; // virre-palvelun salasana
-
     String USER_ID = "${userId}"; // xroad-kutsun userId
     String ID = "${id}"; // xroad-kutsun id
     String ISSUE = "${issue}"; // xroad-kutsun issue

@@ -20,7 +20,7 @@ import fi.vm.kapa.rova.virreclient.service.VIRREService;
 import fi.vm.kapa.rova.virreclient.service.VIRREServiceException;
 
 @Service
-@Path("/rest")
+@Path("/virre")
 public class VIRREResource {
 
     @Inject
@@ -28,14 +28,12 @@ public class VIRREResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/roles/{hetu}/{organizationid")
-    public Response getOrganizationalRoles(@PathParam("hetu") String hetu,
-            @PathParam("organizationid") String organizationid,
-            @QueryParam("endUserId") String endUserId,
-            @QueryParam("requestId") String requestId) {
+    @Path("/roles/{hetu}")
+    public Response getOrganizationalRoles(@PathParam("hetu") String hetu) {
         try {
-            List<OrganizationalRole> organizationalRoles = service.getOrganizationalRoles(hetu, organizationid, endUserId, requestId);
-            return Response.ok().entity(organizationalRoles).build();
+            OrganizationalPerson organizationalPerson = service.getOrganizationalPerson(hetu);
+            return Response.ok().entity(organizationalPerson).build();
+            
         } catch (VIRREServiceException e) {
             ResponseBuilder responseBuilder = Response.serverError();
             return responseBuilder.build();
