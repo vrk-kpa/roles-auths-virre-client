@@ -87,6 +87,6 @@ public class VIRREClient implements SpringPropertyNames {
         return null;
         
     }
-}
+} //TODO:handler ottaa attackmentin ja muuntaa sen stringiksi
  
 
