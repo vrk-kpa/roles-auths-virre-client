@@ -4,6 +4,7 @@
   {
   "businessId": "1234567‐8",
 "companyName": "Perhe Testaajat Oy",
+"companyFormCode": "1",
 "exceptionStatus": null,
   "extendedRoleInfos": [
   {
@@ -23,7 +24,7 @@
   {
 "header": "ASEMAAN SIDOTTU EDUSTAMINEN",
 "text": "Yhtiöjärjestyksen mukaan yhtiötä edustavat hallituksen jäsenet kaksi yhdessä.",
-"signingcode": "NIMA04"
+"signingcode": "NIMA01"
 }
 ],
   "bodies": [

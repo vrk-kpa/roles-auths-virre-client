@@ -57,6 +57,7 @@ public class VIRREService {
                 OrganizationalRole orgRole=new OrganizationalRole();
                 orgRole.setOrganizationId(role.getBusinessId());
                 orgRole.setOrganizationName(role.getCompanyName());
+                orgRole.setCompanyFormCode(role.getCompanyFormCode());
                 List<OrganizationalRoleInfo> oRoleInfo=new ArrayList<OrganizationalRoleInfo>();
                 for (ExtendedRoleInfo e : role.getExtendedRoleInfos()) {
                     OrganizationalRoleInfo roleInfo=new OrganizationalRoleInfo();

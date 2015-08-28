@@ -8,6 +8,7 @@ public class Role {
     private String businessId;
     private String companyName;
     private String exceptionStatus;
+    private String companyFormCode;
     private List<ExtendedRoleInfo> extendedRoleInfos;
     
     @JsonIgnore
@@ -63,5 +64,11 @@ public class Role {
     }
     public void setBodies(List<Body> bodies) {
         this.bodies = bodies;
+    }
+    public String getCompanyFormCode() {
+        return companyFormCode;
+    }
+    public void setCompanyFormCode(String companyFormCode) {
+        this.companyFormCode = companyFormCode;
     }   
 }
