@@ -56,4 +56,13 @@ public class OrganizationalRole {
         this.companyFormCode = companyFormCode;
     }
 
+    @Override
+    public String toString() {
+        return "OrganizationalRole [organizationId=" + organizationId
+                + ", organizationName=" + organizationName + ", roleInfos="
+                + roleInfos + ", representations=" + representations
+                + ", exceptionStatus=" + exceptionStatus + ", companyFormCode="
+                + companyFormCode + "]";
+    }
+
 }

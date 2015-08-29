@@ -9,5 +9,9 @@ public class OrganizationalRepresentation {
     public void setSigningcode(String signingcode) {
         this.signingcode = signingcode;
     }
+    @Override
+    public String toString() {
+        return "OrganizationalRepresentation [signingcode=" + signingcode + "]";
+    }
 
 }

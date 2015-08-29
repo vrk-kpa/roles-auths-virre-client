@@ -37,6 +37,7 @@ public class OrgDataConverter {
                     newRole.setOrganization(createOrganization(origRole, code));
                     newRole.setRoles(new LinkedList<>(createRoleTypes(origRole)));
                     roles.add(newRole);
+                    LOG.fine("new role added to list");
                 } catch (IllegalArgumentException | NullPointerException e) {
                     LOG.warning("Unable to create OrganizationalRole: " + e.getMessage());
                 }
@@ -62,6 +63,7 @@ public class OrgDataConverter {
     private static Organization createOrganization(OrganizationalRole role, SigningCodeType code) {
         Organization org = new Organization();
         org.setName(role.getOrganizationName());
+        org.setIdentifier(role.getOrganizationId());
         org.setExceptionStatus(role.getExceptionStatus());
         org.setType(OrganizationType.find(role.getCompanyFormCode()));
         org.setSigningCode(code);

@@ -70,7 +70,7 @@ public class VIRREClient implements SpringPropertyNames {
         port.roVaRoles(request, response);
         
         String attachment = (String) httpRequest.getAttribute(AttachmentHandler.ATTACHMENT_ATTRIBUTE);
-        System.out.println(response);
+        LOG.debug("Virre got response: "+ response);
         return attachment;
         
     }

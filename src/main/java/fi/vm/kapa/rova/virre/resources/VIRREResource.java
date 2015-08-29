@@ -15,6 +15,7 @@ import javax.ws.rs.core.Response.ResponseBuilder;
 import org.springframework.stereotype.Service;
 
 import fi.vm.kapa.rova.engine.model.OrganizationalRole;
+import fi.vm.kapa.rova.utils.OrgDataConverter;
 import fi.vm.kapa.rova.virre.model.OrganizationalPerson;
 import fi.vm.kapa.rova.virreclient.service.VIRREService;
 import fi.vm.kapa.rova.virreclient.service.VIRREServiceException;
@@ -31,8 +32,10 @@ public class VIRREResource {
     @Path("/roles/{hetu}")
     public Response getOrganizationalRoles(@PathParam("hetu") String hetu) {
         try {
-            OrganizationalPerson organizationalPerson = service.getOrganizationalPerson(hetu);
-            return Response.ok().entity(organizationalPerson).build();
+//            OrganizationalPerson organizationalPerson = service.getOrganizationalPerson(hetu);
+//            List<OrganizationalRole> roles = OrgDataConverter.convertVirreToApi(organizationalPerson);
+            List<OrganizationalRole> roles = service.getOrganizationalRoles(hetu);
+            return Response.ok().entity(roles).build();
             
         } catch (VIRREServiceException e) {
             ResponseBuilder responseBuilder = Response.serverError();

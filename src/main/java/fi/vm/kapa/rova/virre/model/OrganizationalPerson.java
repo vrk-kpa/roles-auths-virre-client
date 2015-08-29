@@ -21,4 +21,9 @@ public class OrganizationalPerson {
     public void setOrgRoles(List<OrganizationalRole> orgRoles) {
         this.orgRoles = orgRoles;
     }
+    @Override
+    public String toString() {
+        return "OrganizationalPerson [personId=" + personId + ", orgRoles="
+                + orgRoles + "]";
+    }
 }

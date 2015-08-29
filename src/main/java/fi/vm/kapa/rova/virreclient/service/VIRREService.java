@@ -6,8 +6,11 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,10 +19,17 @@ import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import fi.vm.kapa.rova.engine.model.BodyType;
+import fi.vm.kapa.rova.engine.model.Organization;
+import fi.vm.kapa.rova.engine.model.OrganizationType;
+import fi.vm.kapa.rova.engine.model.RoleNameType;
+import fi.vm.kapa.rova.engine.model.RoleType;
+import fi.vm.kapa.rova.engine.model.SigningCodeType;
 import fi.vm.kapa.rova.logging.Logger;
 import fi.vm.kapa.rova.soap.virre.VIRREClient;
 import fi.vm.kapa.rova.soap.virre.model.ExtendedRoleInfo;
 import fi.vm.kapa.rova.soap.virre.model.LegalRepresentation;
+import fi.vm.kapa.rova.soap.virre.model.Representation;
 import fi.vm.kapa.rova.soap.virre.model.Role;
 import fi.vm.kapa.rova.soap.virre.model.VIRREResponseMessage;
 import fi.vm.kapa.rova.virre.model.OrganizationalRepresentation;
@@ -31,9 +41,66 @@ import fi.vm.kapa.rova.virre.model.OrganizationalRole;
 public class VIRREService {
 
     private static Logger LOG = Logger.getLogger(VIRREService.class, Logger.VIRRE_CLIENT);
+    
+    private static final int MIN_DATE_LENGTH = 10;
+    
+    private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy‐MM‐dd'T'HH:mm:ss.SSSZZZZZ");
+
 
     @Autowired
     private VIRREClient client;
+
+    public List<fi.vm.kapa.rova.engine.model.OrganizationalRole> getOrganizationalRoles(String hetu) throws VIRREServiceException {
+        List<fi.vm.kapa.rova.engine.model.OrganizationalRole> orgRoles = new ArrayList<fi.vm.kapa.rova.engine.model.OrganizationalRole>();
+
+        try {
+            long startTime = System.currentTimeMillis();
+
+            //TODO: must use correct VirreClient
+            //VIRREResponseMessage response = client.getResponse(hetu); 
+            VIRREResponseMessage response = getResponse(); 
+            LOG.info("duration=" + (System.currentTimeMillis() - startTime));
+            
+            if (response != null) {
+                List<Role> roles= response.getRoles();         
+                for (Role role : roles) {
+                    Set<SigningCodeType> codes = new HashSet<SigningCodeType>();
+                    for (LegalRepresentation legalRepr : role.getLegalRepresentations()) {
+                            String codeString = legalRepr.getSigningcode();
+                            try  {
+                                SigningCodeType code = SigningCodeType.valueOf(codeString);
+                                codes.add(code);
+                            } catch (IllegalArgumentException | NullPointerException e) {
+                                LOG.warning("Unable to create SigningCodeType: " + codeString);
+                            }
+                    }
+                    
+                    for (SigningCodeType code : codes) {
+                        try {
+                            fi.vm.kapa.rova.engine.model.OrganizationalRole newRole = new fi.vm.kapa.rova.engine.model.OrganizationalRole();
+                            newRole.setPersonIdentifier(hetu);
+                            newRole.setOrganization(createOrganization(role, code));
+                            newRole.setRoles(new LinkedList<>(createRoleTypes(role)));
+                            orgRoles.add(newRole);
+                            LOG.debug("to roles list was added: "+ newRole);
+                        } catch (IllegalArgumentException | NullPointerException e) {
+                            LOG.warning("Unable to create OrganizationalRole: " + e.getMessage());
+                        }
+                    }
+                    
+                }
+            } else {
+                // TODO what if
+            }
+            
+            
+        } catch (Throwable e) {
+            LOG.error("Person parsing failed reason:" + e);
+            throw new VIRREServiceException("Person parsing failed", e);
+        }
+        
+        return orgRoles;
+    }
 
     public OrganizationalPerson getOrganizationalPerson(String hetu) throws VIRREServiceException {
         final int MIN_DATE_LENGTH=10;
@@ -44,31 +111,30 @@ public class VIRREService {
 
             //TODO: must use correct VirreClient
             //VIRREResponseMessage response=client.getResponse(hetu); 
-            VIRREResponseMessage response=getResponse(); 
+            VIRREResponseMessage response = getResponse(); 
             LOG.info("duration=" + (System.currentTimeMillis() - startTime));
                       
             person.setPersonId(response.getSocialSec());
           
-            List<OrganizationalRole> orgRoles=new ArrayList<OrganizationalRole>();
+            List<OrganizationalRole> orgRoles = new ArrayList<OrganizationalRole>();
             
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy‐MM‐dd'T'HH:mm:ss.SSSZZZZZ");
             List<Role> roles= response.getRoles();         
             for (Role role : roles) {
-                OrganizationalRole orgRole=new OrganizationalRole();
+                OrganizationalRole orgRole = new OrganizationalRole();
                 orgRole.setOrganizationId(role.getBusinessId());
                 orgRole.setOrganizationName(role.getCompanyName());
                 orgRole.setCompanyFormCode(role.getCompanyFormCode());
-                List<OrganizationalRoleInfo> oRoleInfo=new ArrayList<OrganizationalRoleInfo>();
+                List<OrganizationalRoleInfo> oRoleInfo = new ArrayList<OrganizationalRoleInfo>();
                 for (ExtendedRoleInfo e : role.getExtendedRoleInfos()) {
-                    OrganizationalRoleInfo roleInfo=new OrganizationalRoleInfo();
+                    OrganizationalRoleInfo roleInfo = new OrganizationalRoleInfo();
                     roleInfo.setBodyType(e.getBodyType());
                     LocalDateTime startDate = LocalDateTime.parse(e.getStartDate(), formatter);
                     roleInfo.setStartDate(startDate);
                                    
                     if ( e.getExpirationDate().length() < MIN_DATE_LENGTH ) {
-                        e.setExpirationDate(null);
-                    }
-                    else {    
+                        roleInfo.setExpirationDate(null);
+                    } else {    
                         LocalDateTime expDate = LocalDateTime.parse(e.getExpirationDate(), formatter);
                         roleInfo.setExpirationDate(expDate);
                     }
@@ -100,7 +166,7 @@ public class VIRREService {
         VIRREResponseMessage responseMessage=null;
         try {
             responseMessage = mapper.readValue(new File("virre_response.json"), VIRREResponseMessage.class);
-            System.out.println(responseMessage);
+            LOG.debug("VIRREResponseMessage: "+responseMessage);
         } catch (JsonGenerationException e) {
             e.printStackTrace();
         } catch (JsonMappingException e) {
@@ -109,5 +175,40 @@ public class VIRREService {
             e.printStackTrace();
         }
         return responseMessage;
+    }
+
+    private Organization createOrganization(Role role, SigningCodeType code) {
+        Organization org = new Organization();
+        org.setName(role.getCompanyName());
+        org.setIdentifier(role.getBusinessId());
+        org.setExceptionStatus(role.getExceptionStatus());
+        org.setType(OrganizationType.find(role.getCompanyFormCode()));
+        org.setSigningCode(code);
+        LOG.debug("created organization: "+ org);
+        return org;
+    }
+
+    private Set<RoleType> createRoleTypes(Role role) {
+        Set<RoleType> roleTypes = new HashSet<>();
+        for (ExtendedRoleInfo info : role.getExtendedRoleInfos()) {
+            try {
+                RoleType roleType = new RoleType();
+                roleType.setRoleName(RoleNameType.valueOf(info.getRoleName()));
+                roleType.setBodyType(BodyType.valueOf(info.getBodyType()));
+                LocalDateTime startDate = LocalDateTime.parse(info.getStartDate(), formatter);
+                roleType.setStartDate(startDate);
+                if (info.getExpirationDate().length() < MIN_DATE_LENGTH) {
+                    roleType.setExpirationDate(null);
+                } else {    
+                    LocalDateTime expDate = LocalDateTime.parse(info.getExpirationDate(), formatter);
+                    roleType.setExpirationDate(expDate);
+                }
+                roleTypes.add(roleType);
+                LOG.debug("created roletype: "+ roleType);
+            } catch (IllegalArgumentException | NullPointerException e) {
+                LOG.warning("Unable to create RoleType: " + e.getMessage());
+            }
+        }
+        return roleTypes;
     }
 }    
