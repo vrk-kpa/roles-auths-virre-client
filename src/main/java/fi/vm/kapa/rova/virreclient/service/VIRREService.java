@@ -2,14 +2,12 @@ package fi.vm.kapa.rova.virreclient.service;
 
 import java.io.File;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,13 +27,12 @@ import fi.vm.kapa.rova.logging.Logger;
 import fi.vm.kapa.rova.soap.virre.VIRREClient;
 import fi.vm.kapa.rova.soap.virre.model.ExtendedRoleInfo;
 import fi.vm.kapa.rova.soap.virre.model.LegalRepresentation;
-import fi.vm.kapa.rova.soap.virre.model.Representation;
 import fi.vm.kapa.rova.soap.virre.model.Role;
 import fi.vm.kapa.rova.soap.virre.model.VIRREResponseMessage;
-import fi.vm.kapa.rova.virre.model.OrganizationalRepresentation;
-import fi.vm.kapa.rova.virre.model.OrganizationalRoleInfo;
 import fi.vm.kapa.rova.virre.model.OrganizationalPerson;
+import fi.vm.kapa.rova.virre.model.OrganizationalRepresentation;
 import fi.vm.kapa.rova.virre.model.OrganizationalRole;
+import fi.vm.kapa.rova.virre.model.OrganizationalRoleInfo;
 
 @Service
 public class VIRREService {
