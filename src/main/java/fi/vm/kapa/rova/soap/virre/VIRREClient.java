@@ -35,6 +35,9 @@ public class VIRREClient implements SpringPropertyNames {
     private XroadHeaderHandler xroadHeaderHandler;
 
     @Autowired
+    private AttachmentHandler attachmentHandler;
+
+    @Autowired
     private HttpServletRequest httpRequest;
     
     @Value(XROAD_ENDPOINT)
@@ -50,6 +53,7 @@ public class VIRREClient implements SpringPropertyNames {
             public List<Handler> getHandlerChain(PortInfo portInfo) {
                 List<Handler> handlers = new ArrayList<Handler>();
                 handlers.add(xroadHeaderHandler);
+                handlers.add(attachmentHandler);
                 return handlers;
             }
         };
@@ -70,7 +74,7 @@ public class VIRREClient implements SpringPropertyNames {
         port.roVaRoles(request, response);
         
         String attachment = (String) httpRequest.getAttribute(AttachmentHandler.ATTACHMENT_ATTRIBUTE);
-        LOG.debug("Virre got response: "+ response);
+        LOG.info("Virre got response: "+ response);
         return attachment;
         
     }

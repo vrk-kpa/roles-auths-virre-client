@@ -1,6 +1,5 @@
 package fi.vm.kapa.rova.virreclient.service;
 
-import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -29,10 +28,6 @@ import fi.vm.kapa.rova.soap.virre.model.ExtendedRoleInfo;
 import fi.vm.kapa.rova.soap.virre.model.LegalRepresentation;
 import fi.vm.kapa.rova.soap.virre.model.Role;
 import fi.vm.kapa.rova.soap.virre.model.VIRREResponseMessage;
-import fi.vm.kapa.rova.virre.model.OrganizationalPerson;
-import fi.vm.kapa.rova.virre.model.OrganizationalRepresentation;
-import fi.vm.kapa.rova.virre.model.OrganizationalRole;
-import fi.vm.kapa.rova.virre.model.OrganizationalRoleInfo;
 
 @Service
 public class VIRREService {
@@ -41,7 +36,7 @@ public class VIRREService {
     
     private static final int MIN_DATE_LENGTH = 10;
     
-    private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy‐MM‐dd'T'HH:mm:ss.SSSZZZZZ");
+    private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ");
 
 
     @Autowired
@@ -91,69 +86,13 @@ public class VIRREService {
             
         } catch (Throwable e) {
             LOG.error("Person parsing failed reason:" + e);
+            e.printStackTrace();
             throw new VIRREServiceException("Person parsing failed", e);
         }
         
         return orgRoles;
     }
 
-    public OrganizationalPerson getOrganizationalPerson(String hetu) throws VIRREServiceException {
-        final int MIN_DATE_LENGTH=10;
-        OrganizationalPerson person = new OrganizationalPerson();
-        
-        try {
-            long startTime = System.currentTimeMillis();
-
-            VIRREResponseMessage response=getResponse(client.getResponse(hetu)); 
-           
-            LOG.info("duration=" + (System.currentTimeMillis() - startTime));
-                      
-            person.setPersonId(response.getSocialSec());
-          
-            List<OrganizationalRole> orgRoles = new ArrayList<OrganizationalRole>();
-            
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy‐MM‐dd'T'HH:mm:ss.SSSZZZZZ");
-            List<Role> roles= response.getRoles();         
-            for (Role role : roles) {
-                OrganizationalRole orgRole = new OrganizationalRole();
-                orgRole.setOrganizationId(role.getBusinessId());
-                orgRole.setOrganizationName(role.getCompanyName());
-                orgRole.setCompanyFormCode(role.getCompanyFormCode());
-                List<OrganizationalRoleInfo> oRoleInfo = new ArrayList<OrganizationalRoleInfo>();
-                for (ExtendedRoleInfo e : role.getExtendedRoleInfos()) {
-                    OrganizationalRoleInfo roleInfo = new OrganizationalRoleInfo();
-                    roleInfo.setBodyType(e.getBodyType());
-                    LocalDateTime startDate = LocalDateTime.parse(e.getStartDate(), formatter);
-                    roleInfo.setStartDate(startDate);
-                                   
-                    if ( e.getExpirationDate().length() < MIN_DATE_LENGTH ) {
-                        roleInfo.setExpirationDate(null);
-                    } else {    
-                        LocalDateTime expDate = LocalDateTime.parse(e.getExpirationDate(), formatter);
-                        roleInfo.setExpirationDate(expDate);
-                    }
-                    roleInfo.setRoleName(e.getRoleName());
-                    oRoleInfo.add(roleInfo);
-                 }
-                orgRole.setRoleInfos(oRoleInfo);
-                List<OrganizationalRepresentation> oRepr=new ArrayList<OrganizationalRepresentation>();
-                for (LegalRepresentation l : role.getLegalRepresentations()) {
-                    OrganizationalRepresentation lRepr=new OrganizationalRepresentation();
-                    lRepr.setSigningcode(l.getSigningcode());
-                    oRepr.add(lRepr);
-                } 
-                orgRole.setRepresentations(oRepr);
-                
-                orgRoles.add(orgRole);
-            }
-           person.setOrgRoles(orgRoles);
-      
-        } catch (Throwable e) {
-           LOG.error("Person parsing failed reason:" + e);
-           throw new VIRREServiceException("Person parsing failed", e);
-        }
-        return person;
-    }
     
     private VIRREResponseMessage getResponse(String response) {
         ObjectMapper mapper = new ObjectMapper();
@@ -187,7 +126,7 @@ public class VIRREService {
         for (ExtendedRoleInfo info : role.getExtendedRoleInfos()) {
             try {
                 RoleType roleType = new RoleType();
-                roleType.setRoleName(RoleNameType.valueOf(info.getRoleName()));
+                roleType.setRoleName(RoleNameType.valueOf(info.getRoleType()));
                 roleType.setBodyType(BodyType.valueOf(info.getBodyType()));
                 LocalDateTime startDate = LocalDateTime.parse(info.getStartDate(), formatter);
                 roleType.setStartDate(startDate);

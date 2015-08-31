@@ -1,5 +1,8 @@
 package fi.vm.kapa.rova.soap.handlers;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringWriter;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -10,6 +13,8 @@ import javax.xml.soap.SOAPException;
 import javax.xml.ws.handler.MessageContext;
 import javax.xml.ws.handler.soap.SOAPHandler;
 import javax.xml.ws.handler.soap.SOAPMessageContext;
+
+import net.logstash.logback.encoder.org.apache.commons.io.IOUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -29,17 +34,27 @@ public class AttachmentHandler implements SOAPHandler<SOAPMessageContext>, Sprin
 
         @Override
         public boolean handleMessage(SOAPMessageContext context) {
-            Iterator<AttachmentPart> it =  context.getMessage().getAttachments();
-            while (it.hasNext()) {
-                AttachmentPart ap = it.next();
-                try {
-                    request.setAttribute(ATTACHMENT_ATTRIBUTE, (String)ap.getContent());
-                    System.out.println((String)ap.getContent());
-                } catch (SOAPException e) {
-                    LOG.error("Virre attachment handling error: " +  e);
+            Boolean outboundProperty = (Boolean) context.get(MessageContext.MESSAGE_OUTBOUND_PROPERTY);
+            if (!outboundProperty) {
+                Iterator<AttachmentPart> it =  context.getMessage().getAttachments();
+                while (it.hasNext()) {
+                    AttachmentPart ap = it.next();
+                    try {
+                        InputStream inputStream = (InputStream)ap.getContent();
+                        
+                        StringWriter writer = new StringWriter();
+                        IOUtils.copy(inputStream, writer);
+                        String json = writer.toString();
+
+                        request.setAttribute(ATTACHMENT_ATTRIBUTE, json);
+                    } catch (SOAPException e) {
+                        LOG.error("Virre attachment handling error: " +  e);
+                    } catch (IOException e) {
+                        LOG.error("Virre attachment handling error: " +  e);
+                    }
                 }
             }
-        return false;
+        return true;
         }
 
         @Override
