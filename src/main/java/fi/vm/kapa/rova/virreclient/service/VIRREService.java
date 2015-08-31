@@ -53,9 +53,7 @@ public class VIRREService {
         try {
             long startTime = System.currentTimeMillis();
 
-            //TODO: must use correct VirreClient
-            //VIRREResponseMessage response = client.getResponse(hetu); 
-            VIRREResponseMessage response = getResponse(); 
+            VIRREResponseMessage response=getResponse(client.getResponse(hetu)); 
             LOG.info("duration=" + (System.currentTimeMillis() - startTime));
             
             if (response != null) {
@@ -106,9 +104,8 @@ public class VIRREService {
         try {
             long startTime = System.currentTimeMillis();
 
-            //TODO: must use correct VirreClient
-            //VIRREResponseMessage response=client.getResponse(hetu); 
-            VIRREResponseMessage response = getResponse(); 
+            VIRREResponseMessage response=getResponse(client.getResponse(hetu)); 
+           
             LOG.info("duration=" + (System.currentTimeMillis() - startTime));
                       
             person.setPersonId(response.getSocialSec());
@@ -158,11 +155,11 @@ public class VIRREService {
         return person;
     }
     
-    private VIRREResponseMessage getResponse() {
+    private VIRREResponseMessage getResponse(String response) {
         ObjectMapper mapper = new ObjectMapper();
         VIRREResponseMessage responseMessage=null;
         try {
-            responseMessage = mapper.readValue(new File("virre_response.json"), VIRREResponseMessage.class);
+            responseMessage = mapper.readValue(response, VIRREResponseMessage.class);
             LOG.debug("VIRREResponseMessage: "+responseMessage);
         } catch (JsonGenerationException e) {
             e.printStackTrace();
