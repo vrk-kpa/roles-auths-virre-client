@@ -125,7 +125,6 @@ public class VIRREService {
         Set<RoleType> roleTypes = new HashSet<>();
         for (ExtendedRoleInfo info : role.getExtendedRoleInfos()) {
             try {
-                System.out.println(info.getBodyType()+ " " + info.getRoleType());
                 RoleType roleType = new RoleType();
                 roleType.setRoleName(RoleNameType.valueOf(info.getRoleType()));
                 roleType.setBodyType(BodyType.valueOf(info.getBodyType()));
