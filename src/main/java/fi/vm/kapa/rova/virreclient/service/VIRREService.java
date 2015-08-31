@@ -49,7 +49,7 @@ public class VIRREService {
             long startTime = System.currentTimeMillis();
 
             VIRREResponseMessage response=getResponse(client.getResponse(hetu)); 
-            LOG.info("duration=" + (System.currentTimeMillis() - startTime));
+            LOG.info("Soap request duration=" + (System.currentTimeMillis() - startTime));
             
             if (response != null) {
                 List<Role> roles= response.getRoles();         
@@ -125,12 +125,13 @@ public class VIRREService {
         Set<RoleType> roleTypes = new HashSet<>();
         for (ExtendedRoleInfo info : role.getExtendedRoleInfos()) {
             try {
+                System.out.println(info.getBodyType()+ " " + info.getRoleType());
                 RoleType roleType = new RoleType();
                 roleType.setRoleName(RoleNameType.valueOf(info.getRoleType()));
                 roleType.setBodyType(BodyType.valueOf(info.getBodyType()));
                 LocalDateTime startDate = LocalDateTime.parse(info.getStartDate(), formatter);
                 roleType.setStartDate(startDate);
-                if (info.getExpirationDate().length() < MIN_DATE_LENGTH) {
+                if (info.getExpirationDate() == null || info.getExpirationDate().length() < MIN_DATE_LENGTH) {
                     roleType.setExpirationDate(null);
                 } else {    
                     LocalDateTime expDate = LocalDateTime.parse(info.getExpirationDate(), formatter);

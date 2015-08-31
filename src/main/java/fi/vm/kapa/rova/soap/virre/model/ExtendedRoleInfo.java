@@ -1,15 +1,19 @@
 package fi.vm.kapa.rova.soap.virre.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class ExtendedRoleInfo {
     private String roleType;
     private String bodyType;
     private String startDate;
     private String expirationDate;
     private String roleDescription;
+    private String BodyDescription;
     
+    public String getBodyDescription() {
+        return BodyDescription;
+    }
+    public void setBodyDescription(String bodyDescription) {
+        BodyDescription = bodyDescription;
+    }
     public String getRoleDescription() {
         return roleDescription;
     }
