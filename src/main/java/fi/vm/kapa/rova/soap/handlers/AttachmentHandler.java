@@ -43,7 +43,7 @@ public class AttachmentHandler implements SOAPHandler<SOAPMessageContext>, Sprin
                         InputStream inputStream = (InputStream)ap.getContent();
                         
                         StringWriter writer = new StringWriter();
-                        IOUtils.copy(inputStream, writer);
+                        IOUtils.copy(inputStream, writer, "UTF-8");
                         String json = writer.toString();
 
                         request.setAttribute(ATTACHMENT_ATTRIBUTE, json);
