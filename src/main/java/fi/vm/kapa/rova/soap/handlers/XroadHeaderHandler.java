@@ -32,7 +32,7 @@ import fi.vrk.xml.rova.virre.XRoadServiceIdentifierType;
 @Component
 public class XroadHeaderHandler implements SOAPHandler<SOAPMessageContext>, SpringPropertyNames {
 
-    private static Logger LOG = Logger.getLogger(XroadHeaderHandler.class, Logger.VIRRE_CLIENT);
+    private static Logger LOG = Logger.getLogger(XroadHeaderHandler.class);
 
     private ObjectFactory factory = new ObjectFactory();
 

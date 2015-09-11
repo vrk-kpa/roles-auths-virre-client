@@ -32,7 +32,7 @@ import fi.vm.kapa.rova.soap.virre.model.VIRREResponseMessage;
 @Service
 public class VIRREService {
 
-    private static Logger LOG = Logger.getLogger(VIRREService.class, Logger.VIRRE_CLIENT);
+    private static Logger LOG = Logger.getLogger(VIRREService.class);
     
     private static final int MIN_DATE_LENGTH = 10;
     

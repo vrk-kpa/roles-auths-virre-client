@@ -7,7 +7,7 @@ import fi.vm.kapa.rova.logging.Logger;
 
 public class CustomValidationEventHandler implements ValidationEventHandler {
 
-    private static Logger LOG = Logger.getLogger(CustomValidationEventHandler.class, Logger.VIRRE_CLIENT);
+    private static Logger LOG = Logger.getLogger(CustomValidationEventHandler.class);
 
     @Override
     public boolean handleEvent(ValidationEvent event) {

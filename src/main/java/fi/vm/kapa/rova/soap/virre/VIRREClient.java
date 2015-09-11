@@ -43,7 +43,7 @@ public class VIRREClient implements SpringPropertyNames {
     @Value(XROAD_ENDPOINT)
     private String xrdEndPoint;
 
-    private static Logger LOG = Logger.getLogger(VIRREClient.class, Logger.VIRRE_CLIENT);
+    private static Logger LOG = Logger.getLogger(VIRREClient.class);
     
     @PostConstruct
     public void init() {
