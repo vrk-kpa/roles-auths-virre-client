@@ -48,11 +48,11 @@ public class VIRREService {
         try {
             long startTime = System.currentTimeMillis();
 
-            VIRREResponseMessage response=getResponse(client.getResponse(hetu)); 
+            VIRREResponseMessage response = getResponse(client.getResponse(hetu)); 
             LOG.info("Soap request duration=" + (System.currentTimeMillis() - startTime));
-            
-            if (response != null) {
-                List<Role> roles= response.getRoles();         
+
+            if (response.getMessage() == null) {
+                List<Role> roles = response.getRoles();         
                 for (Role role : roles) {
                     Set<SigningCodeType> codes = new HashSet<SigningCodeType>();
                     for (LegalRepresentation legalRepr : role.getLegalRepresentations()) {
@@ -72,7 +72,7 @@ public class VIRREService {
                             newRole.setOrganization(createOrganization(role, code));
                             newRole.setRoles(new LinkedList<>(createRoleTypes(role)));
                             orgRoles.add(newRole);
-                            LOG.debug("to roles list was added: "+ newRole);
+                            LOG.debug("to roles list was added: " + newRole);
                         } catch (IllegalArgumentException | NullPointerException e) {
                             LOG.warning("Unable to create OrganizationalRole: " + e.getMessage());
                         }
@@ -80,9 +80,8 @@ public class VIRREService {
                     
                 }
             } else {
-                // TODO what if
+                LOG.warning("Got error message from service: " + response.getMessage());
             }
-            
             
         } catch (Throwable e) {
             LOG.error("Person parsing failed reason:" + e);
