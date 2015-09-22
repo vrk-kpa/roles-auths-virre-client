@@ -32,4 +32,4 @@ ADD target/roles-auths-virre-client.jar /opt/rova/roles-auths-virre-client/
 WORKDIR /opt/rova/roles-auths-virre-client/
 
 EXPOSE 8080
-ENTRYPOINT ["java", "-Dlogging.config=config/logback.xml", "-jar", "roles-auths-virre-client.jar"]
+ENTRYPOINT ["java", "-jar", "roles-auths-virre-client.jar"]
