@@ -230,6 +230,7 @@
                 <version>2.1</version>
                 <executions>
                     <execution>
+                        <id>wsimport-virre</id>
                         <goals>
                             <goal>wsimport</goal>
                         </goals>
@@ -238,6 +239,48 @@
                             <wsdlLocation>../../../../../wsdl/virre.wsdl</wsdlLocation>
                             <wsdlUrls>
                                 <wsdlUrl>${basedir}/src/main/resources/wsdl/virre.wsdl</wsdlUrl>
+                            </wsdlUrls>
+                            <verbose>true</verbose>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>wsimport-prh-companies</id>
+                        <goals>
+                            <goal>wsimport</goal>
+                        </goals>
+                        <configuration>
+                            <packageName>fi.vrk.xml.rova.prh.companies</packageName>
+                            <wsdlLocation>../../../../../wsdl/prh-companies.wsdl</wsdlLocation>
+                            <wsdlUrls>
+                                <wsdlUrl>${basedir}/src/main/resources/wsdl/prh-companies.wsdl</wsdlUrl>
+                            </wsdlUrls>
+                            <verbose>true</verbose>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>wsimport-prh-representations</id>
+                        <goals>
+                            <goal>wsimport</goal>
+                        </goals>
+                        <configuration>
+                            <packageName>fi.vrk.xml.rova.prh.representations</packageName>
+                            <wsdlLocation>../../../../../wsdl/prh-representations.wsdl</wsdlLocation>
+                            <wsdlUrls>
+                                <wsdlUrl>${basedir}/src/main/resources/wsdl/prh-representations.wsdl</wsdlUrl>
+                            </wsdlUrls>
+                            <verbose>true</verbose>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>wsimport-prh-rights</id>
+                        <goals>
+                            <goal>wsimport</goal>
+                        </goals>
+                        <configuration>
+                            <packageName>fi.vrk.xml.rova.prh.rights</packageName>
+                            <wsdlLocation>../../../../../wsdl/prh-rights.wsdl</wsdlLocation>
+                            <wsdlUrls>
+                                <wsdlUrl>${basedir}/src/main/resources/wsdl/prh-rights.wsdl</wsdlUrl>
                             </wsdlUrls>
                             <verbose>true</verbose>
                         </configuration>
