@@ -92,7 +92,7 @@
     <xsd:schema xmlns:tns="http://xml.vrk.fi/ws/Rova/Virre/Entities" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://xml.vrk.fi/ws/Rova/Virre/Entities">
       <xsd:complexType name="Request">
         <xsd:sequence>
-          <xsd:element name="socialsecuritynumber" type="xsd:string"/>
+          <xsd:element name="businessid" type="xsd:string"/>
         </xsd:sequence>
       </xsd:complexType>
     </xsd:schema>

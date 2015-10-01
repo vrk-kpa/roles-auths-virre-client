@@ -250,7 +250,7 @@
                         </goals>
                         <configuration>
                             <packageName>fi.vrk.xml.rova.prh.companies</packageName>
-                            <wsdlLocation>../../../../../wsdl/prh-companies.wsdl</wsdlLocation>
+                            <wsdlLocation>../../../../../../wsdl/prh-companies.wsdl</wsdlLocation>
                             <wsdlUrls>
                                 <wsdlUrl>${basedir}/src/main/resources/wsdl/prh-companies.wsdl</wsdlUrl>
                             </wsdlUrls>
@@ -264,7 +264,7 @@
                         </goals>
                         <configuration>
                             <packageName>fi.vrk.xml.rova.prh.representations</packageName>
-                            <wsdlLocation>../../../../../wsdl/prh-representations.wsdl</wsdlLocation>
+                            <wsdlLocation>../../../../../../wsdl/prh-representations.wsdl</wsdlLocation>
                             <wsdlUrls>
                                 <wsdlUrl>${basedir}/src/main/resources/wsdl/prh-representations.wsdl</wsdlUrl>
                             </wsdlUrls>
@@ -278,7 +278,7 @@
                         </goals>
                         <configuration>
                             <packageName>fi.vrk.xml.rova.prh.rights</packageName>
-                            <wsdlLocation>../../../../../wsdl/prh-rights.wsdl</wsdlLocation>
+                            <wsdlLocation>../../../../../../wsdl/prh-rights.wsdl</wsdlLocation>
                             <wsdlUrls>
                                 <wsdlUrl>${basedir}/src/main/resources/wsdl/prh-rights.wsdl</wsdlUrl>
                             </wsdlUrls>
