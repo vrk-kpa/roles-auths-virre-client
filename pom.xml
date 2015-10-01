@@ -241,7 +241,6 @@
                                 <wsdlUrl>${basedir}/src/main/resources/wsdl/virre.wsdl</wsdlUrl>
                             </wsdlUrls>
                             <verbose>true</verbose>
-                        </configuration>
                     </execution>
                     <execution>
                         <id>wsimport-prh-companies</id>
