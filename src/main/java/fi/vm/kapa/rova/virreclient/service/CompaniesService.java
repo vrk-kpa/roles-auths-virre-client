@@ -1,10 +1,14 @@
 
 package fi.vm.kapa.rova.virreclient.service;
 
+import fi.vm.kapa.rova.engine.model.prh.Company;
+import fi.vm.kapa.rova.engine.model.prh.CompanyRole;
+import fi.vm.kapa.rova.engine.model.RoleNameType;
 import fi.vm.kapa.rova.logging.Logger;
 import fi.vm.kapa.rova.soap.prh.CompaniesClient;
 import fi.vm.kapa.rova.soap.prh.model.CompaniesResponseMessage;
 import fi.vm.kapa.rova.soap.prh.model.Role;
+import fi.vm.kapa.rova.soap.prh.model.ExtendedRoleInfo;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.List;
@@ -31,35 +35,50 @@ public class CompaniesService {
      * @return List of organizations for given hetu
      * @throws VIRREServiceException 
      */
-    public List<String> getCompanies(String hetu) throws VIRREServiceException {
+    public List<Company> getCompanies(String hetu) throws VIRREServiceException {
 
-        List<String> orgs = null;
+        List<Company> companies = null;
 
         try {
             String responseString = cc.getResponse(hetu);
             CompaniesResponseMessage msg = MessageParser.parseResponseMessage(responseString, CompaniesResponseMessage.class);
-            orgs = listBusinessIds(msg);
-            log.info("Found " + orgs.size() + " companies for person.");
+            companies = parseCompanies(msg);
+            log.info("Found " + companies.size() + " companies for person.");
         } catch (Exception e) {
             log.error("Failed to parse companies: " + e.getMessage());
             throw new VIRREServiceException(e.getMessage(), e);
         }
 
-        return orgs;
+        return companies;
     }
 
-    private List<String> listBusinessIds(CompaniesResponseMessage msg) {
-        List<String> orgs = new LinkedList<>();
+    private List<Company> parseCompanies(CompaniesResponseMessage msg) {
+        List<Company> companies = new LinkedList<>();
         if (msg != null) {
             for (Role role : msg.getRoles()) {
-                String businessId = role.getBusinessId();
-                orgs.add(businessId);
-                log.debug("Business id: " + businessId);
+                Company company = new Company();
+                company.setBusinessId(role.getBusinessId());
+                company.setCompanyName(role.getCompanyName());
+                List<CompanyRole> roles = new LinkedList<>();
+                for (ExtendedRoleInfo eri : role.getExtendedRoleInfos()) {
+                    CompanyRole cr = new CompanyRole();
+                    RoleNameType type = null;
+                    String rt = eri.getRoleType();
+                    try {
+                        type = RoleNameType.valueOf(rt);
+                    } catch (IllegalArgumentException e) {
+                        log.warning("Unable to parse role: " + rt);
+                    }
+                    cr.setType(type);
+                    roles.add(cr);
+                }
+                company.setRoles(roles);
+                companies.add(company);
             }
         } else {
             log.warning("Got null message.");
         }
-        return orgs;
+        return companies;
     }
 
 }

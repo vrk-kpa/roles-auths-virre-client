@@ -1,5 +1,8 @@
 package fi.vm.kapa.rova.virre.resources;
 
+import fi.vm.kapa.rova.engine.model.prh.Company;
+import fi.vm.kapa.rova.engine.model.prh.CompanyRepresentations;
+import fi.vm.kapa.rova.engine.model.prh.RepresentationRight;
 import fi.vm.kapa.rova.logging.Logger;
 import java.util.List;
 
@@ -16,7 +19,9 @@ import org.springframework.stereotype.Service;
 
 import fi.vm.kapa.rova.virreclient.service.CompaniesService;
 import fi.vm.kapa.rova.virreclient.service.RepresentationsService;
+import fi.vm.kapa.rova.virreclient.service.RightsService;
 import fi.vm.kapa.rova.virreclient.service.VIRREServiceException;
+import javax.ws.rs.QueryParam;
 
 @Service
 @Path("/rest")
@@ -28,15 +33,18 @@ public class PrhResource {
     private CompaniesService cs;
 
     @Inject
-    private RepresentationsService rs;
+    private RepresentationsService reps;
+
+    @Inject
+    private RightsService rs;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/prh/companies/{socialsecuritynumber}")
-    public Response getCompanies(@PathParam("socialsecuritynumber") String socialsecuritynumber) {
+    @Path("/prh/companies/{socialsec}")
+    public Response getCompanies(@PathParam("socialsec") String socialsec) {
         try {
-            List<String> roles = cs.getCompanies(socialsecuritynumber);
-            return Response.ok().entity(roles).build();
+            List<Company> companies = cs.getCompanies(socialsec);
+            return Response.ok().entity(companies).build();
         } catch (VIRREServiceException e) {
             log.error("Returning error. Failed to get companies: " + e.getMessage());
             ResponseBuilder responseBuilder = Response.serverError();
@@ -49,10 +57,26 @@ public class PrhResource {
     @Path("/prh/representations/{businessid}")
     public Response getRepresentations(@PathParam("businessid") String businessid) {
         try {
-            List<String> roles = rs.getRepresentations(businessid);
-            return Response.ok().entity(roles).build();
+            CompanyRepresentations reprs = reps.getRepresentations(businessid);
+            return Response.ok().entity(reprs).build();
         } catch (VIRREServiceException e) {
             log.error("Returning error. Failed to get persons: " + e.getMessage());
+            ResponseBuilder responseBuilder = Response.serverError();
+            return responseBuilder.build();
+        }
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/prh/rights")
+    public Response getRights(@QueryParam("socialsec") String socialSec,
+                        @QueryParam("businessid") String businessId,
+                        @QueryParam("rightlevel") String rightLevel) {
+        try {
+            RepresentationRight right = rs.getRights(socialSec, businessId, rightLevel);
+            return Response.ok().entity(right).build();
+        } catch (VIRREServiceException e) {
+            log.error("Returning error. Failed to get rights: " + e.getMessage());
             ResponseBuilder responseBuilder = Response.serverError();
             return responseBuilder.build();
         }

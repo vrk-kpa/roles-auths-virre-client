@@ -59,19 +59,21 @@ public class RightsClient implements SpringPropertyNames {
         };
         service.setHandlerResolver(hs);
     }
-    
-    public String getResponse(String personId) {
+
+    public String getRights(String socialSec, String businessId, String rightLevel) {
         XRoadPortType port = service.getXRoadServicePort();
         BindingProvider bp = (BindingProvider) port;
         
         bp.getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, xrdEndPoint);
 
         Holder<Request> request = new Holder<Request>(factory.createRequest());
-        RoVaRightToRepresentResponse companiesResponse = factory.createRoVaRightToRepresentResponse();
+        RoVaRightToRepresentResponse rightResponse = factory.createRoVaRightToRepresentResponse();
 
-        Holder<RoVaRightToRepresentResponse.Response> response = new Holder<RoVaRightToRepresentResponse.Response>(companiesResponse.getResponse());
+        Holder<RoVaRightToRepresentResponse.Response> response = new Holder<RoVaRightToRepresentResponse.Response>(rightResponse.getResponse());
 
-        request.value.setSocialsecuritynumber(personId);
+        request.value.setSocialsecuritynumber(socialSec);
+        request.value.setBusinessid(businessId);
+        request.value.setRightlevel(rightLevel);
 
         port.roVaRightToRepresent(request, response);
         
