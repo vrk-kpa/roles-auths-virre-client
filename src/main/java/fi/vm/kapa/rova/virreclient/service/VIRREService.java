@@ -1,5 +1,7 @@
 package fi.vm.kapa.rova.virreclient.service;
 
+import static fi.vm.kapa.rova.logging.Logger.Field.DURATION;
+
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -23,6 +25,7 @@ import fi.vm.kapa.rova.engine.model.RoleNameType;
 import fi.vm.kapa.rova.engine.model.RoleType;
 import fi.vm.kapa.rova.engine.model.SigningCodeType;
 import fi.vm.kapa.rova.logging.Logger;
+import fi.vm.kapa.rova.logging.Logger.Field;
 import fi.vm.kapa.rova.soap.virre.VIRREClient;
 import fi.vm.kapa.rova.soap.virre.model.ExtendedRoleInfo;
 import fi.vm.kapa.rova.soap.virre.model.LegalRepresentation;
@@ -49,7 +52,7 @@ public class VIRREService {
             long startTime = System.currentTimeMillis();
 
             VIRREResponseMessage response = getResponse(client.getResponse(hetu)); 
-            LOG.info("Soap request duration=" + (System.currentTimeMillis() - startTime));
+            logVirreRequest(startTime, System.currentTimeMillis());
 
             if (response.getMessage() == null) {
                 List<Role> roles = response.getRoles();         
@@ -61,7 +64,7 @@ public class VIRREService {
                                 SigningCodeType code = SigningCodeType.valueOf(codeString);
                                 codes.add(code);
                             } catch (IllegalArgumentException | NullPointerException e) {
-                                LOG.warning("Unable to create SigningCodeType: " + codeString);
+                                logVirreWarning("Unable to create SigningCodeType: " + codeString);
                             }
                     }
                     
@@ -74,25 +77,26 @@ public class VIRREService {
                             orgRoles.add(newRole);
                             LOG.debug("to roles list was added: " + newRole);
                         } catch (IllegalArgumentException | NullPointerException e) {
-                            LOG.warning("Unable to create OrganizationalRole: " + e.getMessage());
+                            logVirreWarning("Unable to create OrganizationalRole: " + e.getMessage());
                         }
                     }
                     
                 }
             } else {
-                LOG.warning("Got error message from service: " + response.getMessage());
+                logVirreWarning("Got error message from service: " + response.getMessage());
             }
             
         } catch (Throwable e) {
-            LOG.error("Person parsing failed reason:" + e);
+            logVirreError("Person org_roles failed:" + e.getMessage());
             e.printStackTrace();
-            throw new VIRREServiceException("Person parsing failed", e);
+            throw new VIRREServiceException("Person org_roles failed", e);
         }
         
         return orgRoles;
     }
 
     
+
     private VIRREResponseMessage getResponse(String response) {
         ObjectMapper mapper = new ObjectMapper();
         VIRREResponseMessage responseMessage=null;
@@ -138,9 +142,29 @@ public class VIRREService {
                 roleTypes.add(roleType);
                 LOG.debug("created roletype: "+ roleType);
             } catch (IllegalArgumentException | NullPointerException e) {
-                LOG.warning("Unable to create RoleType: " + e.getMessage());
+                logVirreWarning("Unable to create RoleType: " + e.getMessage());
             }
         }
         return roleTypes;
     }
+
+
+    private void logVirreRequest(long startTime, long currentTimeMillis) {
+        Logger.LogMap logmap = LOG.infoMap();
+        logmap.set(DURATION, currentTimeMillis - startTime);
+        logmap.log();
+    }
+
+    private void logVirreWarning(String warningString) {
+        Logger.LogMap logmap = LOG.warningMap();
+        logmap.set(Field.WARNING, warningString);
+        logmap.log();
+    }
+
+    private void logVirreError(String errorString) {
+        Logger.LogMap logmap = LOG.errorMap();
+        logmap.set(Field.ERROR, errorString);
+        logmap.log();
+    }
+
 }    
