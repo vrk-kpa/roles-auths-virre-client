@@ -1,6 +1,6 @@
 package fi.vm.kapa.rova.virreclient.service;
 
-import static fi.vm.kapa.rova.logging.Logger.Field.DURATION;
+import static fi.vm.kapa.rova.logging.Logger.Field.*;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -25,7 +25,6 @@ import fi.vm.kapa.rova.engine.model.RoleNameType;
 import fi.vm.kapa.rova.engine.model.RoleType;
 import fi.vm.kapa.rova.engine.model.SigningCodeType;
 import fi.vm.kapa.rova.logging.Logger;
-import fi.vm.kapa.rova.logging.Logger.Field;
 import fi.vm.kapa.rova.soap.virre.VIRREClient;
 import fi.vm.kapa.rova.soap.virre.model.ExtendedRoleInfo;
 import fi.vm.kapa.rova.soap.virre.model.LegalRepresentation;
@@ -157,13 +156,13 @@ public class VIRREService {
 
     private void logVirreWarning(String warningString) {
         Logger.LogMap logmap = LOG.warningMap();
-        logmap.set(Field.WARNING, warningString);
+        logmap.set(WARNINGSTR, warningString);
         logmap.log();
     }
 
     private void logVirreError(String errorString) {
         Logger.LogMap logmap = LOG.errorMap();
-        logmap.set(Field.ERROR, errorString);
+        logmap.set(ERRORSTR, errorString);
         logmap.log();
     }
 
