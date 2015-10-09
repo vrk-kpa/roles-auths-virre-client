@@ -20,6 +20,14 @@ service_service_code={{ virre_service_service_code }}
 # SERVICE_VERSION defines the version of the called service (eg. v1)
 service_service_version={{ virre_service_service_version }}
 
+service_companies_service_code={{ virre_service_companies_service_code }}
+service_representations_service_code={{ virre_service_representations_service_code }}
+service_rights_service_code={{ virre_service_rights_service_code }}
+
+service_companies_service_version={{ virre_service_companies_service_version }}
+service_representations_service_version={{ virre_service_representations_service_version }}
+service_rights_service_version={{ virre_service_rights_service_version }}
+
 # own xroad service specific properties
 # ROVA_SDSB_INSTANCE identifies X-road instance: contains ISO country code and code of technical env (eg. FI_DEV)
 client_sdsb_instance={{ virre_client_sdsb_instance }}
