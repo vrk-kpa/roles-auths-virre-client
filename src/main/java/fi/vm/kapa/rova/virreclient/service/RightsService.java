@@ -29,7 +29,7 @@ public class RightsService {
      * @param socialsec hetu
      * @param businessId Y-tunnus
      * @param level OI/P
-     * @return AUTHORIZED or UNAUTHORIZED
+     * @return RepresentationRight 
      * @throws VIRREServiceException 
      */
     public RepresentationRight getRights(String socialsec, String businessId, String level) throws VIRREServiceException {
