@@ -58,6 +58,8 @@ public class RepresentationsService {
 
         CompanyRepresentations repr = new CompanyRepresentations();
         if (msg != null) {
+            repr.setBusinessId(msg.getBusinessId());
+            repr.setCompanyName(msg.getCompanyName());
             repr.setCompanyFormCode(msg.getCompanyFormCode());
             List<CompanyPerson> persons = new LinkedList<>();
 
