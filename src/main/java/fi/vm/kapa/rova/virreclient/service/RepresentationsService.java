@@ -55,6 +55,7 @@ public class RepresentationsService {
     }
 
     private CompanyRepresentations parseRepresentations(RepresentationsResponseMessage msg) {
+        log.debug(msg.toString());
 
         CompanyRepresentations repr = new CompanyRepresentations();
         if (msg != null) {
@@ -63,12 +64,16 @@ public class RepresentationsService {
             repr.setCompanyFormCode(msg.getCompanyFormCode());
             List<CompanyPerson> persons = new LinkedList<>();
 
-            for (Representation r : msg.getRepresentations()) {
-                addPersonData(persons, r.getPersons());
+            if (msg.getRepresentations() != null) {
+                for (Representation r : msg.getRepresentations()) {
+                    addPersonData(persons, r.getPersons());
+                }
             }
 
-            for (Body body : msg.getBodies()) {
-                addPersonData(persons, body.getNaturalPersons());
+            if (msg.getBodies() != null) {
+                for (Body body : msg.getBodies()) {
+                    addPersonData(persons, body.getNaturalPersons());
+                }
             }
 
             repr.setCompanyPersons(persons);
