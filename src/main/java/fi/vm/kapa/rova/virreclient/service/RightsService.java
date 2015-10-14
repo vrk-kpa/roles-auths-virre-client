@@ -15,7 +15,9 @@ import org.springframework.stereotype.Service;
  * @author mtom
  */
 @Service
-public class RightsService {
+public class RightsService extends ServiceLogging {
+
+    public static final String OP = "RightsService";
 
     private static final Logger log = Logger.getLogger(RightsService.class);
 
@@ -37,13 +39,14 @@ public class RightsService {
         RepresentationRight right = null;
 
         try {
+            long startTime = System.currentTimeMillis();
             String responseString = rc.getRights(socialsec, businessId, level);
-            log.info("Response string: " + responseString);
+            logRequest(OP + ":RoVaCompanyRepresentations", startTime, System.currentTimeMillis());
             RightsResponseMessage msg = MessageParser.parseResponseMessage(responseString, RightsResponseMessage.class);
             right = parseRight(msg);
         } catch (Exception e) {
             e.printStackTrace();
-            log.error("Failed to parse rights: " + e.getMessage());
+            logError(OP, "Failed to parse rights: " + e.getMessage());
             throw new VIRREServiceException(e.getMessage(), e);
         }
 

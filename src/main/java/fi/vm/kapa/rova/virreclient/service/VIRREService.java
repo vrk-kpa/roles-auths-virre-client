@@ -1,6 +1,5 @@
 package fi.vm.kapa.rova.virreclient.service;
 
-import static fi.vm.kapa.rova.logging.Logger.Field.*;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -32,7 +31,9 @@ import fi.vm.kapa.rova.soap.virre.model.Role;
 import fi.vm.kapa.rova.soap.virre.model.VIRREResponseMessage;
 
 @Service
-public class VIRREService {
+public class VIRREService extends ServiceLogging {
+
+    public static final String OP = "VirreService";
 
     private static Logger LOG = Logger.getLogger(VIRREService.class);
     
@@ -51,7 +52,7 @@ public class VIRREService {
             long startTime = System.currentTimeMillis();
 
             VIRREResponseMessage response = getResponse(client.getResponse(hetu)); 
-            logVirreRequest(startTime, System.currentTimeMillis());
+            logRequest(OP, startTime, System.currentTimeMillis());
 
             if (response.getMessage() == null) {
                 List<Role> roles = response.getRoles();         
@@ -63,7 +64,7 @@ public class VIRREService {
                                 SigningCodeType code = SigningCodeType.valueOf(codeString);
                                 codes.add(code);
                             } catch (IllegalArgumentException | NullPointerException e) {
-                                logVirreWarning("Unable to create SigningCodeType: " + codeString);
+                                logWarning(OP, "Unable to create SigningCodeType: " + codeString);
                             }
                     }
                     
@@ -74,19 +75,18 @@ public class VIRREService {
                             newRole.setOrganization(createOrganization(role, code));
                             newRole.setRoles(new LinkedList<>(createRoleTypes(role)));
                             orgRoles.add(newRole);
-                            LOG.debug("to roles list was added: " + newRole);
                         } catch (IllegalArgumentException | NullPointerException e) {
-                            logVirreWarning("Unable to create OrganizationalRole: " + e.getMessage());
+                            logWarning(OP, "Unable to create OrganizationalRole: " + e.getMessage());
                         }
                     }
                     
                 }
             } else {
-                logVirreWarning("Got error message from service: " + response.getMessage());
+                logWarning(OP, "Got error message from service: " + response.getMessage());
             }
             
         } catch (Throwable e) {
-            logVirreError("Person org_roles failed:" + e.getMessage());
+            logError(OP, "Person org_roles failed:" + e.getMessage());
             e.printStackTrace();
             throw new VIRREServiceException("Person org_roles failed", e);
         }
@@ -101,7 +101,6 @@ public class VIRREService {
         VIRREResponseMessage responseMessage=null;
         try {
             responseMessage = mapper.readValue(response, VIRREResponseMessage.class);
-            LOG.debug("VIRREResponseMessage: "+responseMessage);
         } catch (JsonGenerationException e) {
             e.printStackTrace();
         } catch (JsonMappingException e) {
@@ -119,7 +118,6 @@ public class VIRREService {
         org.setExceptionStatus(role.getExceptionStatus());
         org.setType(OrganizationType.find(role.getCompanyFormCode()));
         org.setSigningCode(code);
-        LOG.debug("created organization: "+ org);
         return org;
     }
 
@@ -139,31 +137,12 @@ public class VIRREService {
                     roleType.setExpirationDate(expDate);
                 }
                 roleTypes.add(roleType);
-                LOG.debug("created roletype: "+ roleType);
             } catch (IllegalArgumentException | NullPointerException e) {
-                logVirreWarning("Unable to create RoleType: " + e.getMessage());
+                logWarning(OP, "Unable to create RoleType: " + e.getMessage());
             }
         }
         return roleTypes;
     }
 
-
-    private void logVirreRequest(long startTime, long currentTimeMillis) {
-        Logger.LogMap logmap = LOG.infoMap();
-        logmap.set(DURATION, currentTimeMillis - startTime);
-        logmap.log();
-    }
-
-    private void logVirreWarning(String warningString) {
-        Logger.LogMap logmap = LOG.warningMap();
-        logmap.set(WARNINGSTR, warningString);
-        logmap.log();
-    }
-
-    private void logVirreError(String errorString) {
-        Logger.LogMap logmap = LOG.errorMap();
-        logmap.set(ERRORSTR, errorString);
-        logmap.log();
-    }
 
 }    

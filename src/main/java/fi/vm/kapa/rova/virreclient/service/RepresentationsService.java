@@ -22,7 +22,9 @@ import org.springframework.stereotype.Service;
  * @author mtom
  */
 @Service
-public class RepresentationsService {
+public class RepresentationsService extends ServiceLogging {
+
+    public static final String OP = "RepresentationsService";
 
     private static final Logger log = Logger.getLogger(RepresentationsService.class);
 
@@ -42,12 +44,14 @@ public class RepresentationsService {
         CompanyRepresentations representations = null;
 
         try {
+            long startTime = System.currentTimeMillis();
             String responseString = rc.getResponse(businessId);
+            logRequest(OP + "RoVaRightToRepresent", startTime, System.currentTimeMillis());
             RepresentationsResponseMessage msg = MessageParser.parseResponseMessage(responseString, RepresentationsResponseMessage.class);
             representations = parseRepresentations(msg);
         } catch (Exception e) {
             e.printStackTrace();
-            log.error("Failed to parse persons: " + e.getMessage());
+            logError(OP, "Failed to parse persons: " + e.getMessage());
             throw new VIRREServiceException(e.getMessage(), e);
         }
 
@@ -55,7 +59,6 @@ public class RepresentationsService {
     }
 
     private CompanyRepresentations parseRepresentations(RepresentationsResponseMessage msg) {
-        log.debug(msg.toString());
 
         CompanyRepresentations repr = new CompanyRepresentations();
         if (msg != null) {
@@ -78,7 +81,7 @@ public class RepresentationsService {
 
             repr.setCompanyPersons(persons);
         } else {
-            log.warning("Got null message.");
+            logWarning(OP, "Message was null.");
         }
         return repr;
     }
@@ -98,7 +101,7 @@ public class RepresentationsService {
             try {
                 rnt = RoleNameType.valueOf(r);
             } catch (IllegalArgumentException e) {
-                log.warning("Unable to parse role: " + r);
+                logWarning(OP, "Unable to parse role: " + r);
             }
             role.setType(rnt);
             person.setCompanyRole(role);

@@ -20,7 +20,9 @@ import org.springframework.stereotype.Service;
  * @author mtom
  */
 @Service
-public class CompaniesService {
+public class CompaniesService extends ServiceLogging {
+
+    public static final String OP = "CompaniesService";
 
     private static final Logger log = Logger.getLogger(CompaniesService.class);
 
@@ -40,12 +42,13 @@ public class CompaniesService {
         List<Company> companies = null;
 
         try {
+            long startTime = System.currentTimeMillis();
             String responseString = cc.getResponse(hetu);
+            logRequest(OP + ":RoVaListCompanies", startTime, System.currentTimeMillis());
             CompaniesResponseMessage msg = MessageParser.parseResponseMessage(responseString, CompaniesResponseMessage.class);
             companies = parseCompanies(msg);
-            log.info("Found " + companies.size() + " companies for person.");
         } catch (Exception e) {
-            log.error("Failed to parse companies: " + e.getMessage());
+            logError(OP, "Failed to parse companies: " + e.getMessage());
             throw new VIRREServiceException(e.getMessage(), e);
         }
 
@@ -67,7 +70,7 @@ public class CompaniesService {
                     try {
                         type = RoleNameType.valueOf(rt);
                     } catch (IllegalArgumentException e) {
-                        log.warning("Unable to parse role: " + rt);
+                        logWarning(OP, "Unable to parse role: " + rt);
                     }
                     cr.setType(type);
                     roles.add(cr);
@@ -76,7 +79,7 @@ public class CompaniesService {
                 companies.add(company);
             }
         } else {
-            log.warning("Got null message.");
+            logWarning(OP, "Message was null.");
         }
         return companies;
     }
