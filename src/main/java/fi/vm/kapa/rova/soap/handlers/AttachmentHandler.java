@@ -25,7 +25,7 @@ import fi.vm.kapa.rova.logging.Logger;
 @Component
 public class AttachmentHandler implements SOAPHandler<SOAPMessageContext>, SpringPropertyNames {
 
-        private static Logger LOG = Logger.getLogger(XroadHeaderHandler.class);
+        private static Logger LOG = Logger.getLogger(AttachmentHandler.class);
 
         public static final String ATTACHMENT_ATTRIBUTE = "virre-attachment-attribute";
         

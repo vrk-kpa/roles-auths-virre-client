@@ -8,9 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
-import fi.vm.kapa.rova.rest.validation.ValidationContainerRequestFilter;
 import fi.vm.kapa.rova.virre.resources.PrhResource;
-import fi.vm.kapa.rova.virre.resources.VIRREResource;
 
 @Configuration
 @ApplicationPath("/")
@@ -26,7 +24,6 @@ public class ServiceConfiguration extends ResourceConfig {
     Integer requestAliveSeconds;
 
     public ServiceConfiguration() {
-        register(VIRREResource.class);
         register(PrhResource.class);
     }
 
