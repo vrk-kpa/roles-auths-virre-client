@@ -97,7 +97,7 @@ public abstract class AbstractXroadHeaderHandler implements SOAPHandler<SOAPMess
                 JAXBElement<String> idElement = factory.createId(id);
                 SOAPHeaderElement idHeaderElement = header
                         .addHeaderElement(idElement.getName());
-                idHeaderElement.addTextNode((String) idElement.getValue());
+                idHeaderElement.addTextNode(idElement.getValue());
 
                 String origUserId = request.getHeader(RequestIdentificationFilter.XROAD_END_USER);
                 if (origUserId == null) {
@@ -106,20 +106,20 @@ public abstract class AbstractXroadHeaderHandler implements SOAPHandler<SOAPMess
 
                 JAXBElement<String> userIdElement = factory.createUserId(origUserId);
                 SOAPHeaderElement uidHeaderElement = header.addHeaderElement(userIdElement.getName());
-                uidHeaderElement.addTextNode((String) userIdElement.getValue());
+                uidHeaderElement.addTextNode(userIdElement.getValue());
 
                 JAXBElement<String> protocolversion = factory.createProtocolVersion("4.0");
                 SOAPHeaderElement pvHeaderElement = header.addHeaderElement(protocolversion.getName());
-                pvHeaderElement.addTextNode((String) protocolversion.getValue());
+                pvHeaderElement.addTextNode(protocolversion.getValue());
 
-                String origRequestId = request.getHeader(RequestIdentificationFilter.XROAD_REQUEST_IDENTIFIER);;
+                String origRequestId = request.getHeader(RequestIdentificationFilter.XROAD_REQUEST_IDENTIFIER);
                 if (origRequestId == null) {
                     origRequestId = "";
                 }
 
                 JAXBElement<String> issueElement = factory.createIssue(origRequestId);
                 SOAPHeaderElement issueHeaderElement = header.addHeaderElement(issueElement.getName());
-                issueHeaderElement.addTextNode((String) issueElement.getValue());
+                issueHeaderElement.addTextNode(issueElement.getValue());
 
                 XRoadClientIdentifierType clientHeaderType = factory.createXRoadClientIdentifierType();
                 JAXBElement<XRoadClientIdentifierType> clientElement = factory.createClient(clientHeaderType);

@@ -33,7 +33,7 @@ public class Initializer implements WebApplicationInitializer {
     public void onStartup(ServletContext ctx) throws ServletException {
         ctx.addFilter(MDC_FILTER, MDCFilter.class)
                 .addMappingForUrlPatterns(
-                        EnumSet.<DispatcherType>of(DispatcherType.REQUEST,
+                        EnumSet.of(DispatcherType.REQUEST,
                                 DispatcherType.FORWARD), false, "/*");
     }
 }
