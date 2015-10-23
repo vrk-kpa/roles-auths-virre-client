@@ -29,6 +29,7 @@ RUN apt-get update && \
 # Deploy project
 RUN mkdir -p /opt/rova/roles-auths-virre-client/
 ADD target/roles-auths-virre-client.jar /opt/rova/roles-auths-virre-client/
+ADD service.properties.template /opt/rova/roles-auths-virre-client/
 WORKDIR /opt/rova/roles-auths-virre-client/
 
 EXPOSE 8080
