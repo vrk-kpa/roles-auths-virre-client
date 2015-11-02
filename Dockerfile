@@ -33,4 +33,4 @@ ADD service.properties.template /opt/rova/roles-auths-virre-client/
 WORKDIR /opt/rova/roles-auths-virre-client/
 
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "roles-auths-virre-client.jar"]
+ENTRYPOINT ["java", "-Xms256m", "-Xmx512m", "-jar", "roles-auths-virre-client.jar"]
