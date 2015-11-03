@@ -1,9 +1,10 @@
 package fi.vm.kapa.rova.virre.resources;
 
-import fi.vm.kapa.rova.engine.model.prh.Company;
-import fi.vm.kapa.rova.engine.model.prh.CompanyRepresentations;
-import fi.vm.kapa.rova.engine.model.prh.RepresentationRight;
+import fi.vm.kapa.rova.external.model.virre.Company;
+import fi.vm.kapa.rova.external.model.virre.CompanyRepresentations;
+import fi.vm.kapa.rova.external.model.virre.RepresentationRight;
 import fi.vm.kapa.rova.logging.Logger;
+
 import java.util.List;
 
 import javax.inject.Inject;

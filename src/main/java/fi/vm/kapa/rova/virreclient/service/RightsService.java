@@ -1,11 +1,12 @@
 
 package fi.vm.kapa.rova.virreclient.service;
 
-import fi.vm.kapa.rova.engine.model.AuthorizationType;
-import fi.vm.kapa.rova.engine.model.prh.RepresentationRight;
+import fi.vm.kapa.rova.external.model.AuthorizationType;
+import fi.vm.kapa.rova.external.model.virre.RepresentationRight;
 import fi.vm.kapa.rova.logging.Logger;
 import fi.vm.kapa.rova.soap.prh.RightsClient;
 import fi.vm.kapa.rova.soap.prh.model.RightsResponseMessage;
+
 import java.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

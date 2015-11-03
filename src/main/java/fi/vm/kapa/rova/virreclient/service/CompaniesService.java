@@ -1,9 +1,9 @@
 
 package fi.vm.kapa.rova.virreclient.service;
 
-import fi.vm.kapa.rova.engine.model.prh.Company;
-import fi.vm.kapa.rova.engine.model.prh.CompanyRole;
-import fi.vm.kapa.rova.engine.model.RoleNameType;
+import fi.vm.kapa.rova.external.model.virre.Company;
+import fi.vm.kapa.rova.external.model.virre.CompanyRoleType;
+import fi.vm.kapa.rova.external.model.virre.RoleNameType;
 import fi.vm.kapa.rova.logging.Logger;
 import fi.vm.kapa.rova.soap.prh.CompaniesClient;
 import fi.vm.kapa.rova.soap.prh.model.CompaniesResponseMessage;
@@ -62,9 +62,9 @@ public class CompaniesService extends ServiceLogging {
                 Company company = new Company();
                 company.setBusinessId(role.getBusinessId());
                 company.setCompanyName(role.getCompanyName());
-                List<CompanyRole> roles = new LinkedList<>();
+                List<CompanyRoleType> roles = new LinkedList<>();
                 for (ExtendedRoleInfo eri : role.getExtendedRoleInfos()) {
-                    CompanyRole cr = new CompanyRole();
+                    CompanyRoleType cr = new CompanyRoleType();
                     RoleNameType type = null;
                     String rt = eri.getRoleType();
                     try {

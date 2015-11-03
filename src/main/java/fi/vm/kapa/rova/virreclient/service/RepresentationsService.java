@@ -1,16 +1,17 @@
 
 package fi.vm.kapa.rova.virreclient.service;
 
-import fi.vm.kapa.rova.engine.model.prh.CompanyPerson;
-import fi.vm.kapa.rova.engine.model.prh.CompanyRepresentations;
-import fi.vm.kapa.rova.engine.model.prh.CompanyRole;
-import fi.vm.kapa.rova.engine.model.RoleNameType;
+import fi.vm.kapa.rova.external.model.virre.CompanyPerson;
+import fi.vm.kapa.rova.external.model.virre.CompanyRepresentations;
+import fi.vm.kapa.rova.external.model.virre.CompanyRoleType;
+import fi.vm.kapa.rova.external.model.virre.RoleNameType;
 import fi.vm.kapa.rova.logging.Logger;
 import fi.vm.kapa.rova.soap.prh.RepresentationsClient;
 import fi.vm.kapa.rova.soap.prh.model.Body;
 import fi.vm.kapa.rova.soap.prh.model.NaturalPerson;
 import fi.vm.kapa.rova.soap.prh.model.Representation;
 import fi.vm.kapa.rova.soap.prh.model.RepresentationsResponseMessage;
+
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.List;
@@ -95,7 +96,7 @@ public class RepresentationsService extends ServiceLogging {
             person.setLastName(np.getLastName());
             person.setSocialSec(np.getSocialSec());
 
-            CompanyRole role = new CompanyRole();
+            CompanyRoleType role = new CompanyRoleType();
             String r = np.getRole();
             RoleNameType rnt = null;
             try {
