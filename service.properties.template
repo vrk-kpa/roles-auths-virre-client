@@ -41,3 +41,11 @@ client_subsystem_code={{ virre_client_subsystem_code }}
 logstash.host={{ logstash_host }}
 logstash.port={{ logstash_port }}
 logstash.level=INFO
+
+ssl_keystoretype={{ ssl_keystoretype }}
+ssl_keystore=/opt/rova/roles-auths-virre-client/config/{{ ssl_keystore }}
+ssl_keystorepassword={{ ssl_keystorepassword }}
+ssl_truststoretype={{ ssl_truststoretype }}
+ssl_truststore=/opt/rova/roles-auths-virre-client/config/{{ ssl_truststore }}
+ssl_truststorepassword={{ ssl_truststorepassword }}
+

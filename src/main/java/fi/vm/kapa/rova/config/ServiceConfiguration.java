@@ -23,6 +23,24 @@ public class ServiceConfiguration extends ResourceConfig {
     @Value("${request_alive_seconds}")
     Integer requestAliveSeconds;
 
+    @Value("${ssl_keystoretype}")
+    String sslKeyStoreType;
+
+    @Value("${ssl_keystore}")
+    String sslKeyStore;
+
+    @Value("${ssl_keystorepassword}")
+    String sslKeyStorePassword;
+
+    @Value("${ssl_truststoretype}")
+    String sslTrustStoreType;
+
+    @Value("${ssl_truststore}")
+    String sslTrustStore;
+
+    @Value("${ssl_truststorepassword}")
+    String sslTrustStorePassword;
+
     public ServiceConfiguration() {
         register(PrhResource.class);
     }
@@ -30,6 +48,12 @@ public class ServiceConfiguration extends ResourceConfig {
     @PostConstruct
     public void init() {
         SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
-        //register(new ValidationContainerRequestFilter(apiKey, requestAliveSeconds, apiPathPrefix));
+        register(new ValidationContainerRequestFilter(apiKey, requestAliveSeconds, apiPathPrefix));
+        System.setProperty("javax.net.ssl.keyStoreType", sslKeyStoreType);
+        System.setProperty("javax.net.ssl.keyStore", sslKeyStore);
+        System.setProperty("javax.net.ssl.keyStorePassword", sslKeyStorePassword);
+        System.setProperty("javax.net.ssl.trustStoreType", sslTrustStoreType);
+        System.setProperty("javax.net.ssl.trustStore", sslTrustStore);
+        System.setProperty("javax.net.ssl.trustStorePassword", sslTrustStorePassword);
     }
 }

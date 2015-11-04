@@ -30,4 +30,11 @@ public interface SpringPropertyNames {
     String CLIENT_SUBSYSTEM_CODE = "${client_subsystem_code}";
 
     String XROAD_ENDPOINT = "${xroad_endpoint}"; // xroad-kutsun endpoint (oma liityntäpalvelin)
+
+    String SSL_KEYSTORETYPE = "ssl_keystoretype";
+    String SSL_KEYSTORE = "ssl_keystore";
+    String SSL_KEYSTOREPASSWORD = "ssl_keystorepassword";
+    String SSL_TRUSTSTORETYPE = "ssl_truststoretype";
+    String SSL_TRUSTSTORE = "ssl_truststore";
+    String SSL_TRUSTSTOREPASSWORD = "ssl_truststorepassword";
 }
