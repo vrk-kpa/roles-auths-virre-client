@@ -10,3 +10,7 @@ Maven commands:
 ## Start standalone jar
 java -Dserver.port=8003 -jar target/roles-auths-virre-client.jar
 # roles-auths-virre-client
+
+# About application properties
+ssl-prefixed properties can be left empty if https is not used for communicating with Xroad server
+
