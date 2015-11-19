@@ -43,6 +43,7 @@ public class PrhResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/prh/companies/{socialsec}")
     public Response getCompanies(@PathParam("socialsec") String socialsec) {
+        log.info("Companies request received.");
         try {
             List<Company> companies = cs.getCompanies(socialsec);
             return Response.ok().entity(companies).build();
@@ -57,6 +58,7 @@ public class PrhResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/prh/representations/{businessid}")
     public Response getRepresentations(@PathParam("businessid") String businessid) {
+        log.info("Representations request received.");
         try {
             CompanyRepresentations reprs = reps.getRepresentations(businessid);
             return Response.ok().entity(reprs).build();
@@ -73,6 +75,7 @@ public class PrhResource {
     public Response getRights(@QueryParam("socialsec") String socialSec,
                         @QueryParam("businessid") String businessId,
                         @QueryParam("rightlevel") String rightLevel) {
+        log.info("Rights request received.");
         try {
             RepresentationRight right = rs.getRights(socialSec, businessId, rightLevel);
             return Response.ok().entity(right).build();
