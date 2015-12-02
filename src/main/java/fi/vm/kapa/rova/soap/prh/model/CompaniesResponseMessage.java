@@ -4,7 +4,6 @@ package fi.vm.kapa.rova.soap.prh.model;
 import java.util.List;
 
 /**
- *
  * @author mtom
  */
 public class CompaniesResponseMessage {
@@ -13,6 +12,7 @@ public class CompaniesResponseMessage {
     }
 
     private String socialSec;
+    private String status;
     private List<Role> roles;
 
     public String getSocialSec() {
@@ -29,6 +29,14 @@ public class CompaniesResponseMessage {
 
     public void setRoles(List<Role> roles) {
         this.roles = roles;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
 }
