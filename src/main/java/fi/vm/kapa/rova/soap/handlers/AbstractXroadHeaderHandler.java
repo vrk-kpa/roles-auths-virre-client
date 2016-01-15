@@ -144,8 +144,9 @@ public abstract class AbstractXroadHeaderHandler implements SOAPHandler<SOAPMess
                 serviceHeaderType.setMemberCode(serviceMemberCode);
                 serviceHeaderType.setSubsystemCode(serviceSubsystemCode);
                 serviceHeaderType.setServiceCode(getServiceCode());
-                serviceHeaderType.setServiceVersion(getServiceVersion());
-
+                if (getServiceVersion() != null) {
+                    serviceHeaderType.setServiceVersion(getServiceVersion());
+                }
                 marshaller = JAXBContext.newInstance(
                         XRoadServiceIdentifierType.class).createMarshaller();
                 marshaller.marshal(serviceElement, header);

@@ -16,12 +16,10 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 
+import fi.vm.kapa.rova.soap.prh.ActiveRolesClient;
+import fi.vm.kapa.rova.virreclient.service.*;
 import org.springframework.stereotype.Service;
 
-import fi.vm.kapa.rova.virreclient.service.CompaniesService;
-import fi.vm.kapa.rova.virreclient.service.RepresentationsService;
-import fi.vm.kapa.rova.virreclient.service.RightsService;
-import fi.vm.kapa.rova.virreclient.service.VIRREServiceException;
 import javax.ws.rs.QueryParam;
 
 @Service
@@ -29,6 +27,9 @@ import javax.ws.rs.QueryParam;
 public class PrhResource {
 
     private static final Logger log = Logger.getLogger(PrhResource.class);
+
+    @Inject
+    private ActiveRolesService arc;
 
     @Inject
     private CompaniesService cs;
@@ -45,7 +46,7 @@ public class PrhResource {
     public Response getCompanies(@PathParam("socialsec") String socialsec) {
         log.info("Companies request received.");
         try {
-            List<Company> companies = cs.getCompanies(socialsec);
+            List<Company> companies = arc.getCompanies(socialsec);
             return Response.ok().entity(companies).build();
         } catch (VIRREServiceException e) {
             log.error("Returning error. Failed to get companies: " + e.getMessage());

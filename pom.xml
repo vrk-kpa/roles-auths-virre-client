@@ -235,6 +235,20 @@
                             <verbose>true</verbose>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>wsimport-prh-activeRoleInfo</id>
+                        <goals>
+                            <goal>wsimport</goal>
+                        </goals>
+                        <configuration>
+                            <packageName>fi.vrk.xml.rova.prh.activeroles</packageName>
+                            <wsdlLocation>../../../../../../wsdl/prh-personActiveRoles.wsdl</wsdlLocation>
+                            <wsdlUrls>
+                                <wsdlUrl>${basedir}/src/main/resources/wsdl/prh-personActiveRoles.wsdl</wsdlUrl>
+                            </wsdlUrls>
+                            <verbose>true</verbose>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
         </plugins>

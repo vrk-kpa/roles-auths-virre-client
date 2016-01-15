@@ -49,7 +49,7 @@ public class ServiceConfiguration extends ResourceConfig {
     @PostConstruct
     public void init() {
         SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
-        register(new ValidationContainerRequestFilter(apiKey, requestAliveSeconds, apiPathPrefix));
+       // register(new ValidationContainerRequestFilter(apiKey, requestAliveSeconds, apiPathPrefix));
         System.setProperty("javax.net.ssl.keyStoreType", sslKeyStoreType);
         System.setProperty("javax.net.ssl.keyStore", sslKeyStore);
         System.setProperty("javax.net.ssl.keyStorePassword", sslKeyStorePassword);
