@@ -9,12 +9,18 @@ import fi.vm.kapa.rova.soap.prh.CompaniesClient;
 import fi.vm.kapa.rova.soap.prh.model.CompaniesResponseMessage;
 import fi.vm.kapa.rova.soap.prh.model.ExtendedRoleInfo;
 import fi.vm.kapa.rova.soap.prh.model.Role;
+import fi.vm.kapa.rova.soap.virre.model.VirreResponseMessage;
+import fi.vrk.xml.rova.prh.activeroles.XRoadPersonActiveRoleInfoResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.List;
+
+import javax.annotation.PostConstruct;
+import javax.xml.ws.Holder;
 
 /**
  * Created by Juha Korkalainen on 15.1.2016.
@@ -24,23 +30,23 @@ import java.util.List;
 public class ActiveRolesService extends ServiceLogging {
     public static final String OP = "ActiveRolesService";
 
-    private static final Logger log = Logger.getLogger(CompaniesService.class);
+    private static final Logger LOG = Logger.getLogger(CompaniesService.class);
 
     private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ");
 
     @Autowired
     private ActiveRolesClient client;
-
+    
     public List<Company> getCompanies(String hetu) throws VIRREServiceException {
-
         List<Company> companies = null;
 
         try {
             long startTime = System.currentTimeMillis();
-            String responseString = client.getResponse(hetu);
-            System.out.println(responseString);
+//            String responseString = client.getResponse(hetu);
+            VirreResponseMessage response = client.getResponse(hetu);
+            LOG.warning(response.toString());
             logRequest(OP + ":RoVaListCompanies", startTime, System.currentTimeMillis());
-            CompaniesResponseMessage msg = MessageParser.parseResponseMessage(responseString, CompaniesResponseMessage.class);
+            CompaniesResponseMessage msg = null; //MessageParser.parseResponseMessage(responseString, CompaniesResponseMessage.class);
             companies = parseCompanies(msg);
         } catch (Exception e) {
             logError(OP, "Failed to parse companies: " + e.getMessage());

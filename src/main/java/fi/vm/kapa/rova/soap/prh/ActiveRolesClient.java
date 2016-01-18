@@ -5,19 +5,27 @@ import fi.vm.kapa.rova.logging.Logger;
 import fi.vm.kapa.rova.soap.handlers.ActiveRolesClientXroadHeaderHandler;
 import fi.vm.kapa.rova.soap.handlers.AttachmentHandler;
 import fi.vm.kapa.rova.soap.handlers.CompaniesXroadHeaderHandler;
-import fi.vrk.xml.rova.prh.activeroles.XRoadPersonActiveRoleInfoResponse;
+import fi.vm.kapa.rova.soap.virre.CustomValidationEventHandler;
+import fi.vm.kapa.rova.soap.virre.model.RoleInCompany;
+import fi.vm.kapa.rova.soap.virre.model.VirreResponseMessage;
 import fi.vrk.xml.rova.prh.activeroles.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.w3c.dom.Node;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.ws.BindingProvider;
 import javax.xml.ws.Holder;
 import javax.xml.ws.handler.Handler;
 import javax.xml.ws.handler.HandlerResolver;
 import javax.xml.ws.handler.PortInfo;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,27 +60,52 @@ public class ActiveRolesClient implements SpringPropertyNames {
         service.setHandlerResolver(hs);
     }
     
-    public String getResponse(String personId) {
+    public VirreResponseMessage getResponse(String personId) throws JAXBException { // String
         XRoadPortType port = service.getXRoadServicePort();
         BindingProvider bp = (BindingProvider) port;
         
         bp.getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, xrdEndPoint);
 
         Holder<Request> request = new Holder<Request>(factory.createRequest());
-        XRoadPersonActiveRoleInfoResponse XRoadResponse = factory.createXRoadPersonActiveRoleInfoResponse();
+        XRoadPersonActiveRoleInfoResponse xRoadResponse = factory.createXRoadPersonActiveRoleInfoResponse();
 
-
-        Holder<XRoadPersonActiveRoleInfoResponse.Response> response = new Holder<XRoadPersonActiveRoleInfoResponse.Response>(XRoadResponse.getResponse());
+        Holder<XRoadPersonActiveRoleInfoResponse.Response> responseHolder = new Holder<XRoadPersonActiveRoleInfoResponse.Response>(xRoadResponse.getResponse());
 
         request.value.setSocialSecurityNumber(personId);
        
-        port.xRoadPersonActiveRoleInfo(request, response);
+        port.xRoadPersonActiveRoleInfo(request, responseHolder);
         
-        String attachment = (String) httpRequest.getAttribute(AttachmentHandler.ATTACHMENT_ATTRIBUTE);
+//        String attachment = (String) httpRequest.getAttribute(AttachmentHandler.ATTACHMENT_ATTRIBUTE);
+
+        VirreResponseMessage result = null;
+        
+        XRoadPersonActiveRoleInfoResponse.Response response = responseHolder.value;
 
         LOG.info("Got company listing response from PRH: " + response);
 
-        return attachment;
+        Object object = response.getAny();
+        if (object != null) {
+            LOG.info("JAXB parsing next");
+            JAXBContext context = JAXBContext.newInstance(RoleInCompany.class);
+            LOG.info("JAXB context created");
+            Unmarshaller um = context.createUnmarshaller();
+            LOG.info("JAXB unmarshaller created");
+            um.setEventHandler(new CustomValidationEventHandler());
+            LOG.info("CustomValidationEventHandler set");
+            try {
+                @SuppressWarnings("unchecked")
+                RoleInCompany roleInCompany = (RoleInCompany) um.unmarshal((Node) object);
+                LOG.warning(roleInCompany.toString());
+//                result =  (VirreResponseMessage) um.unmarshal((Node) object);
+//                LOG.info("Unmarshalling done");
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw e;
+            }
+        } else {
+            LOG.info("getAny() gave null");
+        }
+        return result;
         
     }
 }
