@@ -14,19 +14,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBElement;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.*;
 import javax.xml.ws.BindingProvider;
 import javax.xml.ws.Holder;
 import javax.xml.ws.handler.Handler;
 import javax.xml.ws.handler.HandlerResolver;
 import javax.xml.ws.handler.PortInfo;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -81,10 +80,40 @@ public class ActiveRolesClient implements SpringPropertyNames {
         VirreResponseMsg result = null;
         
         XRoadPersonActiveRoleInfoResponse.Response response = responseHolder.value;
-
         LOG.info("Got company listing response from PRH: " + response);
 
-        Object object = response.getAny();
+        response.g
+        List<com.sun.org.apache.xerces.internal.dom.ElementNSImpl> element = (List) response.getRoleInCompany();
+        com.sun.org.apache.xerces.internal.dom.ElementNSImpl element2 = (com.sun.org.apache.xerces.internal.dom.ElementNSImpl) response.getFirstname();
+
+        for (com.sun.org.apache.xerces.internal.dom.ElementNSImpl e : element) {
+            System.out.println(e.getBaseURI());
+            System.out.println(e.getLocalName());
+            System.out.println(e.getTextContent());
+            NodeList list = e.getChildNodes();
+            for (int i = 0 ; i < list.getLength() ; i++) {
+                Node n = list.item(i);
+                System.out.println(n.getNodeName());
+            }
+
+        }
+        System.out.println(element2.getBaseURI());
+        System.out.println(element2.getLocalName());
+        System.out.println(element2.getTextContent());
+
+        /*try {
+            JAXBContext jc = JAXBContext.newInstance(element.getValue().getClass());
+            Marshaller marshaller = jc.createMarshaller();
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            marshaller.marshal(element, baos);
+            System.out.println(baos.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        */
+        /*
         if (object != null) {
             JAXBContext context = JAXBContext.newInstance(VirreResponseMsg.class); //.getPackage().getName());
             Unmarshaller um = context.createUnmarshaller();
@@ -102,6 +131,7 @@ public class ActiveRolesClient implements SpringPropertyNames {
         } else {
             LOG.info("getAny() gave null");
         }
+        */
         return result;
         
     }

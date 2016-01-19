@@ -113,9 +113,15 @@
             </xsd:sequence>
             <xsd:element name="response">
               <xsd:complexType>
-                <xsd:sequence>
-                  <xsd:any/>
-                </xsd:sequence>
+                <xsd:all>
+                  <xsd:element name="firstname"/>
+                  <xsd:element name="surname"/>
+                  <xsd:element name="socialSecurityNumber"/>
+                  <xsd:element name="status"/>
+                  <xsd:sequence minOccurs="0" maxOccurs="unbounded">
+                    <xsd:element name="roleInCompany"/>
+                  </xsd:sequence>
+                </xsd:all>
               </xsd:complexType>
             </xsd:element>
           </xsd:sequence>
