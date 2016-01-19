@@ -2,6 +2,7 @@ package fi.vm.kapa.rova.soap.prh;
 
 import fi.vm.kapa.rova.config.SpringPropertyNames;
 import fi.vm.kapa.rova.logging.Logger;
+import fi.vm.kapa.rova.rest.identification.RequestIdentificationFilter;
 import fi.vm.kapa.rova.soap.handlers.ActiveRolesClientXroadHeaderHandler;
 import fi.vm.kapa.rova.soap.handlers.AttachmentHandler;
 import fi.vm.kapa.rova.soap.handlers.CompaniesXroadHeaderHandler;
@@ -13,12 +14,13 @@ import fi.vm.kapa.rova.soap.virre.model.RoleInCompany;
 import fi.vm.kapa.rova.soap.virre.model.RoleInfo;
 import fi.vm.kapa.rova.soap.virre.model.VirreResponseMsg;
 import fi.vrk.xml.rova.prh.activeroles.*;
-
 import fi.vrk.xml.rova.prh.activeroles.ObjectFactory;
+import fi.vrk.xml.rova.prh.activeroles.RoleInCompanyType.RoleBasicInfo;
 import fi.vrk.xml.rova.prh.activeroles.XRoadClientIdentifierType;
 import fi.vrk.xml.rova.prh.activeroles.XRoadObjectType;
 import fi.vrk.xml.rova.prh.activeroles.XRoadServiceIdentifierType;
 import fi.vrk.xml.rova.virre.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -39,6 +41,7 @@ import javax.xml.ws.handler.PortInfo;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Component
 public class ActiveRolesClient implements SpringPropertyNames {
@@ -117,7 +120,7 @@ public class ActiveRolesClient implements SpringPropertyNames {
     }
 
     private Holder<XRoadServiceIdentifierType> getServiceHeader() {
-        Holder<XRoadServiceIdentifierType> result = new Holder();
+        Holder<XRoadServiceIdentifierType> result = new Holder<>();
         result.value = factory.createXRoadServiceIdentifierType();
         result.value.setObjectType("SERVICE");
         result.value.setXRoadInstance(serviceSdsbInstance);
@@ -130,22 +133,25 @@ public class ActiveRolesClient implements SpringPropertyNames {
     }
 
     private Holder<String> getUserIdHeader() {
-        Holder<String> result = new Holder();
-        result.value = "userID";
+        Holder<String> result = new Holder<>();
+        String origUserId = request.getHeader(RequestIdentificationFilter.XROAD_END_USER);
+        if (origUserId == null) {
+            origUserId = "rova-end-user-unknown";
+        }
+        result.value = origUserId;
         return result;
     }
     private Holder<String> getIdHeader() {
-        Holder<String> result = new Holder();
-        result.value = "id";
+        Holder<String> result = new Holder<>();
+        result.value = UUID.randomUUID().toString();
         return result;
     }
     private Holder<String> getProtocolVersionHeader() {
-        Holder<String> result = new Holder();
+        Holder<String> result = new Holder<>();
         result.value = "4.0";
         return result;
     }
 
-    @SuppressWarnings("restriction")
     public CompaniesResponseMessage getResponse(String personId) throws JAXBException {
         XRoadPersonActiveRoleInfoPortType port = service.getXRoadPersonActiveRoleInfoPortTypePort();
         BindingProvider bp = (BindingProvider) port;
@@ -159,94 +165,46 @@ public class ActiveRolesClient implements SpringPropertyNames {
         Holder<XRoadPersonActiveRoleInfoResponse> response = new Holder<XRoadPersonActiveRoleInfoResponse>();
         response.value = factory.createXRoadPersonActiveRoleInfoResponse();
 
-        port.xRoadPersonActiveRoleInfo(request, getClientHeader(), getServiceHeader(), getUserIdHeader(), getIdHeader(), getProtocolVersionHeader(), response);
-
         CompaniesResponseMessage result = new CompaniesResponseMessage();
-        result.setSocialSec(response.value.getResponse().getSocialSecurityNumber());
-        result.setStatus(response.value.getResponse().getStatus());
+        try {
+            port.xRoadPersonActiveRoleInfo(request, getClientHeader(), getServiceHeader(), getUserIdHeader(), getIdHeader(), getProtocolVersionHeader(), response);
+            LOG.info("soap succeeded");
+
+            result.setSocialSec(response.value.getResponse().getSocialSecurityNumber());
+            result.setStatus(response.value.getResponse().getStatus());
 
 
-        List<Role> roles = new ArrayList<>(); // to be set into responseMsg
+            List<Role> roles = new ArrayList<>(); // to be set into responseMsg
 
-        for (RoleInCompanyType roleInCompany : response.value.getResponse().getRoleInCompany()) {
+            for (RoleInCompanyType roleInCompany : response.value.getResponse().getRoleInCompany()) {
 
-            Role role = new Role();
-            role.setBusinessId(roleInCompany.getBusinessId());
-            role.setCompanyName(roleInCompany.getCompanyName());
+                Role role = new Role();
+                role.setBusinessId(roleInCompany.getBusinessId());
+                role.setCompanyName(roleInCompany.getCompanyName());
 
-            /*
-            RoleInfo roleInfo = roleInCompany.getRoleInfo();
-            ExtendedRoleInfo extendedRoleInfo = new ExtendedRoleInfo();
-            extendedRoleInfo.setRoleType(roleInfo.getName());
-            extendedRoleInfo.setBodyType(roleInfo.getBodyType());
-            extendedRoleInfo.setStartDate(roleInfo.getStartDate());
+                List<ExtendedRoleInfo> extendedRoleInfos = new ArrayList<>();
+                
+                for (RoleBasicInfo roleInfo : roleInCompany.getRoleBasicInfo()) {
+                    ExtendedRoleInfo extendedRoleInfo = new ExtendedRoleInfo();
+                    extendedRoleInfo.setRoleType(roleInfo.getName());
+                    extendedRoleInfo.setBodyType(roleInfo.getBodyType());
+                    extendedRoleInfo.setStartDate(roleInfo.getStartDate().toString());
 
-            List<ExtendedRoleInfo> extendedRoleInfos = new ArrayList<>();
-            extendedRoleInfos.add(extendedRoleInfo);
-            role.setExtendedRoleInfos(extendedRoleInfos);
-*/
-            roles.add(role);
+                    extendedRoleInfos.add(extendedRoleInfo);
+                    
+                }
+                role.setExtendedRoleInfos(extendedRoleInfos);
+
+                roles.add(role);
+            }
+            
+            result.setRoles(roles);
+        } catch (Exception e) {
+            LOG.warning("exception: "+ e.getMessage());
+            e.printStackTrace();
         }
+        
         return result;
-  //      responseMsg.setRoles(roles);
-
-
-        /*
-
-        port.xRoadPersonActiveRoleInfo(body, holder, );
-        port.xRoadPersonActiveRoleInfo();RoleInfo;
-        Holder<Request> request = new Holder<Request>(factory.createPer);
-        XRoadPersonActiveRoleInfoResponse xRoadResponse = factory.createXRoadPersonActiveRoleInfoResponse();
-
-        Holder<XRoadPersonActiveRoleInfoResponse.Response> responseHolder = new Holder<XRoadPersonActiveRoleInfoResponse.Response>(xRoadResponse.getResponse());
-
-        request.value.setSocialSecurityNumber(personId);
-
-
-        port.xRoadPersonActiveRoleInfo(request, responseHolder);
-        
-        XRoadPersonActiveRoleInfoResponse.Response response = responseHolder.value; // soap response
-        LOG.info("Got company listing response from PRH: " + response);
-
-        CompaniesResponseMessage responseMsg = new CompaniesResponseMessage(); // return value
-        
-        ElementNSImpl socSecElement = (ElementNSImpl) response.getSocialSecurityNumber();
-        responseMsg.setSocialSec(socSecElement.getTextContent());
-        
-        ElementNSImpl statusElement = (ElementNSImpl) response.getStatus();
-        responseMsg.setStatus(statusElement.getTextContent());
-        
-        List<Role> roles = new ArrayList<>(); // to be set into responseMsg
-
-        @SuppressWarnings({ "unchecked", "rawtypes" })
-        List<ElementNSImpl> roleElements = (List) response.getRoleInCompany();
-        JAXBContext context = JAXBContext.newInstance(RoleInCompany.class);
-        Unmarshaller um = context.createUnmarshaller();
-        um.setEventHandler(new CustomValidationEventHandler());
-        for (ElementNSImpl roleElement : roleElements) {
-            RoleInCompany roleInCompany = (RoleInCompany) um.unmarshal((Node) roleElement);
-            LOG.info("role = "+ roleInCompany);
-
-            Role role = new Role();
-            role.setBusinessId(roleInCompany.getBusinessId());
-            role.setCompanyName(roleInCompany.getCompanyName());
-            
-            RoleInfo roleInfo = roleInCompany.getRoleInfo();
-            ExtendedRoleInfo extendedRoleInfo = new ExtendedRoleInfo();
-            extendedRoleInfo.setRoleType(roleInfo.getName());
-            extendedRoleInfo.setBodyType(roleInfo.getBodyType());
-            extendedRoleInfo.setStartDate(roleInfo.getStartDate());
-            
-            List<ExtendedRoleInfo> extendedRoleInfos = new ArrayList<>();
-            extendedRoleInfos.add(extendedRoleInfo);
-            role.setExtendedRoleInfos(extendedRoleInfos);
-            
-            roles.add(role);
-        }
-        responseMsg.setRoles(roles);
-
-        return responseMsg;
-        */
-    }
+   }
 }
  
