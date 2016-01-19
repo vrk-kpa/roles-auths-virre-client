@@ -249,6 +249,20 @@
                             <verbose>true</verbose>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>wsimport-prh-CompanyRepresentInfo</id>
+                        <goals>
+                            <goal>wsimport</goal>
+                        </goals>
+                        <configuration>
+                            <packageName>fi.vrk.xml.rova.prh.companyrepresentinfo</packageName>
+                            <wsdlLocation>../../../../../../wsdl/prh-CompanyRepresentInfo.wsdl</wsdlLocation>
+                            <wsdlUrls>
+                                <wsdlUrl>${basedir}/src/main/resources/wsdl/prh-CompanyRepresentInfo.wsdl</wsdlUrl>
+                            </wsdlUrls>
+                            <verbose>true</verbose>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
         </plugins>
