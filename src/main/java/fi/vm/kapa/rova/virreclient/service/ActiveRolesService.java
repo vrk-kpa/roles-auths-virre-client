@@ -1,26 +1,21 @@
 package fi.vm.kapa.rova.virreclient.service;
 
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import fi.vm.kapa.rova.external.model.virre.Company;
 import fi.vm.kapa.rova.external.model.virre.CompanyRoleType;
 import fi.vm.kapa.rova.external.model.virre.RoleNameType;
 import fi.vm.kapa.rova.logging.Logger;
 import fi.vm.kapa.rova.soap.prh.ActiveRolesClient;
-import fi.vm.kapa.rova.soap.prh.CompaniesClient;
 import fi.vm.kapa.rova.soap.prh.model.CompaniesResponseMessage;
 import fi.vm.kapa.rova.soap.prh.model.ExtendedRoleInfo;
 import fi.vm.kapa.rova.soap.prh.model.Role;
-import fi.vm.kapa.rova.soap.virre.model.VirreResponseMessage;
-import fi.vrk.xml.rova.prh.activeroles.XRoadPersonActiveRoleInfoResponse;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.time.format.DateTimeFormatter;
-import java.util.LinkedList;
-import java.util.List;
-
-import javax.annotation.PostConstruct;
-import javax.xml.ws.Holder;
+import fi.vm.kapa.rova.soap.virre.model.VirreResponseMsg;
 
 /**
  * Created by Juha Korkalainen on 15.1.2016.
@@ -43,7 +38,7 @@ public class ActiveRolesService extends ServiceLogging {
         try {
             long startTime = System.currentTimeMillis();
 //            String responseString = client.getResponse(hetu);
-            VirreResponseMessage response = client.getResponse(hetu);
+            VirreResponseMsg response = client.getResponse(hetu);
             LOG.warning(response.toString());
             logRequest(OP + ":RoVaListCompanies", startTime, System.currentTimeMillis());
             CompaniesResponseMessage msg = null; //MessageParser.parseResponseMessage(responseString, CompaniesResponseMessage.class);
