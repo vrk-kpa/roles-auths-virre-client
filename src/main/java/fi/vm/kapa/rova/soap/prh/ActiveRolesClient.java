@@ -7,7 +7,7 @@ import fi.vm.kapa.rova.soap.handlers.AttachmentHandler;
 import fi.vm.kapa.rova.soap.handlers.CompaniesXroadHeaderHandler;
 import fi.vm.kapa.rova.soap.virre.CustomValidationEventHandler;
 import fi.vm.kapa.rova.soap.virre.model.RoleInCompany;
-import fi.vm.kapa.rova.soap.virre.model.VirreResponseMessage;
+import fi.vm.kapa.rova.soap.virre.model.VirreResponseMsg;
 import fi.vrk.xml.rova.prh.activeroles.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,7 +61,7 @@ public class ActiveRolesClient implements SpringPropertyNames {
         service.setHandlerResolver(hs);
     }
     
-    public VirreResponseMessage getResponse(String personId) throws JAXBException { // String
+    public VirreResponseMsg getResponse(String personId) throws JAXBException { // String
         XRoadPortType port = service.getXRoadServicePort();
         BindingProvider bp = (BindingProvider) port;
         
@@ -78,7 +78,7 @@ public class ActiveRolesClient implements SpringPropertyNames {
         
 //        String attachment = (String) httpRequest.getAttribute(AttachmentHandler.ATTACHMENT_ATTRIBUTE);
 
-        VirreResponseMessage result = null;
+        VirreResponseMsg result = null;
         
         XRoadPersonActiveRoleInfoResponse.Response response = responseHolder.value;
 
@@ -86,12 +86,12 @@ public class ActiveRolesClient implements SpringPropertyNames {
 
         Object object = response.getAny();
         if (object != null) {
-            JAXBContext context = JAXBContext.newInstance(VirreResponseMessage.class);
+            JAXBContext context = JAXBContext.newInstance(VirreResponseMsg.class); //.getPackage().getName());
             Unmarshaller um = context.createUnmarshaller();
             um.setEventHandler(new CustomValidationEventHandler());
             LOG.info("Ready for unmarshalling");
             try {
-                JAXBElement<VirreResponseMessage> root = um.unmarshal((Node) object, VirreResponseMessage.class);
+                JAXBElement<VirreResponseMsg> root = um.unmarshal((Node) object, VirreResponseMsg.class);
                 result = root.getValue();
 //                result = (VirreResponseMessage) um.unmarshal((Node) object);
                 LOG.info("Unmarshalling done: "+ result);

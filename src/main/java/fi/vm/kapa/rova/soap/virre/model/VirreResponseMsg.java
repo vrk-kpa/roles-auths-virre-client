@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "VirreResponseMessage") // XRoadPersonActiveRoleInfoResponse.
 @XmlAccessorType(XmlAccessType.FIELD)
-public class VirreResponseMessage {
+public class VirreResponseMsg {
     @XmlElement(name = "firstname")
     private String firstName;
 
