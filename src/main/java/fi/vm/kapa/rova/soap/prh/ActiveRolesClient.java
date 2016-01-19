@@ -18,6 +18,7 @@ import org.w3c.dom.Node;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.ws.BindingProvider;
@@ -85,19 +86,15 @@ public class ActiveRolesClient implements SpringPropertyNames {
 
         Object object = response.getAny();
         if (object != null) {
-            LOG.info("JAXB parsing next");
-            JAXBContext context = JAXBContext.newInstance(RoleInCompany.class);
-            LOG.info("JAXB context created");
+            JAXBContext context = JAXBContext.newInstance(VirreResponseMessage.class);
             Unmarshaller um = context.createUnmarshaller();
-            LOG.info("JAXB unmarshaller created");
             um.setEventHandler(new CustomValidationEventHandler());
-            LOG.info("CustomValidationEventHandler set");
+            LOG.info("Ready for unmarshalling");
             try {
-                @SuppressWarnings("unchecked")
-                RoleInCompany roleInCompany = (RoleInCompany) um.unmarshal((Node) object);
-                LOG.warning(roleInCompany.toString());
-//                result =  (VirreResponseMessage) um.unmarshal((Node) object);
-//                LOG.info("Unmarshalling done");
+                JAXBElement<VirreResponseMessage> root = um.unmarshal((Node) object, VirreResponseMessage.class);
+                result = root.getValue();
+//                result = (VirreResponseMessage) um.unmarshal((Node) object);
+                LOG.info("Unmarshalling done: "+ result);
             } catch (Exception e) {
                 e.printStackTrace();
                 throw e;

@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement(name = "response", namespace = "http://xroad.virre.prh.fi/producer") // XRoadPersonActiveRoleInfoResponse.
+@XmlRootElement(name = "VirreResponseMessage") // XRoadPersonActiveRoleInfoResponse.
 @XmlAccessorType(XmlAccessType.FIELD)
 public class VirreResponseMessage {
     @XmlElement(name = "firstname")
@@ -23,8 +23,8 @@ public class VirreResponseMessage {
     @XmlElement(name = "status")
     private String status;
 
-    @XmlElementWrapper(name="roleInCompany")
-    @XmlElement(name = "role")
+//    @XmlElementWrapper(name="roleInCompany")
+    @XmlElement(name = "roleInCompany")
     private List<RoleInCompany> roles;
 
     public String getFirstName() {
@@ -65,6 +65,13 @@ public class VirreResponseMessage {
 
     public void setRoles(List<RoleInCompany> roles) {
         this.roles = roles;
+    }
+
+    @Override
+    public String toString() {
+        return "VirreResponseMessage [firstName=" + firstName + ", lastName="
+                + lastName + ", socialSecurityNumber=" + socialSecurityNumber
+                + ", status=" + status + ", roles=" + roles + "]";
     }
 
 }
