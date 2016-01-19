@@ -14,6 +14,11 @@ import fi.vm.kapa.rova.soap.virre.model.RoleInfo;
 import fi.vm.kapa.rova.soap.virre.model.VirreResponseMsg;
 import fi.vrk.xml.rova.prh.activeroles.*;
 
+import fi.vrk.xml.rova.prh.activeroles.ObjectFactory;
+import fi.vrk.xml.rova.prh.activeroles.XRoadClientIdentifierType;
+import fi.vrk.xml.rova.prh.activeroles.XRoadObjectType;
+import fi.vrk.xml.rova.prh.activeroles.XRoadServiceIdentifierType;
+import fi.vrk.xml.rova.virre.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -38,8 +43,42 @@ import java.util.List;
 @Component
 public class ActiveRolesClient implements SpringPropertyNames {
 
-    ProviderGateway service = new ProviderGateway();
+    XRoadPersonActiveRoleInfoPortTypeService service = new XRoadPersonActiveRoleInfoPortTypeService();
     ObjectFactory factory = new ObjectFactory();
+
+    @Autowired
+    private HttpServletRequest request;
+
+    @Value(CLIENT_OBJECT_TYPE)
+    private String clientObjectType;
+
+    @Value(CLIENT_SDSB_INSTANCE)
+    private String clientSdsbInstance;
+
+    @Value(CLIENT_MEMBER_CLASS)
+    private String clientMemberClass;
+
+    @Value(CLIENT_MEMBER_CODE)
+    private String clientMemberCode;
+
+    @Value(CLIENT_SUBSYSTEM_CODE)
+    private String clientSubsystemCode;
+
+    @Value(SERVICE_OBJECT_TYPE)
+    private String serviceObjectType;
+
+    @Value(SERVICE_SDSB_INSTANCE)
+    private String serviceSdsbInstance;
+
+    @Value(SERVICE_MEMBER_CLASS)
+    private String serviceMemberClass;
+
+    @Value(SERVICE_MEMBER_CODE)
+    private String serviceMemberCode;
+
+    @Value(SERVICE_SUBSYSTEM_CODE)
+    private String serviceSubsystemCode;
+
 
     @Autowired
     private ActiveRolesClientXroadHeaderHandler xroadHeaderHandler;
@@ -52,7 +91,7 @@ public class ActiveRolesClient implements SpringPropertyNames {
 
     private static Logger LOG = Logger.getLogger(ActiveRolesClient.class);
     
-    @PostConstruct
+/*    @PostConstruct
     public void init() {
         HandlerResolver hs = new HandlerResolver() {
             @SuppressWarnings("rawtypes")
@@ -65,21 +104,105 @@ public class ActiveRolesClient implements SpringPropertyNames {
         };
         service.setHandlerResolver(hs);
     }
-    
+*/
+    private Holder<XRoadClientIdentifierType> getClientHeader() {
+        Holder<XRoadClientIdentifierType> result = new Holder<>();
+        result.value = factory.createXRoadClientIdentifierType();
+        result.value.setObjectType("SUBSYSTEM");
+        result.value.setXRoadInstance(clientSdsbInstance);
+        result.value.setMemberClass(clientMemberClass);
+        result.value.setMemberCode(clientMemberCode);
+        result.value.setSubsystemCode(clientSubsystemCode);
+        return result;
+    }
+
+    private Holder<XRoadServiceIdentifierType> getServiceHeader() {
+        Holder<XRoadServiceIdentifierType> result = new Holder();
+        result.value = factory.createXRoadServiceIdentifierType();
+        result.value.setObjectType("SERVICE");
+        result.value.setXRoadInstance(serviceSdsbInstance);
+        result.value.setMemberClass(serviceMemberClass);
+        result.value.setMemberCode(serviceMemberCode);
+        result.value.setSubsystemCode(serviceSubsystemCode);
+        result.value.setServiceCode("XRoadPersonActiveRoleInfo");
+        return result;
+
+    }
+
+    private Holder<String> getUserIdHeader() {
+        Holder<String> result = new Holder();
+        result.value = "userID";
+        return result;
+    }
+    private Holder<String> getIdHeader() {
+        Holder<String> result = new Holder();
+        result.value = "id";
+        return result;
+    }
+    private Holder<String> getProtocolVersionHeader() {
+        Holder<String> result = new Holder();
+        result.value = "4.0";
+        return result;
+    }
+
     @SuppressWarnings("restriction")
     public CompaniesResponseMessage getResponse(String personId) throws JAXBException {
-        XRoadPortType port = service.getXRoadServicePort();
+        XRoadPersonActiveRoleInfoPortType port = service.getXRoadPersonActiveRoleInfoPortTypePort();
         BindingProvider bp = (BindingProvider) port;
         
         bp.getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, xrdEndPoint);
+        XRoadPersonActiveRoleInfo request = factory.createXRoadPersonActiveRoleInfo();
+        PersonActiveRoleInfoType value = factory.createPersonActiveRoleInfoType();
+        value.setSocialSecurityNumber(personId);
+        request.setRequest(value);
 
-        Holder<Request> request = new Holder<Request>(factory.createRequest());
+        Holder<XRoadPersonActiveRoleInfoResponse> response = new Holder<XRoadPersonActiveRoleInfoResponse>();
+        response.value = factory.createXRoadPersonActiveRoleInfoResponse();
+
+        port.xRoadPersonActiveRoleInfo(request, getClientHeader(), getServiceHeader(), getUserIdHeader(), getIdHeader(), getProtocolVersionHeader(), response);
+
+        CompaniesResponseMessage result = new CompaniesResponseMessage();
+        result.setSocialSec(response.value.getResponse().getSocialSecurityNumber());
+        result.setStatus(response.value.getResponse().getStatus());
+
+
+        List<Role> roles = new ArrayList<>(); // to be set into responseMsg
+
+        for (RoleInCompanyType roleInCompany : response.value.getResponse().getRoleInCompany()) {
+
+            Role role = new Role();
+            role.setBusinessId(roleInCompany.getBusinessId());
+            role.setCompanyName(roleInCompany.getCompanyName());
+
+            /*
+            RoleInfo roleInfo = roleInCompany.getRoleInfo();
+            ExtendedRoleInfo extendedRoleInfo = new ExtendedRoleInfo();
+            extendedRoleInfo.setRoleType(roleInfo.getName());
+            extendedRoleInfo.setBodyType(roleInfo.getBodyType());
+            extendedRoleInfo.setStartDate(roleInfo.getStartDate());
+
+            List<ExtendedRoleInfo> extendedRoleInfos = new ArrayList<>();
+            extendedRoleInfos.add(extendedRoleInfo);
+            role.setExtendedRoleInfos(extendedRoleInfos);
+*/
+            roles.add(role);
+        }
+        return result;
+  //      responseMsg.setRoles(roles);
+
+
+        /*
+
+        port.xRoadPersonActiveRoleInfo(body, holder, );
+        port.xRoadPersonActiveRoleInfo();RoleInfo;
+        Holder<Request> request = new Holder<Request>(factory.createPer);
         XRoadPersonActiveRoleInfoResponse xRoadResponse = factory.createXRoadPersonActiveRoleInfoResponse();
 
         Holder<XRoadPersonActiveRoleInfoResponse.Response> responseHolder = new Holder<XRoadPersonActiveRoleInfoResponse.Response>(xRoadResponse.getResponse());
 
         request.value.setSocialSecurityNumber(personId);
-       
+
+
         port.xRoadPersonActiveRoleInfo(request, responseHolder);
         
         XRoadPersonActiveRoleInfoResponse.Response response = responseHolder.value; // soap response
@@ -120,10 +243,10 @@ public class ActiveRolesClient implements SpringPropertyNames {
             
             roles.add(role);
         }
-        
         responseMsg.setRoles(roles);
 
         return responseMsg;
+        */
     }
 }
  

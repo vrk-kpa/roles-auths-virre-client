@@ -242,9 +242,10 @@
                         </goals>
                         <configuration>
                             <packageName>fi.vrk.xml.rova.prh.activeroles</packageName>
-                            <wsdlLocation>../../../../../../wsdl/prh-personActiveRoles.wsdl</wsdlLocation>
+                            <wsdlLocation>../../../../../../wsdl/XRoadPersonActiveRoleInfo.wsdl</wsdlLocation>
+                            <extension>true</extension>
                             <wsdlUrls>
-                                <wsdlUrl>${basedir}/src/main/resources/wsdl/prh-personActiveRoles.wsdl</wsdlUrl>
+                                <wsdlUrl>${basedir}/src/main/resources/wsdl/XRoadPersonActiveRoleInfo.wsdl</wsdlUrl>
                             </wsdlUrls>
                             <verbose>true</verbose>
                         </configuration>
