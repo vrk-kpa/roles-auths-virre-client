@@ -251,15 +251,16 @@
                         </configuration>
                     </execution>
                     <execution>
-                        <id>wsimport-prh-CompanyRepresentInfo</id>
+                        <id>wsimport-XRoadCompanyRepresentInfo</id>
                         <goals>
                             <goal>wsimport</goal>
                         </goals>
                         <configuration>
-                            <packageName>fi.vrk.xml.rova.prh.companyrepresentinfo</packageName>
-                            <wsdlLocation>../../../../../../wsdl/prh-CompanyRepresentInfo.wsdl</wsdlLocation>
+                            <packageName>fi.vrk.xml.rova.prh.companyreprinfo</packageName>
+                            <wsdlLocation>../../../../../../wsdl/XRoadCompanyRepresentInfo.wsdl</wsdlLocation>
+                            <extension>true</extension>
                             <wsdlUrls>
-                                <wsdlUrl>${basedir}/src/main/resources/wsdl/prh-CompanyRepresentInfo.wsdl</wsdlUrl>
+                                <wsdlUrl>${basedir}/src/main/resources/wsdl/XRoadCompanyRepresentInfo.wsdl</wsdlUrl>
                             </wsdlUrls>
                             <verbose>true</verbose>
                         </configuration>
