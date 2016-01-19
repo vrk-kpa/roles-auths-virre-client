@@ -5,8 +5,12 @@ import fi.vm.kapa.rova.logging.Logger;
 import fi.vm.kapa.rova.soap.handlers.ActiveRolesClientXroadHeaderHandler;
 import fi.vm.kapa.rova.soap.handlers.AttachmentHandler;
 import fi.vm.kapa.rova.soap.handlers.CompaniesXroadHeaderHandler;
+import fi.vm.kapa.rova.soap.prh.model.CompaniesResponseMessage;
+import fi.vm.kapa.rova.soap.prh.model.ExtendedRoleInfo;
+import fi.vm.kapa.rova.soap.prh.model.Role;
 import fi.vm.kapa.rova.soap.virre.CustomValidationEventHandler;
 import fi.vm.kapa.rova.soap.virre.model.RoleInCompany;
+import fi.vm.kapa.rova.soap.virre.model.RoleInfo;
 import fi.vm.kapa.rova.soap.virre.model.VirreResponseMsg;
 import fi.vrk.xml.rova.prh.activeroles.*;
 
@@ -15,6 +19,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import com.sun.org.apache.xerces.internal.dom.ElementNSImpl;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
@@ -60,7 +66,8 @@ public class ActiveRolesClient implements SpringPropertyNames {
         service.setHandlerResolver(hs);
     }
     
-    public VirreResponseMsg getResponse(String personId) throws JAXBException { // String
+    @SuppressWarnings("restriction")
+    public CompaniesResponseMessage getResponse(String personId) throws JAXBException {
         XRoadPortType port = service.getXRoadServicePort();
         BindingProvider bp = (BindingProvider) port;
         
@@ -75,65 +82,48 @@ public class ActiveRolesClient implements SpringPropertyNames {
        
         port.xRoadPersonActiveRoleInfo(request, responseHolder);
         
-//        String attachment = (String) httpRequest.getAttribute(AttachmentHandler.ATTACHMENT_ATTRIBUTE);
-
-        VirreResponseMsg result = null;
-        
-        XRoadPersonActiveRoleInfoResponse.Response response = responseHolder.value;
+        XRoadPersonActiveRoleInfoResponse.Response response = responseHolder.value; // soap response
         LOG.info("Got company listing response from PRH: " + response);
 
-        response.g
-        List<com.sun.org.apache.xerces.internal.dom.ElementNSImpl> element = (List) response.getRoleInCompany();
-        com.sun.org.apache.xerces.internal.dom.ElementNSImpl element2 = (com.sun.org.apache.xerces.internal.dom.ElementNSImpl) response.getFirstname();
-
-        for (com.sun.org.apache.xerces.internal.dom.ElementNSImpl e : element) {
-            System.out.println(e.getBaseURI());
-            System.out.println(e.getLocalName());
-            System.out.println(e.getTextContent());
-            NodeList list = e.getChildNodes();
-            for (int i = 0 ; i < list.getLength() ; i++) {
-                Node n = list.item(i);
-                System.out.println(n.getNodeName());
-            }
-
-        }
-        System.out.println(element2.getBaseURI());
-        System.out.println(element2.getLocalName());
-        System.out.println(element2.getTextContent());
-
-        /*try {
-            JAXBContext jc = JAXBContext.newInstance(element.getValue().getClass());
-            Marshaller marshaller = jc.createMarshaller();
-            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            marshaller.marshal(element, baos);
-            System.out.println(baos.toString());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        */
-        /*
-        if (object != null) {
-            JAXBContext context = JAXBContext.newInstance(VirreResponseMsg.class); //.getPackage().getName());
-            Unmarshaller um = context.createUnmarshaller();
-            um.setEventHandler(new CustomValidationEventHandler());
-            LOG.info("Ready for unmarshalling");
-            try {
-                JAXBElement<VirreResponseMsg> root = um.unmarshal((Node) object, VirreResponseMsg.class);
-                result = root.getValue();
-//                result = (VirreResponseMessage) um.unmarshal((Node) object);
-                LOG.info("Unmarshalling done: "+ result);
-            } catch (Exception e) {
-                e.printStackTrace();
-                throw e;
-            }
-        } else {
-            LOG.info("getAny() gave null");
-        }
-        */
-        return result;
+        CompaniesResponseMessage responseMsg = new CompaniesResponseMessage(); // return value
         
+        ElementNSImpl socSecElement = (ElementNSImpl) response.getSocialSecurityNumber();
+        responseMsg.setSocialSec(socSecElement.getTextContent());
+        
+        ElementNSImpl statusElement = (ElementNSImpl) response.getStatus();
+        responseMsg.setStatus(statusElement.getTextContent());
+        
+        List<Role> roles = new ArrayList<>(); // to be set into responseMsg
+
+        @SuppressWarnings({ "unchecked", "rawtypes" })
+        List<ElementNSImpl> roleElements = (List) response.getRoleInCompany();
+        JAXBContext context = JAXBContext.newInstance(RoleInCompany.class);
+        Unmarshaller um = context.createUnmarshaller();
+        um.setEventHandler(new CustomValidationEventHandler());
+        for (ElementNSImpl roleElement : roleElements) {
+            RoleInCompany roleInCompany = (RoleInCompany) um.unmarshal((Node) roleElement);
+            LOG.info("role = "+ roleInCompany);
+
+            Role role = new Role();
+            role.setBusinessId(roleInCompany.getBusinessId());
+            role.setCompanyName(roleInCompany.getCompanyName());
+            
+            RoleInfo roleInfo = roleInCompany.getRoleInfo();
+            ExtendedRoleInfo extendedRoleInfo = new ExtendedRoleInfo();
+            extendedRoleInfo.setRoleType(roleInfo.getName());
+            extendedRoleInfo.setBodyType(roleInfo.getBodyType());
+            extendedRoleInfo.setStartDate(roleInfo.getStartDate());
+            
+            List<ExtendedRoleInfo> extendedRoleInfos = new ArrayList<>();
+            extendedRoleInfos.add(extendedRoleInfo);
+            role.setExtendedRoleInfos(extendedRoleInfos);
+            
+            roles.add(role);
+        }
+        
+        responseMsg.setRoles(roles);
+
+        return responseMsg;
     }
 }
  

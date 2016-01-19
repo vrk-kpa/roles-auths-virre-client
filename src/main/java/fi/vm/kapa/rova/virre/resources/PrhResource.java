@@ -46,7 +46,7 @@ public class PrhResource {
     public Response getCompanies(@PathParam("socialsec") String socialsec) {
         log.info("Companies request received.");
         try {
-            List<Company> companies = arc.getCompanies(socialsec);
+            List<Company> companies = cs.getCompanies(socialsec);
             return Response.ok().entity(companies).build();
         } catch (VIRREServiceException e) {
             log.error("Returning error. Failed to get companies: " + e.getMessage());

@@ -37,11 +37,9 @@ public class ActiveRolesService extends ServiceLogging {
 
         try {
             long startTime = System.currentTimeMillis();
-//            String responseString = client.getResponse(hetu);
-            VirreResponseMsg response = client.getResponse(hetu);
-            LOG.warning(response.toString());
+            CompaniesResponseMessage msg = client.getResponse(hetu);
+            LOG.warning(msg.toString());
             logRequest(OP + ":RoVaListCompanies", startTime, System.currentTimeMillis());
-            CompaniesResponseMessage msg = null; //MessageParser.parseResponseMessage(responseString, CompaniesResponseMessage.class);
             companies = parseCompanies(msg);
         } catch (Exception e) {
             logError(OP, "Failed to parse companies: " + e.getMessage());
