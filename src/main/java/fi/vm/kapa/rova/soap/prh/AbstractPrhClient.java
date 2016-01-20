@@ -56,29 +56,6 @@ public abstract class AbstractPrhClient implements SpringPropertyNames {
         this.serviceCode = serviceCode;
     }
 
-    public Holder<XRoadClientIdentifierType> getClientHeader(ObjectFactory factory) {
-        Holder<XRoadClientIdentifierType> result = new Holder<>();
-        result.value = factory.createXRoadClientIdentifierType();
-        result.value.setObjectType(XRoadObjectType.SUBSYSTEM.toString());
-        result.value.setXRoadInstance(clientSdsbInstance);
-        result.value.setMemberClass(clientMemberClass);
-        result.value.setMemberCode(clientMemberCode);
-        result.value.setSubsystemCode(clientSubsystemCode);
-        return result;
-    }
-
-    public Holder<XRoadServiceIdentifierType> getServiceHeader(ObjectFactory factory) {
-        Holder<XRoadServiceIdentifierType> result = new Holder<>();
-        result.value = factory.createXRoadServiceIdentifierType();
-        result.value.setObjectType(XRoadObjectType.SERVICE.toString());
-        result.value.setXRoadInstance(serviceSdsbInstance);
-        result.value.setMemberClass(serviceMemberClass);
-        result.value.setMemberCode(serviceMemberCode);
-        result.value.setSubsystemCode(serviceSubsystemCode);
-        result.value.setServiceCode(serviceCode);
-        return result;
-    }
-
     public Holder<String> getUserIdHeader() {
         Holder<String> result = new Holder<>();
         String origUserId = httpRequest.getHeader(RequestIdentificationFilter.XROAD_END_USER);
