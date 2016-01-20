@@ -35,7 +35,7 @@ public class PrhResource {
     private CompaniesService cs;
 
     @Inject
-    private RepresentationsService reps;
+    private CompanyReprService crs;
 
     @Inject
     private RightsService rs;
@@ -61,7 +61,7 @@ public class PrhResource {
     public Response getRepresentations(@PathParam("businessid") String businessid) {
         log.info("Representations request received.");
         try {
-            CompanyRepresentations reprs = reps.getRepresentations(businessid);
+            CompanyRepresentations reprs = crs.getRepresentations(businessid);
             return Response.ok().entity(reprs).build();
         } catch (VIRREServiceException e) {
             log.error("Returning error. Failed to get persons: " + e.getMessage());
