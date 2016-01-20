@@ -18,48 +18,43 @@ import fi.vrk.xml.rova.virre.XRoadObjectType;
 
 public abstract class AbstractPrhClient implements SpringPropertyNames {
 
-    @Autowired
-    private HttpServletRequest request;
+    public static final String PROTOCOL_VERSION = "4.0"; 
 
-    @Value(CLIENT_OBJECT_TYPE)
-    private String clientObjectType;
+    @Autowired
+    protected HttpServletRequest httpRequest;
 
     @Value(CLIENT_SDSB_INSTANCE)
-    private String clientSdsbInstance;
+    protected String clientSdsbInstance;
 
     @Value(CLIENT_MEMBER_CLASS)
-    private String clientMemberClass;
+    protected String clientMemberClass;
 
     @Value(CLIENT_MEMBER_CODE)
-    private String clientMemberCode;
+    protected String clientMemberCode;
 
     @Value(CLIENT_SUBSYSTEM_CODE)
-    private String clientSubsystemCode;
-
-    @Value(SERVICE_OBJECT_TYPE)
-    private String serviceObjectType;
+    protected String clientSubsystemCode;
 
     @Value(SERVICE_SDSB_INSTANCE)
-    private String serviceSdsbInstance;
+    protected String serviceSdsbInstance;
 
     @Value(SERVICE_MEMBER_CLASS)
-    private String serviceMemberClass;
+    protected String serviceMemberClass;
 
     @Value(SERVICE_MEMBER_CODE)
-    private String serviceMemberCode;
+    protected String serviceMemberCode;
 
     @Value(SERVICE_SUBSYSTEM_CODE)
-    private String serviceSubsystemCode;
+    protected String serviceSubsystemCode;
 
-
-    @Autowired
-    private ActiveRolesClientXroadHeaderHandler xroadHeaderHandler;
-
-    @Autowired
-    private HttpServletRequest httpRequest;
-    
     @Value(XROAD_ENDPOINT)
-    String xrdEndPoint;
+    protected String xrdEndPoint;
+
+    protected String serviceCode;
+
+    public AbstractPrhClient(String serviceCode) {
+        this.serviceCode = serviceCode;
+    }
 
     public Holder<XRoadClientIdentifierType> getClientHeader(ObjectFactory factory) {
         Holder<XRoadClientIdentifierType> result = new Holder<>();
@@ -80,14 +75,13 @@ public abstract class AbstractPrhClient implements SpringPropertyNames {
         result.value.setMemberClass(serviceMemberClass);
         result.value.setMemberCode(serviceMemberCode);
         result.value.setSubsystemCode(serviceSubsystemCode);
-        result.value.setServiceCode("XRoadPersonActiveRoleInfo");
+        result.value.setServiceCode(serviceCode);
         return result;
-
     }
 
     public Holder<String> getUserIdHeader() {
         Holder<String> result = new Holder<>();
-        String origUserId = request.getHeader(RequestIdentificationFilter.XROAD_END_USER);
+        String origUserId = httpRequest.getHeader(RequestIdentificationFilter.XROAD_END_USER);
         if (origUserId == null) {
             origUserId = "rova-end-user-unknown";
         }
@@ -100,10 +94,10 @@ public abstract class AbstractPrhClient implements SpringPropertyNames {
         result.value = UUID.randomUUID().toString();
         return result;
     }
-    
+
     public  Holder<String> getProtocolVersionHeader() {
         Holder<String> result = new Holder<>();
-        result.value = "4.0";
+        result.value = PROTOCOL_VERSION;
         return result;
     }
 

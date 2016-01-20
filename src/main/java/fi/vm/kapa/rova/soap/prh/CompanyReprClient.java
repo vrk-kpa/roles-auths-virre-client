@@ -19,6 +19,7 @@ import fi.vrk.xml.rova.prh.companyreprinfo.XRoadCompanyRepresentInfo;
 import fi.vrk.xml.rova.prh.companyreprinfo.XRoadCompanyRepresentInfoPortType;
 import fi.vrk.xml.rova.prh.companyreprinfo.XRoadCompanyRepresentInfoPortTypeService;
 import fi.vrk.xml.rova.prh.companyreprinfo.XRoadCompanyRepresentInfoResponse;
+import fi.vrk.xml.rova.prh.companyreprinfo.XRoadObjectType;
 import fi.vrk.xml.rova.prh.companyreprinfo.XRoadServiceIdentifierType;
 import java.util.LinkedList;
 
@@ -37,56 +38,23 @@ import java.util.List;
 import java.util.UUID;
 
 @Component
-public class CompanyReprClient implements SpringPropertyNames {
+public class CompanyReprClient extends AbstractPrhClient {
 
     public static final String SERVICE_CODE = "XRoadCompanyRepresentInfo";
-    public static final String PROTOCOL_VERSION = "4.0";
+
+    private static Logger LOG = Logger.getLogger(CompanyReprClient.class);
 
     XRoadCompanyRepresentInfoPortTypeService service = new XRoadCompanyRepresentInfoPortTypeService();
     ObjectFactory factory = new ObjectFactory();
 
-    @Autowired
-    private HttpServletRequest httpRequest;
+    public CompanyReprClient() {
+        super(SERVICE_CODE);
+    }
 
-    @Value(CLIENT_OBJECT_TYPE)
-    private String clientObjectType;
-
-    @Value(CLIENT_SDSB_INSTANCE)
-    private String clientSdsbInstance;
-
-    @Value(CLIENT_MEMBER_CLASS)
-    private String clientMemberClass;
-
-    @Value(CLIENT_MEMBER_CODE)
-    private String clientMemberCode;
-
-    @Value(CLIENT_SUBSYSTEM_CODE)
-    private String clientSubsystemCode;
-
-    @Value(SERVICE_OBJECT_TYPE)
-    private String serviceObjectType;
-
-    @Value(SERVICE_SDSB_INSTANCE)
-    private String serviceSdsbInstance;
-
-    @Value(SERVICE_MEMBER_CLASS)
-    private String serviceMemberClass;
-
-    @Value(SERVICE_MEMBER_CODE)
-    private String serviceMemberCode;
-
-    @Value(SERVICE_SUBSYSTEM_CODE)
-    private String serviceSubsystemCode;
-
-    @Value(XROAD_ENDPOINT)
-    private String xrdEndPoint;
-
-    private static Logger LOG = Logger.getLogger(CompanyReprClient.class);
-
-    private Holder<XRoadClientIdentifierType> getClientHeader() {
+    public Holder<XRoadClientIdentifierType> getClientHeader(ObjectFactory factory) {
         Holder<XRoadClientIdentifierType> result = new Holder<>();
         result.value = factory.createXRoadClientIdentifierType();
-        result.value.setObjectType(clientObjectType);
+        result.value.setObjectType(XRoadObjectType.SUBSYSTEM.toString());
         result.value.setXRoadInstance(clientSdsbInstance);
         result.value.setMemberClass(clientMemberClass);
         result.value.setMemberCode(clientMemberCode);
@@ -94,41 +62,18 @@ public class CompanyReprClient implements SpringPropertyNames {
         return result;
     }
 
-    private Holder<XRoadServiceIdentifierType> getServiceHeader() {
+    public Holder<XRoadServiceIdentifierType> getServiceHeader(ObjectFactory factory) {
         Holder<XRoadServiceIdentifierType> result = new Holder<>();
         result.value = factory.createXRoadServiceIdentifierType();
-        result.value.setObjectType(serviceObjectType);
+        result.value.setObjectType(XRoadObjectType.SERVICE.toString());
         result.value.setXRoadInstance(serviceSdsbInstance);
         result.value.setMemberClass(serviceMemberClass);
         result.value.setMemberCode(serviceMemberCode);
         result.value.setSubsystemCode(serviceSubsystemCode);
-        result.value.setServiceCode(SERVICE_CODE);
-        return result;
-
-    }
-
-    private Holder<String> getUserIdHeader() {
-        Holder<String> result = new Holder<>();
-        String origUserId = httpRequest.getHeader(RequestIdentificationFilter.XROAD_END_USER);
-        if (origUserId == null) {
-            origUserId = "rova-end-user-unknown";
-        }
-        result.value = origUserId;
+        result.value.setServiceCode(serviceCode);
         return result;
     }
 
-    private Holder<String> getIdHeader() {
-        Holder<String> result = new Holder<>();
-        result.value = UUID.randomUUID().toString();
-        return result;
-    }
-
-    private Holder<String> getProtocolVersionHeader() {
-        Holder<String> result = new Holder<>();
-        result.value = PROTOCOL_VERSION;
-        return result;
-    }
-    
     public CompanyRepresentInfoResponseType getResponse(String businessId) throws JAXBException {
 
         XRoadCompanyRepresentInfoPortType port = service.getXRoadCompanyRepresentInfoPortTypePort();
@@ -148,8 +93,8 @@ public class CompanyReprClient implements SpringPropertyNames {
 
         try {
 
-            port.xRoadCompanyRepresentInfo(request, getClientHeader(),
-                    getServiceHeader(), getUserIdHeader(), getIdHeader(),
+            port.xRoadCompanyRepresentInfo(request, getClientHeader(factory),
+                    getServiceHeader(factory), getUserIdHeader(), getIdHeader(),
                     getProtocolVersionHeader(), response);
 
             LOG.info("Soap request succeeded.");
