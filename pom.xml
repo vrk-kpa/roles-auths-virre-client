@@ -180,20 +180,6 @@
                 <version>2.1</version>
                 <executions>
                     <execution>
-                        <id>wsimport-virre</id>
-                        <goals>
-                            <goal>wsimport</goal>
-                        </goals>
-                        <configuration>
-                            <packageName>fi.vrk.xml.rova.virre</packageName>
-                            <wsdlLocation>../../../../../../wsdl/virre.wsdl</wsdlLocation>
-                            <wsdlUrls>
-                                <wsdlUrl>${basedir}/src/main/resources/wsdl/virre.wsdl</wsdlUrl>
-                            </wsdlUrls>
-                            <verbose>true</verbose>
-                        </configuration>
-                    </execution>
-                    <execution>
                         <id>wsimport-prh-XRoadRightToRepresent.wsdl</id>
                         <goals>
                             <goal>wsimport</goal>

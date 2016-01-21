@@ -17,7 +17,6 @@ import fi.vrk.xml.rova.prh.activeroles.XRoadPersonActiveRoleInfoPortType;
 import fi.vrk.xml.rova.prh.activeroles.XRoadPersonActiveRoleInfoPortTypeService;
 import fi.vrk.xml.rova.prh.activeroles.XRoadPersonActiveRoleInfoResponse;
 import fi.vrk.xml.rova.prh.activeroles.XRoadServiceIdentifierType;
-import fi.vrk.xml.rova.virre.XRoadObjectType;
 
 @Component
 public class ActiveRolesClient extends AbstractPrhClient {
@@ -32,7 +31,7 @@ public class ActiveRolesClient extends AbstractPrhClient {
     public Holder<XRoadClientIdentifierType> getClientHeader(ObjectFactory factory) {
         Holder<XRoadClientIdentifierType> result = new Holder<>();
         result.value = factory.createXRoadClientIdentifierType();
-        result.value.setObjectType(XRoadObjectType.SUBSYSTEM.toString());
+        result.value.setObjectType(clientObjectType);
         result.value.setXRoadInstance(clientSdsbInstance);
         result.value.setMemberClass(clientMemberClass);
         result.value.setMemberCode(clientMemberCode);
@@ -43,7 +42,7 @@ public class ActiveRolesClient extends AbstractPrhClient {
     public Holder<XRoadServiceIdentifierType> getServiceHeader(ObjectFactory factory) {
         Holder<XRoadServiceIdentifierType> result = new Holder<>();
         result.value = factory.createXRoadServiceIdentifierType();
-        result.value.setObjectType(XRoadObjectType.SERVICE.toString());
+        result.value.setObjectType(serviceObjectType);
         result.value.setXRoadInstance(serviceSdsbInstance);
         result.value.setMemberClass(serviceMemberClass);
         result.value.setMemberCode(serviceMemberCode);

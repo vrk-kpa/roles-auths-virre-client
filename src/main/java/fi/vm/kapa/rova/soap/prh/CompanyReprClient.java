@@ -16,7 +16,6 @@ import fi.vrk.xml.rova.prh.companyreprinfo.XRoadCompanyRepresentInfo;
 import fi.vrk.xml.rova.prh.companyreprinfo.XRoadCompanyRepresentInfoPortType;
 import fi.vrk.xml.rova.prh.companyreprinfo.XRoadCompanyRepresentInfoPortTypeService;
 import fi.vrk.xml.rova.prh.companyreprinfo.XRoadCompanyRepresentInfoResponse;
-import fi.vrk.xml.rova.prh.companyreprinfo.XRoadObjectType;
 import fi.vrk.xml.rova.prh.companyreprinfo.XRoadServiceIdentifierType;
 
 @Component
@@ -32,7 +31,7 @@ public class CompanyReprClient extends AbstractPrhClient {
     public Holder<XRoadClientIdentifierType> getClientHeader(ObjectFactory factory) {
         Holder<XRoadClientIdentifierType> result = new Holder<>();
         result.value = factory.createXRoadClientIdentifierType();
-        result.value.setObjectType(XRoadObjectType.SUBSYSTEM.toString());
+        result.value.setObjectType(clientObjectType);
         result.value.setXRoadInstance(clientSdsbInstance);
         result.value.setMemberClass(clientMemberClass);
         result.value.setMemberCode(clientMemberCode);
@@ -43,7 +42,7 @@ public class CompanyReprClient extends AbstractPrhClient {
     public Holder<XRoadServiceIdentifierType> getServiceHeader(ObjectFactory factory) {
         Holder<XRoadServiceIdentifierType> result = new Holder<>();
         result.value = factory.createXRoadServiceIdentifierType();
-        result.value.setObjectType(XRoadObjectType.SERVICE.toString());
+        result.value.setObjectType(serviceObjectType);
         result.value.setXRoadInstance(serviceSdsbInstance);
         result.value.setMemberClass(serviceMemberClass);
         result.value.setMemberCode(serviceMemberCode);

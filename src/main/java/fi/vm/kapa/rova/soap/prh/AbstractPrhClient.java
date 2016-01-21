@@ -18,6 +18,12 @@ public abstract class AbstractPrhClient implements SpringPropertyNames {
     @Autowired
     protected HttpServletRequest httpRequest;
 
+    @Value(SERVICE_OBJECT_TYPE)
+    protected String serviceObjectType;
+
+    @Value(CLIENT_OBJECT_TYPE)
+    protected String clientObjectType;
+
     @Value(CLIENT_SDSB_INSTANCE)
     protected String clientSdsbInstance;
 
