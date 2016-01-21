@@ -1,24 +1,11 @@
 package fi.vm.kapa.rova.soap.prh;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.annotation.PostConstruct;
-import javax.servlet.http.HttpServletRequest;
 import javax.xml.ws.BindingProvider;
 import javax.xml.ws.Holder;
-import javax.xml.ws.handler.Handler;
-import javax.xml.ws.handler.HandlerResolver;
-import javax.xml.ws.handler.PortInfo;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import fi.vm.kapa.rova.config.SpringPropertyNames;
 import fi.vm.kapa.rova.logging.Logger;
-import fi.vm.kapa.rova.soap.handlers.AttachmentHandler;
-import fi.vm.kapa.rova.soap.handlers.RightsXroadHeaderHandler;
 import fi.vrk.xml.rova.prh.companyright.ObjectFactory;
 import fi.vrk.xml.rova.prh.companyright.RightToRepresentParametersType;
 import fi.vrk.xml.rova.prh.companyright.RightToRepresentResponseType;
