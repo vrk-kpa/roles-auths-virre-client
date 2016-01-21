@@ -10,11 +10,6 @@ import org.springframework.beans.factory.annotation.Value;
 
 import fi.vm.kapa.rova.config.SpringPropertyNames;
 import fi.vm.kapa.rova.rest.identification.RequestIdentificationFilter;
-import fi.vm.kapa.rova.soap.handlers.ActiveRolesClientXroadHeaderHandler;
-import fi.vrk.xml.rova.prh.activeroles.ObjectFactory;
-import fi.vrk.xml.rova.prh.activeroles.XRoadClientIdentifierType;
-import fi.vrk.xml.rova.prh.activeroles.XRoadServiceIdentifierType;
-import fi.vrk.xml.rova.virre.XRoadObjectType;
 
 public abstract class AbstractPrhClient implements SpringPropertyNames {
 
@@ -51,10 +46,6 @@ public abstract class AbstractPrhClient implements SpringPropertyNames {
     protected String xrdEndPoint;
 
     protected String serviceCode;
-
-    public AbstractPrhClient(String serviceCode) {
-        this.serviceCode = serviceCode;
-    }
 
     public Holder<String> getUserIdHeader() {
         Holder<String> result = new Holder<>();

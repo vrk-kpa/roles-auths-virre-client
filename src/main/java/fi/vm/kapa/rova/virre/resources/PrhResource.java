@@ -40,13 +40,16 @@ public class PrhResource {
     @Inject
     private RightsService rs;
 
+    @Inject
+    private RightReprService rrs;
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/prh/companies/{socialsec}")
     public Response getCompanies(@PathParam("socialsec") String socialsec) {
-        log.info("Companies request received.");
+        log.debug("Companies request received.");
         try {
-            List<Company> companies = cs.getCompanies(socialsec);
+            List<Company> companies = arc.getCompanies(socialsec);
             return Response.ok().entity(companies).build();
         } catch (VIRREServiceException e) {
             log.error("Returning error. Failed to get companies: " + e.getMessage());
@@ -59,7 +62,7 @@ public class PrhResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/prh/representations/{businessid}")
     public Response getRepresentations(@PathParam("businessid") String businessid) {
-        log.info("Representations request received.");
+        log.debug("Representations request received.");
         try {
             CompanyRepresentations reprs = crs.getRepresentations(businessid);
             return Response.ok().entity(reprs).build();
@@ -76,9 +79,9 @@ public class PrhResource {
     public Response getRights(@QueryParam("socialsec") String socialSec,
                         @QueryParam("businessid") String businessId,
                         @QueryParam("rightlevel") String rightLevel) {
-        log.info("Rights request received.");
+        log.debug("Rights request received.");
         try {
-            RepresentationRight right = rs.getRights(socialSec, businessId, rightLevel);
+            RepresentationRight right = rrs.getRights(socialSec, businessId, rightLevel);
             return Response.ok().entity(right).build();
         } catch (VIRREServiceException e) {
             log.error("Returning error. Failed to get rights: " + e.getMessage());

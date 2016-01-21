@@ -1,19 +1,16 @@
 package fi.vm.kapa.rova.soap.prh;
 
-import com.sun.org.apache.xerces.internal.dom.ElementNSImpl;
-import fi.vm.kapa.rova.config.SpringPropertyNames;
+import javax.xml.bind.JAXBException;
+import javax.xml.ws.BindingProvider;
+import javax.xml.ws.Holder;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
 import fi.vm.kapa.rova.logging.Logger;
-import fi.vm.kapa.rova.rest.identification.RequestIdentificationFilter;
-import fi.vm.kapa.rova.soap.prh.model.LegalRepresentation;
-import fi.vm.kapa.rova.soap.prh.model.Representation;
-import fi.vm.kapa.rova.soap.prh.model.RepresentationsResponseMessage;
-import fi.vm.kapa.rova.soap.virre.CustomValidationEventHandler;
-import fi.vm.kapa.rova.soap.prh.model.Body;
-import fi.vrk.xml.rova.prh.companyreprinfo.BodyType;
 import fi.vrk.xml.rova.prh.companyreprinfo.CompanyBasicInfoType;
 import fi.vrk.xml.rova.prh.companyreprinfo.CompanyRepresentInfoResponseType;
 import fi.vrk.xml.rova.prh.companyreprinfo.ObjectFactory;
-import fi.vrk.xml.rova.prh.companyreprinfo.StateType;
 import fi.vrk.xml.rova.prh.companyreprinfo.XRoadClientIdentifierType;
 import fi.vrk.xml.rova.prh.companyreprinfo.XRoadCompanyRepresentInfo;
 import fi.vrk.xml.rova.prh.companyreprinfo.XRoadCompanyRepresentInfoPortType;
@@ -21,35 +18,16 @@ import fi.vrk.xml.rova.prh.companyreprinfo.XRoadCompanyRepresentInfoPortTypeServ
 import fi.vrk.xml.rova.prh.companyreprinfo.XRoadCompanyRepresentInfoResponse;
 import fi.vrk.xml.rova.prh.companyreprinfo.XRoadObjectType;
 import fi.vrk.xml.rova.prh.companyreprinfo.XRoadServiceIdentifierType;
-import java.util.LinkedList;
-
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-import org.w3c.dom.Node;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.xml.bind.*;
-import javax.xml.ws.BindingProvider;
-import javax.xml.ws.Holder;
-
-import java.util.List;
-import java.util.UUID;
 
 @Component
 public class CompanyReprClient extends AbstractPrhClient {
-
-    public static final String SERVICE_CODE = "XRoadCompanyRepresentInfo";
-
     private static Logger LOG = Logger.getLogger(CompanyReprClient.class);
 
+    @Value(SERVICE_REPRESENTATIONS_SERVICE_CODE)
+    private String serviceCode;
+    
     XRoadCompanyRepresentInfoPortTypeService service = new XRoadCompanyRepresentInfoPortTypeService();
     ObjectFactory factory = new ObjectFactory();
-
-    public CompanyReprClient() {
-        super(SERVICE_CODE);
-    }
 
     public Holder<XRoadClientIdentifierType> getClientHeader(ObjectFactory factory) {
         Holder<XRoadClientIdentifierType> result = new Holder<>();

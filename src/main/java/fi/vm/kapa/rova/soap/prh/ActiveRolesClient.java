@@ -4,6 +4,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.ws.BindingProvider;
 import javax.xml.ws.Holder;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import fi.vm.kapa.rova.logging.Logger;
@@ -20,17 +21,13 @@ import fi.vrk.xml.rova.virre.XRoadObjectType;
 
 @Component
 public class ActiveRolesClient extends AbstractPrhClient {
-
-    public static final String SERVICE_CODE = "XRoadPersonActiveRoleInfo";
-
     private static final Logger LOG = Logger.getLogger(ActiveRolesClient.class);
+    
+    @Value(SERVICE_COMPANIES_SERVICE_CODE)
+    private String serviceCode;
     
     XRoadPersonActiveRoleInfoPortTypeService service = new XRoadPersonActiveRoleInfoPortTypeService();
     ObjectFactory factory = new ObjectFactory();
-
-    public ActiveRolesClient() {
-        super(SERVICE_CODE);
-    }
 
     public Holder<XRoadClientIdentifierType> getClientHeader(ObjectFactory factory) {
         Holder<XRoadClientIdentifierType> result = new Holder<>();
@@ -70,7 +67,7 @@ public class ActiveRolesClient extends AbstractPrhClient {
 
         port.xRoadPersonActiveRoleInfo(request, getClientHeader(factory), getServiceHeader(factory), 
                 getUserIdHeader(), getIdHeader(), getProtocolVersionHeader(), response);
-        LOG.debug("soap succeeded");
+        LOG.debug("soap for active role info succeeded");
         
         return response.value.getResponse();
    }
