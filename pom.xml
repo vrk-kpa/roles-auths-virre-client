@@ -265,6 +265,21 @@
                             <verbose>true</verbose>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>wsimport-XRoadRightToRepresent</id>
+                        <goals>
+                            <goal>wsimport</goal>
+                        </goals>
+                        <configuration>
+                            <packageName>fi.vrk.xml.rova.prh.companyright</packageName>
+                            <wsdlLocation>../../../../../../wsdl/XRoadRightToRepresent.wsdl</wsdlLocation>
+                            <extension>true</extension>
+                            <wsdlUrls>
+                                <wsdlUrl>${basedir}/src/main/resources/wsdl/XRoadRightToRepresent.wsdl</wsdlUrl>
+                            </wsdlUrls>
+                            <verbose>true</verbose>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
         </plugins>
