@@ -1,7 +1,5 @@
 package fi.vm.kapa.rova.soap.prh.model;
 
-import fi.vm.kapa.rova.soap.virre.model.*;
-
 public class LegalRepresentation {
     private String header;
     private String text;

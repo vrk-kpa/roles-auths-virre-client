@@ -186,7 +186,7 @@
                         </goals>
                         <configuration>
                             <packageName>fi.vrk.xml.rova.virre</packageName>
-                            <wsdlLocation>../../../../../wsdl/virre.wsdl</wsdlLocation>
+                            <wsdlLocation>../../../../../../wsdl/virre.wsdl</wsdlLocation>
                             <wsdlUrls>
                                 <wsdlUrl>${basedir}/src/main/resources/wsdl/virre.wsdl</wsdlUrl>
                             </wsdlUrls>
@@ -194,49 +194,22 @@
                         </configuration>
                     </execution>
                     <execution>
-                        <id>wsimport-prh-companies</id>
+                        <id>wsimport-prh-XRoadRightToRepresent.wsdl</id>
                         <goals>
                             <goal>wsimport</goal>
                         </goals>
                         <configuration>
-                            <packageName>fi.vrk.xml.rova.prh.companies</packageName>
-                            <wsdlLocation>../../../../../../wsdl/prh-companies.wsdl</wsdlLocation>
+                            <packageName>fi.vrk.xml.rova.prh.companyright</packageName>
+                            <wsdlLocation>../../../../../../wsdl/XRoadRightToRepresent.wsdl</wsdlLocation>
+                            <extension>true</extension>
                             <wsdlUrls>
-                                <wsdlUrl>${basedir}/src/main/resources/wsdl/prh-companies.wsdl</wsdlUrl>
+                                <wsdlUrl>${basedir}/src/main/resources/wsdl/XRoadRightToRepresent.wsdl</wsdlUrl>
                             </wsdlUrls>
                             <verbose>true</verbose>
                         </configuration>
                     </execution>
                     <execution>
-                        <id>wsimport-prh-representations</id>
-                        <goals>
-                            <goal>wsimport</goal>
-                        </goals>
-                        <configuration>
-                            <packageName>fi.vrk.xml.rova.prh.representations</packageName>
-                            <wsdlLocation>../../../../../../wsdl/prh-representations.wsdl</wsdlLocation>
-                            <wsdlUrls>
-                                <wsdlUrl>${basedir}/src/main/resources/wsdl/prh-representations.wsdl</wsdlUrl>
-                            </wsdlUrls>
-                            <verbose>true</verbose>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>wsimport-prh-rights</id>
-                        <goals>
-                            <goal>wsimport</goal>
-                        </goals>
-                        <configuration>
-                            <packageName>fi.vrk.xml.rova.prh.rights</packageName>
-                            <wsdlLocation>../../../../../../wsdl/prh-rights.wsdl</wsdlLocation>
-                            <wsdlUrls>
-                                <wsdlUrl>${basedir}/src/main/resources/wsdl/prh-rights.wsdl</wsdlUrl>
-                            </wsdlUrls>
-                            <verbose>true</verbose>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>wsimport-prh-activeRoleInfo</id>
+                        <id>wsimport-XRoadPersonActiveRoleInfo</id>
                         <goals>
                             <goal>wsimport</goal>
                         </goals>

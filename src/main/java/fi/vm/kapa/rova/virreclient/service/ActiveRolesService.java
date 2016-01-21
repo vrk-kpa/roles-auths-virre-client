@@ -28,7 +28,7 @@ import fi.vrk.xml.rova.prh.activeroles.RoleInCompanyType.RoleBasicInfo;
 public class ActiveRolesService extends ServiceLogging {
     public static final String OP = "ActiveRolesService";
 
-    private static final Logger LOG = Logger.getLogger(CompaniesService.class);
+    private static final Logger LOG = Logger.getLogger(ActiveRolesService.class);
 
     private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ");
     

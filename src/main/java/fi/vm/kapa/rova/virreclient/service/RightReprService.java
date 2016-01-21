@@ -1,12 +1,9 @@
 
 package fi.vm.kapa.rova.virreclient.service;
 
-import fi.vm.kapa.rova.external.model.AuthorizationType;
 import fi.vm.kapa.rova.external.model.virre.RepresentationRight;
 import fi.vm.kapa.rova.logging.Logger;
 import fi.vm.kapa.rova.soap.prh.RightReprClient;
-import fi.vm.kapa.rova.soap.prh.RightsClient;
-import fi.vm.kapa.rova.soap.prh.model.RightsResponseMessage;
 import fi.vrk.xml.rova.prh.companyright.RightToRepresentResponseType;
 
 import java.time.format.DateTimeFormatter;

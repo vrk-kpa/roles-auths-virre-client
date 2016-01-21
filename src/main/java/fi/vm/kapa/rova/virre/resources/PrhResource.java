@@ -16,7 +16,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 
-import fi.vm.kapa.rova.soap.prh.ActiveRolesClient;
 import fi.vm.kapa.rova.virreclient.service.*;
 import org.springframework.stereotype.Service;
 
@@ -32,13 +31,7 @@ public class PrhResource {
     private ActiveRolesService arc;
 
     @Inject
-    private CompaniesService cs;
-
-    @Inject
     private CompanyReprService crs;
-
-    @Inject
-    private RightsService rs;
 
     @Inject
     private RightReprService rrs;
