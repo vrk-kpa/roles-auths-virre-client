@@ -51,7 +51,7 @@ public class ActiveRolesClient extends AbstractPrhClient {
         return result;
     }
 
-    public PersonActiveRoleInfoResponseType getResponse(String personId) throws JAXBException {
+    public PersonActiveRoleInfoResponseType getResponse(String personId) {
         XRoadPersonActiveRoleInfoPortType port = service.getXRoadPersonActiveRoleInfoPortTypePort();
         BindingProvider bp = (BindingProvider) port;
         

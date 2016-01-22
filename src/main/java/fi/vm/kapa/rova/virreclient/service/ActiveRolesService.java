@@ -30,27 +30,23 @@ public class ActiveRolesService extends ServiceLogging {
 
     private static final Logger LOG = Logger.getLogger(ActiveRolesService.class);
 
-    private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ");
-    
     @Autowired
     private ActiveRolesClient client;
     
     @SuppressWarnings("unchecked")
     public List<Company> getCompanies(String hetu) throws VIRREServiceException {
-        Map<String, List<?>> response = new HashMap<>();
-
         try {
             long startTime = System.currentTimeMillis();
             PersonActiveRoleInfoResponseType result = client.getResponse(hetu);
             LOG.debug(result.toString());
-            response = parseCompanies(result);
+            Map<String, List<?>> response = parseCompanies(result);
             logRequest(OP + ":RoVaListCompanies", startTime, System.currentTimeMillis());
+            return (List<Company>) response.get(Company.TYPE);
         } catch (Exception e) {
             logError(OP, "Failed to parse companies: " + e.getMessage());
             throw new VIRREServiceException(e.getMessage(), e);
         }
 
-        return (List<Company>) response.get(Company.TYPE);
     }
 
     private Map<String, List<?>> parseCompanies(PersonActiveRoleInfoResponseType result) {
