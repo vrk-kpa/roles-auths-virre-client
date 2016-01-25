@@ -110,7 +110,7 @@ public class CompanyReprService extends ServiceLogging {
             logWarning(OP, "Person data was null.");
             return;
         }
-        for (Object object : persons) {
+        for (Object object : objects) {
             if (object instanceof NaturalPersonType) {
                 NaturalPersonType np = (NaturalPersonType) object;
                 CompanyPerson person = new CompanyPerson(); 
