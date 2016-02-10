@@ -74,7 +74,7 @@ public class CompanyReprClient extends AbstractPrhClient {
                     getServiceHeader(factory), getUserIdHeader(), getIdHeader(),
                     getProtocolVersionHeader(), response);
 
-            LOG.info("Soap request succeeded.");
+            LOG.debug("Soap request succeeded.");
             
             result = response.value.getResponse();
 
