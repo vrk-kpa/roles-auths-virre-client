@@ -66,7 +66,7 @@ public class RightReprClient extends AbstractPrhClient {
         response.value = factory.createXRoadRightToRepresentResponse();
 
         port.xRoadRightToRepresent(request, getClientHeader(), getServiceHeader(), 
-                getUserIdHeader(), getIdHeader(), getProtocolVersionHeader(), response);
+                getUserIdHeader(), getIdHeader(), getIssueHeader(), getProtocolVersionHeader(), response);
         LOG.debug("soap for right to represent succeeded");
 
         return response.value.getResponse();

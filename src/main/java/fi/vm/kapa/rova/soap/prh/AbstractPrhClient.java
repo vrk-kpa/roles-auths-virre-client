@@ -13,7 +13,10 @@ import fi.vm.kapa.rova.rest.identification.RequestIdentificationFilter;
 
 public abstract class AbstractPrhClient implements SpringPropertyNames {
 
-    public static final String PROTOCOL_VERSION = "4.0"; 
+    public static final String PROTOCOL_VERSION = "4.0";
+
+    @Autowired
+    private HttpServletRequest request;
 
     @Autowired
     protected HttpServletRequest httpRequest;
@@ -72,6 +75,18 @@ public abstract class AbstractPrhClient implements SpringPropertyNames {
     public  Holder<String> getProtocolVersionHeader() {
         Holder<String> result = new Holder<>();
         result.value = PROTOCOL_VERSION;
+        return result;
+    }
+
+    public Holder<String> getIssueHeader() {
+        Holder<String> result = new Holder<>();
+
+        String origRequestId = request.getHeader(RequestIdentificationFilter.XROAD_REQUEST_IDENTIFIER);
+        if (origRequestId == null) {
+            origRequestId = "";
+        }
+
+        result.value = origRequestId;
         return result;
     }
 
