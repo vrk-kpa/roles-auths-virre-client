@@ -64,8 +64,8 @@ public class ActiveRolesClient extends AbstractPrhClient {
         Holder<XRoadPersonActiveRoleInfoResponse> response = new Holder<XRoadPersonActiveRoleInfoResponse>();
         response.value = factory.createXRoadPersonActiveRoleInfoResponse();
 
-        port.xRoadPersonActiveRoleInfo(request, getClientHeader(factory), getServiceHeader(factory), 
-                getUserIdHeader(), getIdHeader(), getProtocolVersionHeader(), response);
+        port.xRoadPersonActiveRoleInfo(request, getClientHeader(factory), getServiceHeader(factory),
+                getUserIdHeader(), getIdHeader(), getIssueHeader(), getProtocolVersionHeader(), response);
         LOG.debug("soap for active role info succeeded");
         
         return response.value.getResponse();
