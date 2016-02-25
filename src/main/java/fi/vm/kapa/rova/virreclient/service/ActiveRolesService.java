@@ -13,12 +13,21 @@ import org.springframework.stereotype.Service;
 import fi.vm.kapa.rova.external.model.virre.Company;
 import fi.vm.kapa.rova.external.model.virre.CompanyPerson;
 import fi.vm.kapa.rova.external.model.virre.CompanyRoleType;
+import fi.vm.kapa.rova.external.model.virre.PhaseNameType;
 import fi.vm.kapa.rova.external.model.virre.RoleNameType;
 import fi.vm.kapa.rova.logging.Logger;
 import fi.vm.kapa.rova.soap.prh.ActiveRolesClient;
 import fi.vrk.xml.rova.prh.activeroles.PersonActiveRoleInfoResponseType;
+import fi.vrk.xml.rova.prh.activeroles.PhaseType;
 import fi.vrk.xml.rova.prh.activeroles.RoleInCompanyType;
 import fi.vrk.xml.rova.prh.activeroles.RoleInCompanyType.RoleBasicInfo;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.LinkedList;
+import javax.xml.datatype.XMLGregorianCalendar;
+import org.springframework.scheduling.quartz.LocalDataSourceJobStore;
 
 /**
  * Created by Juha Korkalainen on 15.1.2016.
@@ -69,6 +78,7 @@ public class ActiveRolesService extends ServiceLogging {
             company.setBusinessId(roleInCompany.getBusinessId());
             company.setCompanyName(roleInCompany.getCompanyName());
             company.setState(roleInCompany.getState());
+            company.setPhases(parseActiveCompanyPhases(roleInCompany.getPhase()));
             
             List<CompanyRoleType> roles = new ArrayList<>();
             for (RoleBasicInfo roleInfo : roleInCompany.getRoleBasicInfo()) {
@@ -98,5 +108,48 @@ public class ActiveRolesService extends ServiceLogging {
         
         return rolesMap;
     }
+
+    private List<PhaseNameType> parseActiveCompanyPhases(List<PhaseType> phases) {
+        List<PhaseNameType> activePhases = new LinkedList<>();
+        if (phases != null) {
+            ZonedDateTime now = ZonedDateTime.now();
+            for (PhaseType phaseType : phases) {
+                if (phaseType != null) {
+                    String phaseName = phaseType.getName();
+                    PhaseNameType phase = PhaseNameType.parseType(phaseName);
+                    if (phase != PhaseNameType.NONE && isPhaseActive(phaseType, now)) {
+                        activePhases.add(phase);
+                    }
+                }
+            }
+        }
+        return activePhases;
+    }
+
+    private boolean isPhaseActive(PhaseType phaseType, ZonedDateTime now) {
+
+        boolean active = false;
+
+        XMLGregorianCalendar startCal = phaseType.getRegistrationDate();
+        XMLGregorianCalendar endCal = phaseType.getExpirationDate();
+
+        ZoneId zoneId = ZoneId.of("UTC");
+        ZonedDateTime start = ZonedDateTime.of(LocalDateTime.MIN, zoneId); 
+        ZonedDateTime end = ZonedDateTime.of(LocalDateTime.MAX, zoneId);
+
+        if (startCal != null) {
+            start = startCal.toGregorianCalendar().toZonedDateTime();
+        }
+        if (endCal != null) {
+            end = endCal.toGregorianCalendar().toZonedDateTime();
+        }
+
+        if ((now.isEqual(start) || now.isAfter(start)) && now.isBefore(end)) {
+            active = true;
+        }
+
+        return active;
+    }
+
 
 }
