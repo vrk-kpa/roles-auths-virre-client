@@ -1,6 +1,5 @@
 package fi.vm.kapa.rova.virreclient.service;
 
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -8,7 +7,6 @@ import java.util.Map;
 
 import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import fi.vm.kapa.rova.external.model.virre.Company;
 import fi.vm.kapa.rova.external.model.virre.CompanyPerson;
@@ -21,19 +19,17 @@ import fi.vrk.xml.rova.prh.activeroles.PersonActiveRoleInfoResponseType;
 import fi.vrk.xml.rova.prh.activeroles.PhaseType;
 import fi.vrk.xml.rova.prh.activeroles.RoleInCompanyType;
 import fi.vrk.xml.rova.prh.activeroles.RoleInCompanyType.RoleBasicInfo;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.LinkedList;
 import javax.xml.datatype.XMLGregorianCalendar;
-import org.springframework.scheduling.quartz.LocalDataSourceJobStore;
+import org.springframework.stereotype.Service;
 
 /**
  * Created by Juha Korkalainen on 15.1.2016.
  */
 @Service
-
 public class ActiveRolesService extends ServiceLogging {
     public static final String OP = "ActiveRolesService";
 
@@ -150,6 +146,5 @@ public class ActiveRolesService extends ServiceLogging {
 
         return active;
     }
-
 
 }
