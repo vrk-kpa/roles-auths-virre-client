@@ -71,7 +71,7 @@ public class CompanyReprClient extends AbstractPrhClient {
         try {
 
             port.xRoadCompanyRepresentInfo(request, getClientHeader(factory),
-                    getServiceHeader(factory), getUserIdHeader(), getIssueHeader(), getIdHeader(),
+                    getServiceHeader(factory), getUserIdHeader(), getIdHeader(), getIssueHeader(),
                     getProtocolVersionHeader(), response);
 
             LOG.debug("Soap request succeeded.");
