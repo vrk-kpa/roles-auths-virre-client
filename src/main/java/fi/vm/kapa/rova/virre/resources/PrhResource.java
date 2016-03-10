@@ -1,6 +1,7 @@
 package fi.vm.kapa.rova.virre.resources;
 
 import fi.vm.kapa.rova.external.model.virre.Company;
+import fi.vm.kapa.rova.external.model.virre.CompanyPerson;
 import fi.vm.kapa.rova.external.model.virre.CompanyRepresentations;
 import fi.vm.kapa.rova.external.model.virre.RepresentationRight;
 import fi.vm.kapa.rova.logging.Logger;
@@ -35,6 +36,21 @@ public class PrhResource {
 
     @Inject
     private RightReprService rrs;
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/prh/companyperson/{socialsec}")
+    public Response getCompanyPerson(@PathParam("socialsec") String socialsec) {
+        log.debug("CompanyPerson request received.");
+        try {
+            CompanyPerson person = arc.getCompanyPerson(socialsec);
+            return Response.ok().entity(person).build();
+        } catch (VIRREServiceException e) {
+            log.error("Returning error. Failed to get companies: " + e.getMessage());
+            ResponseBuilder responseBuilder = Response.serverError();
+            return responseBuilder.build();
+        }
+    }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)

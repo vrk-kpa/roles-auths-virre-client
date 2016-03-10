@@ -37,7 +37,22 @@ public class ActiveRolesService extends ServiceLogging {
 
     @Autowired
     private ActiveRolesClient client;
-    
+
+    public CompanyPerson getCompanyPerson(String hetu) throws VIRREServiceException {
+        try {
+            long startTime = System.currentTimeMillis();
+            PersonActiveRoleInfoResponseType result = client.getResponse(hetu);
+            LOG.debug(result.toString());
+            Map<String, List<?>> response = parseCompanies(result);
+            logRequest(OP + ":RoVaCompanyPerson", startTime, System.currentTimeMillis());
+            // return first
+            return ((List<CompanyPerson>) response.get(CompanyPerson.TYPE)).get(0);
+        } catch (Exception e) {
+            logError(OP, "Failed to parse companyPerson: " + e.getMessage());
+            throw new VIRREServiceException(e.getMessage(), e);
+        }
+    }
+
     @SuppressWarnings("unchecked")
     public List<Company> getCompanies(String hetu) throws VIRREServiceException {
         try {
@@ -64,7 +79,7 @@ public class ActiveRolesService extends ServiceLogging {
         person.setLastName(result.getSurname());
         person.setSocialSec(result.getSocialSecurityNumber());
         person.setStatus(result.getStatus());
-        
+
         List<CompanyPerson> persons = new ArrayList<>(); // list of one person into return map
         persons.add(person);
         
@@ -95,7 +110,9 @@ public class ActiveRolesService extends ServiceLogging {
             
             companies.add(company);
         }
-        
+
+        person.setCompanies(companies);
+
         Map<String, List<?>> rolesMap = new HashMap<>(); // return value
         rolesMap.put(CompanyPerson.TYPE, persons);
         rolesMap.put(Company.TYPE, companies);
