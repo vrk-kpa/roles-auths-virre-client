@@ -39,27 +39,12 @@ public class PrhResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/prh/companyperson/{socialsec}")
+    @Path("/prh/companies/{socialsec}")
     public Response getCompanyPerson(@PathParam("socialsec") String socialsec) {
         log.debug("CompanyPerson request received.");
         try {
             CompanyPerson person = arc.getCompanyPerson(socialsec);
             return Response.ok().entity(person).build();
-        } catch (VIRREServiceException e) {
-            log.error("Returning error. Failed to get companies: " + e.getMessage());
-            ResponseBuilder responseBuilder = Response.serverError();
-            return responseBuilder.build();
-        }
-    }
-
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("/prh/companies/{socialsec}")
-    public Response getCompanies(@PathParam("socialsec") String socialsec) {
-        log.debug("Companies request received.");
-        try {
-            List<Company> companies = arc.getCompanies(socialsec);
-            return Response.ok().entity(companies).build();
         } catch (VIRREServiceException e) {
             log.error("Returning error. Failed to get companies: " + e.getMessage());
             ResponseBuilder responseBuilder = Response.serverError();
