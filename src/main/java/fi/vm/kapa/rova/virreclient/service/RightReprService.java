@@ -4,12 +4,11 @@ package fi.vm.kapa.rova.virreclient.service;
 import fi.vm.kapa.rova.external.model.virre.RepresentationRight;
 import fi.vm.kapa.rova.logging.Logger;
 import fi.vm.kapa.rova.soap.prh.RightReprClient;
-import fi.vrk.xml.rova.prh.companyright.RightToRepresentResponseType;
-
-import java.time.format.DateTimeFormatter;
-
+import https.ws_prh_fi.novus.ids.services._2008._08._22.RightToRepresentResponseType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.time.format.DateTimeFormatter;
 
 /**
  * Service for loading Companies from PRH

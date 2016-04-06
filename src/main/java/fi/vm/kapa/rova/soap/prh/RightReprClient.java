@@ -1,34 +1,37 @@
 package fi.vm.kapa.rova.soap.prh;
 
-import javax.xml.ws.BindingProvider;
-import javax.xml.ws.Holder;
+import eu.x_road.xsd.identifiers.ObjectFactory;
+import eu.x_road.xsd.identifiers.XRoadClientIdentifierType;
+import eu.x_road.xsd.identifiers.XRoadServiceIdentifierType;
+import fi.prh.virre.xroad.producer.XRoadRightToRepresent.XRoadRightToRepresent;
+import fi.prh.virre.xroad.producer.XRoadRightToRepresent.XRoadRightToRepresentPortType;
+import fi.prh.virre.xroad.producer.XRoadRightToRepresent.XRoadRightToRepresentResponse;
+import fi.vm.kapa.rova.logging.Logger;
+import https.ws_prh_fi.novus.ids.services._2008._08._22.RightToRepresentParametersType;
+import https.ws_prh_fi.novus.ids.services._2008._08._22.RightToRepresentResponseType;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import fi.vm.kapa.rova.logging.Logger;
-import fi.vrk.xml.rova.prh.companyright.ObjectFactory;
-import fi.vrk.xml.rova.prh.companyright.RightToRepresentParametersType;
-import fi.vrk.xml.rova.prh.companyright.RightToRepresentResponseType;
-import fi.vrk.xml.rova.prh.companyright.XRoadClientIdentifierType;
-import fi.vrk.xml.rova.prh.companyright.XRoadRightToRepresent;
-import fi.vrk.xml.rova.prh.companyright.XRoadRightToRepresentPortType;
-import fi.vrk.xml.rova.prh.companyright.XRoadRightToRepresentPortTypeService;
-import fi.vrk.xml.rova.prh.companyright.XRoadRightToRepresentResponse;
-import fi.vrk.xml.rova.prh.companyright.XRoadServiceIdentifierType;
+import javax.xml.ws.Holder;
 
 @Component
 public class RightReprClient extends AbstractPrhClient {
     private static Logger LOG = Logger.getLogger(RightReprClient.class);
-    
+
     @Value(SERVICE_RIGHTS_SERVICE_CODE)
     private String serviceCode;
 
-    XRoadRightToRepresentPortTypeService service = new XRoadRightToRepresentPortTypeService(); 
-    ObjectFactory factory = new ObjectFactory();
-    
+    @Autowired
+    private XRoadRightToRepresentPortType rightToRepresentClient;
+
+    ObjectFactory identifierFactory = new ObjectFactory();
+    fi.prh.virre.xroad.producer.XRoadRightToRepresent.ObjectFactory producerFactory = new fi.prh.virre.xroad.producer.XRoadRightToRepresent.ObjectFactory();
+    https.ws_prh_fi.novus.ids.services._2008._08._22.ObjectFactory novusFactory = new https.ws_prh_fi.novus.ids.services._2008._08._22.ObjectFactory();
+
     public Holder<XRoadClientIdentifierType> getClientHeader() {
         Holder<XRoadClientIdentifierType> result = new Holder<>();
-        result.value = factory.createXRoadClientIdentifierType();
+        result.value = identifierFactory.createXRoadClientIdentifierType();
         result.value.setObjectType(clientObjectType);
         result.value.setXRoadInstance(clientSdsbInstance);
         result.value.setMemberClass(clientMemberClass);
@@ -39,7 +42,7 @@ public class RightReprClient extends AbstractPrhClient {
 
     public Holder<XRoadServiceIdentifierType> getServiceHeader() {
         Holder<XRoadServiceIdentifierType> result = new Holder<>();
-        result.value = factory.createXRoadServiceIdentifierType();
+        result.value = identifierFactory.createXRoadServiceIdentifierType();
         result.value.setObjectType(serviceObjectType);
         result.value.setXRoadInstance(serviceSdsbInstance);
         result.value.setMemberClass(serviceMemberClass);
@@ -50,27 +53,17 @@ public class RightReprClient extends AbstractPrhClient {
     }
 
     public RightToRepresentResponseType getRights(String socialSec, String businessId, String rightLevel) {
-        XRoadRightToRepresentPortType port = service.getXRoadRightToRepresentPortTypePort();
-        BindingProvider bp = (BindingProvider) port;
-        
-        bp.getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, xrdEndPoint);
-        
-        XRoadRightToRepresent request = factory.createXRoadRightToRepresent();
-        RightToRepresentParametersType parametersType = factory.createRightToRepresentParametersType();
+        XRoadRightToRepresent request = producerFactory.createXRoadRightToRepresent();
+        RightToRepresentParametersType parametersType = novusFactory.createRightToRepresentParametersType();
         parametersType.setBusinessId(businessId);
         parametersType.setPersonId(socialSec);
         parametersType.setLevel(rightLevel);
         request.setRequest(parametersType);
-        
-        Holder<XRoadRightToRepresentResponse> response = new Holder<>();
-        response.value = factory.createXRoadRightToRepresentResponse();
 
-        port.xRoadRightToRepresent(request, getClientHeader(), getServiceHeader(), 
-                getUserIdHeader(), getIdHeader(), getIssueHeader(), getProtocolVersionHeader(), response);
+        XRoadRightToRepresentResponse response = rightToRepresentClient.xRoadRightToRepresent(request, getClientHeader(),
+                getServiceHeader(), getUserIdHeader(), getIdHeader(), getIssueHeader(), getProtocolVersionHeader());
+
         LOG.debug("soap for right to represent succeeded");
-
-        return response.value.getResponse();
-        
+        return response.getResponse();
     }
 }
- 

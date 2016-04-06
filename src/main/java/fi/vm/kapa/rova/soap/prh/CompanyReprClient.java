@@ -1,22 +1,20 @@
 package fi.vm.kapa.rova.soap.prh;
 
-import javax.xml.bind.JAXBException;
-import javax.xml.ws.BindingProvider;
-import javax.xml.ws.Holder;
-
+import eu.x_road.xsd.identifiers.ObjectFactory;
+import eu.x_road.xsd.identifiers.XRoadClientIdentifierType;
+import eu.x_road.xsd.identifiers.XRoadServiceIdentifierType;
+import fi.prh.virre.xroad.producer.XRoadCompanyRepresentInfo.XRoadCompanyRepresentInfo;
+import fi.prh.virre.xroad.producer.XRoadCompanyRepresentInfo.XRoadCompanyRepresentInfoPortType;
+import fi.prh.virre.xroad.producer.XRoadCompanyRepresentInfo.XRoadCompanyRepresentInfoResponse;
+import fi.vm.kapa.rova.logging.Logger;
+import https.ws_prh_fi.novus.ids.services._2008._08._22.CompanyBasicInfoType;
+import https.ws_prh_fi.novus.ids.services._2008._08._22.CompanyRepresentInfoResponseType;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import fi.vm.kapa.rova.logging.Logger;
-import fi.vrk.xml.rova.prh.companyreprinfo.CompanyBasicInfoType;
-import fi.vrk.xml.rova.prh.companyreprinfo.CompanyRepresentInfoResponseType;
-import fi.vrk.xml.rova.prh.companyreprinfo.ObjectFactory;
-import fi.vrk.xml.rova.prh.companyreprinfo.XRoadClientIdentifierType;
-import fi.vrk.xml.rova.prh.companyreprinfo.XRoadCompanyRepresentInfo;
-import fi.vrk.xml.rova.prh.companyreprinfo.XRoadCompanyRepresentInfoPortType;
-import fi.vrk.xml.rova.prh.companyreprinfo.XRoadCompanyRepresentInfoPortTypeService;
-import fi.vrk.xml.rova.prh.companyreprinfo.XRoadCompanyRepresentInfoResponse;
-import fi.vrk.xml.rova.prh.companyreprinfo.XRoadServiceIdentifierType;
+import javax.xml.bind.JAXBException;
+import javax.xml.ws.Holder;
 
 @Component
 public class CompanyReprClient extends AbstractPrhClient {
@@ -24,9 +22,14 @@ public class CompanyReprClient extends AbstractPrhClient {
 
     @Value(SERVICE_REPRESENTATIONS_SERVICE_CODE)
     private String serviceCode;
-    
-    XRoadCompanyRepresentInfoPortTypeService service = new XRoadCompanyRepresentInfoPortTypeService();
-    ObjectFactory factory = new ObjectFactory();
+
+    @Autowired
+    private XRoadCompanyRepresentInfoPortType companyRepresentClient;
+
+    ObjectFactory identifierFactory = new ObjectFactory();
+    fi.prh.virre.xroad.producer.XRoadCompanyRepresentInfo.ObjectFactory producerFactory = new fi.prh.virre.xroad.producer.XRoadCompanyRepresentInfo.ObjectFactory();
+    https.ws_prh_fi.novus.ids.services._2008._08._22.ObjectFactory novusFactory = new https.ws_prh_fi.novus.ids.services._2008._08._22.ObjectFactory();
+
 
     public Holder<XRoadClientIdentifierType> getClientHeader(ObjectFactory factory) {
         Holder<XRoadClientIdentifierType> result = new Holder<>();
@@ -53,37 +56,24 @@ public class CompanyReprClient extends AbstractPrhClient {
 
     public CompanyRepresentInfoResponseType getResponse(String businessId) throws JAXBException {
 
-        XRoadCompanyRepresentInfoPortType port = service.getXRoadCompanyRepresentInfoPortTypePort();
-        BindingProvider bp = (BindingProvider) port;
-        bp.getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, xrdEndPoint);
-
-        XRoadCompanyRepresentInfo request = factory.createXRoadCompanyRepresentInfo();
-        CompanyBasicInfoType value = factory.createCompanyBasicInfoType();
+        XRoadCompanyRepresentInfo request = producerFactory.createXRoadCompanyRepresentInfo();
+        CompanyBasicInfoType value = novusFactory.createCompanyBasicInfoType();
 
         value.setBusinessId(businessId);
         request.setRequest(value);
 
-        Holder<XRoadCompanyRepresentInfoResponse> response = new Holder<>();
-        response.value = factory.createXRoadCompanyRepresentInfoResponse();
-
         CompanyRepresentInfoResponseType result = null;
 
         try {
-
-            port.xRoadCompanyRepresentInfo(request, getClientHeader(factory),
-                    getServiceHeader(factory), getUserIdHeader(), getIdHeader(), getIssueHeader(),
-                    getProtocolVersionHeader(), response);
-
+            XRoadCompanyRepresentInfoResponse response = companyRepresentClient.xRoadCompanyRepresentInfo(request, getClientHeader(identifierFactory), getServiceHeader(identifierFactory), getUserIdHeader(), getIdHeader(), getIssueHeader(), getProtocolVersionHeader());
             LOG.debug("Soap request succeeded.");
-            
-            result = response.value.getResponse();
+            result = response.getResponse();
 
         } catch (Exception e) {
             LOG.error("Failed to fetch company representation data: " + e.getMessage());
         }
 
         return result;
-        
     }
 }
  

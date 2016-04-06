@@ -1,30 +1,20 @@
 
 package fi.vm.kapa.rova.virreclient.service;
 
-import fi.vm.kapa.rova.external.model.virre.CompanyPerson;
-import fi.vm.kapa.rova.external.model.virre.CompanyRepresentations;
-import fi.vm.kapa.rova.external.model.virre.CompanyRoleType;
-import fi.vm.kapa.rova.external.model.virre.PhaseNameType;
-import fi.vm.kapa.rova.external.model.virre.RoleNameType;
+import fi.vm.kapa.rova.external.model.virre.*;
 import fi.vm.kapa.rova.logging.Logger;
 import fi.vm.kapa.rova.soap.prh.CompanyReprClient;
-import fi.vrk.xml.rova.prh.companyreprinfo.BodyType;
-import fi.vrk.xml.rova.prh.companyreprinfo.CompanyRepresentInfoResponseType;
-import fi.vrk.xml.rova.prh.companyreprinfo.NaturalPersonType;
-import fi.vrk.xml.rova.prh.companyreprinfo.NaturalPersonTypeRepresentation;
-import fi.vrk.xml.rova.prh.companyreprinfo.PhaseType;
-import fi.vrk.xml.rova.prh.companyreprinfo.RepresentationType;
-import fi.vrk.xml.rova.prh.companyreprinfo.RepresentationType.Group;
+import https.ws_prh_fi.novus.ids.services._2008._08._22.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import javax.xml.datatype.XMLGregorianCalendar;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.List;
-import javax.xml.datatype.XMLGregorianCalendar;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 /**
  * Service for loading Companies from PRH
@@ -87,7 +77,7 @@ public class CompanyReprService extends ServiceLogging {
             List<RepresentationType> reprTypes = (List) info.getRepresentation();
             if (reprTypes != null) {
                 for (RepresentationType type : reprTypes) {
-                    Group group = type.getGroup();
+                    RepresentationType.Group group = type.getGroup();
                     if (group != null) {
                         List<NaturalPersonTypeRepresentation> reprs = group.getNaturalPerson();
                         addRepresentationData(persons, reprs);

@@ -1,30 +1,20 @@
 package fi.vm.kapa.rova.virreclient.service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.hibernate.service.spi.ServiceException;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import fi.vm.kapa.rova.external.model.virre.Company;
-import fi.vm.kapa.rova.external.model.virre.CompanyPerson;
-import fi.vm.kapa.rova.external.model.virre.CompanyRoleType;
-import fi.vm.kapa.rova.external.model.virre.PhaseNameType;
-import fi.vm.kapa.rova.external.model.virre.RoleNameType;
+import fi.vm.kapa.rova.external.model.virre.*;
 import fi.vm.kapa.rova.logging.Logger;
 import fi.vm.kapa.rova.soap.prh.ActiveRolesClient;
-import fi.vrk.xml.rova.prh.activeroles.PersonActiveRoleInfoResponseType;
-import fi.vrk.xml.rova.prh.activeroles.PhaseType;
-import fi.vrk.xml.rova.prh.activeroles.RoleInCompanyType;
-import fi.vrk.xml.rova.prh.activeroles.RoleInCompanyType.RoleBasicInfo;
+import https.ws_prh_fi.novus.ids.services._2008._08._22.PersonActiveRoleInfoResponseType;
+import https.ws_prh_fi.novus.ids.services._2008._08._22.PhaseType;
+import https.ws_prh_fi.novus.ids.services._2008._08._22.RoleInCompanyType;
+import org.hibernate.service.spi.ServiceException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import javax.xml.datatype.XMLGregorianCalendar;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.LinkedList;
-import javax.xml.datatype.XMLGregorianCalendar;
-import org.springframework.stereotype.Service;
+import java.util.*;
 
 /**
  * Created by Juha Korkalainen on 15.1.2016.
@@ -92,7 +82,7 @@ public class ActiveRolesService extends ServiceLogging {
             company.setPhases(parseActiveCompanyPhases(roleInCompany.getPhase()));
             
             List<CompanyRoleType> roles = new ArrayList<>();
-            for (RoleBasicInfo roleInfo : roleInCompany.getRoleBasicInfo()) {
+            for (RoleInCompanyType.RoleBasicInfo roleInfo : roleInCompany.getRoleBasicInfo()) {
                 CompanyRoleType role = new CompanyRoleType();
                 
                 RoleNameType type = null;

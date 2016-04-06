@@ -154,6 +154,18 @@
             <groupId>commons-logging</groupId>
             <artifactId>commons-logging</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-frontend-jaxws</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-transports-http</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-features-clustering</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
@@ -162,6 +174,9 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>fi.vm.kapa.rova.Application</mainClass>
+                </configuration>
             </plugin>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -174,70 +189,50 @@
                 <groupId>com.spotify</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
             </plugin>
+
             <plugin>
-                <groupId>org.jvnet.jax-ws-commons</groupId>
-                <artifactId>jaxws-maven-plugin</artifactId>
-                <version>2.1</version>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-codegen-plugin</artifactId>
+                <version>${cxf.version}</version>
                 <executions>
                     <execution>
-                        <id>wsimport-prh-XRoadRightToRepresent.wsdl</id>
-                        <goals>
-                            <goal>wsimport</goal>
-                        </goals>
+                        <id>generate-sources</id>
+                        <phase>generate-sources</phase>
                         <configuration>
-                            <packageName>fi.vrk.xml.rova.prh.companyright</packageName>
-                            <wsdlLocation>../../../../../../wsdl/XRoadRightToRepresent.wsdl</wsdlLocation>
-                            <extension>true</extension>
-                            <wsdlUrls>
-                                <wsdlUrl>${basedir}/src/main/resources/wsdl/XRoadRightToRepresent.wsdl</wsdlUrl>
-                            </wsdlUrls>
-                            <verbose>true</verbose>
+                            <sourceRoot>${project.build.directory}/generated-sources/wsimport</sourceRoot>
+                            <wsdlOptions>
+                                <wsdlOption>
+                                    <wsdl>${basedir}/src/main/resources/wsdl/XRoadPersonActiveRoleInfo.wsdl</wsdl>
+                                    <extraargs>
+                                        <extraarg>-client</extraarg>
+                                        <extraarg>-verbose</extraarg>
+                                        <extraarg>-p</extraarg>
+                                        <extraarg>http://xroad.virre.prh.fi/producer=fi.prh.virre.xroad.producer.XRoadPersonActiveRoleInfo</extraarg>
+                                    </extraargs>
+                                </wsdlOption>
+                                <wsdlOption>
+                                    <wsdl>${basedir}/src/main/resources/wsdl/XRoadRightToRepresent.wsdl</wsdl>
+                                    <extraargs>
+                                        <extraarg>-client</extraarg>
+                                        <extraarg>-verbose</extraarg>
+                                        <extraarg>-p</extraarg>
+                                        <extraarg>http://xroad.virre.prh.fi/producer=fi.prh.virre.xroad.producer.XRoadRightToRepresent</extraarg>
+                                    </extraargs>
+                                </wsdlOption>
+                                <wsdlOption>
+                                    <wsdl>${basedir}/src/main/resources/wsdl/XRoadCompanyRepresentInfo.wsdl</wsdl>
+                                    <extraargs>
+                                        <extraarg>-client</extraarg>
+                                        <extraarg>-verbose</extraarg>
+                                        <extraarg>-p</extraarg>
+                                        <extraarg>http://xroad.virre.prh.fi/producer=fi.prh.virre.xroad.producer.XRoadCompanyRepresentInfo</extraarg>
+                                    </extraargs>
+                                </wsdlOption>
+                            </wsdlOptions>
                         </configuration>
-                    </execution>
-                    <execution>
-                        <id>wsimport-XRoadPersonActiveRoleInfo</id>
                         <goals>
-                            <goal>wsimport</goal>
+                            <goal>wsdl2java</goal>
                         </goals>
-                        <configuration>
-                            <packageName>fi.vrk.xml.rova.prh.activeroles</packageName>
-                            <wsdlLocation>../../../../../../wsdl/XRoadPersonActiveRoleInfo.wsdl</wsdlLocation>
-                            <extension>true</extension>
-                            <wsdlUrls>
-                                <wsdlUrl>${basedir}/src/main/resources/wsdl/XRoadPersonActiveRoleInfo.wsdl</wsdlUrl>
-                            </wsdlUrls>
-                            <verbose>true</verbose>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>wsimport-XRoadCompanyRepresentInfo</id>
-                        <goals>
-                            <goal>wsimport</goal>
-                        </goals>
-                        <configuration>
-                            <packageName>fi.vrk.xml.rova.prh.companyreprinfo</packageName>
-                            <wsdlLocation>../../../../../../wsdl/XRoadCompanyRepresentInfo.wsdl</wsdlLocation>
-                            <extension>true</extension>
-                            <wsdlUrls>
-                                <wsdlUrl>${basedir}/src/main/resources/wsdl/XRoadCompanyRepresentInfo.wsdl</wsdlUrl>
-                            </wsdlUrls>
-                            <verbose>true</verbose>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>wsimport-XRoadRightToRepresent</id>
-                        <goals>
-                            <goal>wsimport</goal>
-                        </goals>
-                        <configuration>
-                            <packageName>fi.vrk.xml.rova.prh.companyright</packageName>
-                            <wsdlLocation>../../../../../../wsdl/XRoadRightToRepresent.wsdl</wsdlLocation>
-                            <extension>true</extension>
-                            <wsdlUrls>
-                                <wsdlUrl>${basedir}/src/main/resources/wsdl/XRoadRightToRepresent.wsdl</wsdlUrl>
-                            </wsdlUrls>
-                            <verbose>true</verbose>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
