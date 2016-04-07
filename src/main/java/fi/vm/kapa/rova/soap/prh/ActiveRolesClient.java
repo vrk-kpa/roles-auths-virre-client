@@ -3,9 +3,9 @@ package fi.vm.kapa.rova.soap.prh;
 import eu.x_road.xsd.identifiers.ObjectFactory;
 import eu.x_road.xsd.identifiers.XRoadClientIdentifierType;
 import eu.x_road.xsd.identifiers.XRoadServiceIdentifierType;
-import fi.prh.virre.xroad.producer.XRoadPersonActiveRoleInfo.XRoadPersonActiveRoleInfo;
-import fi.prh.virre.xroad.producer.XRoadPersonActiveRoleInfo.XRoadPersonActiveRoleInfoPortType;
-import fi.prh.virre.xroad.producer.XRoadPersonActiveRoleInfo.XRoadPersonActiveRoleInfoResponse;
+import fi.prh.virre.xroad.producer.activeroleinfo.XRoadPersonActiveRoleInfo;
+import fi.prh.virre.xroad.producer.activeroleinfo.XRoadPersonActiveRoleInfoPortType;
+import fi.prh.virre.xroad.producer.activeroleinfo.XRoadPersonActiveRoleInfoResponse;
 import fi.vm.kapa.rova.logging.Logger;
 import https.ws_prh_fi.novus.ids.services._2008._08._22.PersonActiveRoleInfoResponseType;
 import https.ws_prh_fi.novus.ids.services._2008._08._22.PersonActiveRoleInfoType;
@@ -26,8 +26,8 @@ public class ActiveRolesClient extends AbstractPrhClient {
     private XRoadPersonActiveRoleInfoPortType personActiveRolesClient;
 
     ObjectFactory identifierFactory = new ObjectFactory();
-    fi.prh.virre.xroad.producer.XRoadPersonActiveRoleInfo.ObjectFactory producerFactory
-            = new fi.prh.virre.xroad.producer.XRoadPersonActiveRoleInfo.ObjectFactory();
+    fi.prh.virre.xroad.producer.activeroleinfo.ObjectFactory producerFactory
+            = new fi.prh.virre.xroad.producer.activeroleinfo.ObjectFactory();
     https.ws_prh_fi.novus.ids.services._2008._08._22.ObjectFactory novusFactory
             = new https.ws_prh_fi.novus.ids.services._2008._08._22.ObjectFactory();
 

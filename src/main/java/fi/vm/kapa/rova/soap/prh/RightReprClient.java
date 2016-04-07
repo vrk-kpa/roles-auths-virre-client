@@ -3,9 +3,9 @@ package fi.vm.kapa.rova.soap.prh;
 import eu.x_road.xsd.identifiers.ObjectFactory;
 import eu.x_road.xsd.identifiers.XRoadClientIdentifierType;
 import eu.x_road.xsd.identifiers.XRoadServiceIdentifierType;
-import fi.prh.virre.xroad.producer.XRoadRightToRepresent.XRoadRightToRepresent;
-import fi.prh.virre.xroad.producer.XRoadRightToRepresent.XRoadRightToRepresentPortType;
-import fi.prh.virre.xroad.producer.XRoadRightToRepresent.XRoadRightToRepresentResponse;
+import fi.prh.virre.xroad.producer.righttorepresent.XRoadRightToRepresent;
+import fi.prh.virre.xroad.producer.righttorepresent.XRoadRightToRepresentPortType;
+import fi.prh.virre.xroad.producer.righttorepresent.XRoadRightToRepresentResponse;
 import fi.vm.kapa.rova.logging.Logger;
 import https.ws_prh_fi.novus.ids.services._2008._08._22.RightToRepresentParametersType;
 import https.ws_prh_fi.novus.ids.services._2008._08._22.RightToRepresentResponseType;
@@ -26,7 +26,7 @@ public class RightReprClient extends AbstractPrhClient {
     private XRoadRightToRepresentPortType rightToRepresentClient;
 
     ObjectFactory identifierFactory = new ObjectFactory();
-    fi.prh.virre.xroad.producer.XRoadRightToRepresent.ObjectFactory producerFactory = new fi.prh.virre.xroad.producer.XRoadRightToRepresent.ObjectFactory();
+    fi.prh.virre.xroad.producer.righttorepresent.ObjectFactory producerFactory = new fi.prh.virre.xroad.producer.righttorepresent.ObjectFactory();
     https.ws_prh_fi.novus.ids.services._2008._08._22.ObjectFactory novusFactory = new https.ws_prh_fi.novus.ids.services._2008._08._22.ObjectFactory();
 
     public Holder<XRoadClientIdentifierType> getClientHeader() {

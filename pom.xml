@@ -207,7 +207,7 @@
                                         <extraarg>-client</extraarg>
                                         <extraarg>-verbose</extraarg>
                                         <extraarg>-p</extraarg>
-                                        <extraarg>http://xroad.virre.prh.fi/producer=fi.prh.virre.xroad.producer.XRoadPersonActiveRoleInfo</extraarg>
+                                        <extraarg>http://xroad.virre.prh.fi/producer=fi.prh.virre.xroad.producer.activeroleinfo</extraarg>
                                     </extraargs>
                                 </wsdlOption>
                                 <wsdlOption>
@@ -216,7 +216,7 @@
                                         <extraarg>-client</extraarg>
                                         <extraarg>-verbose</extraarg>
                                         <extraarg>-p</extraarg>
-                                        <extraarg>http://xroad.virre.prh.fi/producer=fi.prh.virre.xroad.producer.XRoadRightToRepresent</extraarg>
+                                        <extraarg>http://xroad.virre.prh.fi/producer=fi.prh.virre.xroad.producer.righttorepresent</extraarg>
                                     </extraargs>
                                 </wsdlOption>
                                 <wsdlOption>
@@ -225,7 +225,7 @@
                                         <extraarg>-client</extraarg>
                                         <extraarg>-verbose</extraarg>
                                         <extraarg>-p</extraarg>
-                                        <extraarg>http://xroad.virre.prh.fi/producer=fi.prh.virre.xroad.producer.XRoadCompanyRepresentInfo</extraarg>
+                                        <extraarg>http://xroad.virre.prh.fi/producer=fi.prh.virre.xroad.producer.companyrepresent</extraarg>
                                     </extraargs>
                                 </wsdlOption>
                             </wsdlOptions>

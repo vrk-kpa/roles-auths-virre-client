@@ -1,9 +1,8 @@
 package fi.vm.kapa.rova.config;
 
-import fi.prh.virre.xroad.producer.XRoadCompanyRepresentInfo.XRoadCompanyRepresentInfo;
-import fi.prh.virre.xroad.producer.XRoadCompanyRepresentInfo.XRoadCompanyRepresentInfoPortType;
-import fi.prh.virre.xroad.producer.XRoadPersonActiveRoleInfo.XRoadPersonActiveRoleInfoPortType;
-import fi.prh.virre.xroad.producer.XRoadRightToRepresent.XRoadRightToRepresentPortType;
+import fi.prh.virre.xroad.producer.activeroleinfo.XRoadPersonActiveRoleInfoPortType;
+import fi.prh.virre.xroad.producer.companyrepresent.XRoadCompanyRepresentInfoPortType;
+import fi.prh.virre.xroad.producer.righttorepresent.XRoadRightToRepresentPortType;
 import org.apache.cxf.clustering.LoadDistributorFeature;
 import org.apache.cxf.clustering.RandomStrategy;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
