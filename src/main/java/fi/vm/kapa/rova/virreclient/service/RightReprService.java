@@ -42,7 +42,7 @@ public class RightReprService extends ServiceLogging {
         try {
             long startTime = System.currentTimeMillis();
             RightToRepresentResponseType result = rrc.getRights(socialsec, businessId, level);
-            logRequest(OP + ":RoVaCompanyRepresentations", startTime, System.currentTimeMillis());
+            logRequest(OP + ":XRoadRightToRepresent", startTime, System.currentTimeMillis());
             right = parseRight(result);
         } catch (Exception e) {
             e.printStackTrace();
