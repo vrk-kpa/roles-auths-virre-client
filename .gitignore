@@ -5,3 +5,4 @@
 .project
 
 dc-application.properties
+/application.properties
