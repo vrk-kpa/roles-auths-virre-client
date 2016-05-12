@@ -80,7 +80,7 @@ public abstract class AbstractPrhClient implements SpringPropertyNames {
 
     public Holder<String> getUserIdHeader() {
         Holder<String> result = new Holder<>();
-        String origUserId = httpRequest.getHeader(RequestIdentificationFilter.XROAD_END_USER);
+        String origUserId = httpRequest.getHeader(RequestIdentificationFilter.ORIG_END_USER);
         if (origUserId == null) {
             origUserId = "rova-end-user-unknown";
         }
@@ -103,7 +103,7 @@ public abstract class AbstractPrhClient implements SpringPropertyNames {
     public Holder<String> getIssueHeader() {
         Holder<String> result = new Holder<>();
 
-        String origRequestId = request.getHeader(RequestIdentificationFilter.XROAD_REQUEST_IDENTIFIER);
+        String origRequestId = request.getHeader(RequestIdentificationFilter.ORIG_REQUEST_IDENTIFIER);
         if (origRequestId == null) {
             origRequestId = "";
         }
