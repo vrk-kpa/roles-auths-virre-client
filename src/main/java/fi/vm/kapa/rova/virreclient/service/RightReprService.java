@@ -67,7 +67,6 @@ public class RightReprService extends ServiceLogging {
             logRequest(OP + ":XRoadRightToRepresent", startTime, System.currentTimeMillis());
             right = parseRight(result);
         } catch (Exception e) {
-            e.printStackTrace();
             logError(OP, "Failed to parse rights: " + e.getMessage());
             throw new VIRREServiceException(e.getMessage(), e);
         }

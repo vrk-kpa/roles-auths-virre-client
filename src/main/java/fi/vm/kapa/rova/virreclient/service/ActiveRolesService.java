@@ -62,7 +62,7 @@ public class ActiveRolesService extends ServiceLogging {
     private ActiveRolesClient client;
 
     @SuppressWarnings("unchecked")
-	public CompanyPerson getCompanyPerson(String hetu) throws VIRREServiceException {
+    public CompanyPerson getCompanyPerson(String hetu) throws VIRREServiceException {
         try {
             long startTime = System.currentTimeMillis();
             PersonActiveRoleInfoResponseType result = client.getResponse(hetu);

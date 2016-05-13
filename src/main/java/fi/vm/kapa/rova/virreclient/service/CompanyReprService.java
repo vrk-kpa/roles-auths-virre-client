@@ -1,4 +1,5 @@
 /**
+
  * The MIT License
  * Copyright (c) 2016 Population Register Centre
  *
@@ -70,7 +71,6 @@ public class CompanyReprService extends ServiceLogging {
             logRequest(OP + "XRoadCompanyRepresentInfo", startTime, System.currentTimeMillis());
             representations = parseRepresentations(info);
         } catch (Exception e) {
-            e.printStackTrace();
             logError(OP, "Failed to parse persons: " + e.getMessage());
             throw new VIRREServiceException(e.getMessage(), e);
         }
