@@ -26,6 +26,7 @@ package fi.vm.kapa.rova.virreclient.service;
 import fi.vm.kapa.rova.external.model.virre.*;
 import fi.vm.kapa.rova.logging.Logger;
 import fi.vm.kapa.rova.soap.prh.CompanyReprClient;
+import fi.vm.kapa.rova.soap.prh.VirreException;
 import https.ws_prh_fi.novus.ids.services._2008._08._22.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -70,7 +71,7 @@ public class CompanyReprService extends ServiceLogging {
             CompanyRepresentInfoResponse info = crc.getResponse(businessId);
             logRequest(OP + "XRoadCompanyRepresentInfo", startTime, System.currentTimeMillis());
             representations = parseRepresentations(info.getCompanyRepresentInfoResponseTypeDetails());
-        } catch (JAXBException e) {
+        } catch (VirreException e) {
             logError(OP, "Failed to parse persons: " + e.getMessage());
             throw new VIRREServiceException(e.getMessage(), e);
         }

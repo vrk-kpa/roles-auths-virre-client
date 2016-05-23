@@ -22,6 +22,10 @@
  */
 package fi.vm.kapa.rova.soap.prh;
 
+import eu.x_road.xsd.identifiers.ObjectFactory;
+import eu.x_road.xsd.identifiers.XRoadClientIdentifierType;
+import eu.x_road.xsd.identifiers.XRoadObjectType;
+import eu.x_road.xsd.identifiers.XRoadServiceIdentifierType;
 import fi.prh.virre.xroad.producer.righttorepresent.XRoadRightToRepresentPortType;
 import fi.prh.virre.xroad.producer.righttorepresent.XRoadRightToRepresentRequestType;
 import fi.prh.virre.xroad.producer.righttorepresent.XRoadRightToRepresentResponseType;
@@ -57,8 +61,8 @@ public class RightReprClient extends AbstractClient {
         Holder<XRoadRightToRepresentResponseType> responseHolder = new Holder<XRoadRightToRepresentResponseType>();
 
         rightToRepresentClient.xRoadRightToRepresent(requestHolder, responseHolder);
-        RightToRepresentResponse response = responseHolder.value.getRightToRepresentResponse();
 
+        RightToRepresentResponse response = responseHolder.value.getRightToRepresentResponse();
         LOG.debug("soap for right to represent succeeded");
         return response;
     }

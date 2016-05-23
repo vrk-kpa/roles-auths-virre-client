@@ -25,6 +25,7 @@ package fi.vm.kapa.rova.virreclient.service;
 import fi.vm.kapa.rova.external.model.virre.*;
 import fi.vm.kapa.rova.logging.Logger;
 import fi.vm.kapa.rova.soap.prh.ActiveRolesClient;
+import fi.vm.kapa.rova.soap.prh.VirreException;
 import https.ws_prh_fi.novus.ids.services._2008._08._22.PersonActiveRoleInfoResponse;
 import https.ws_prh_fi.novus.ids.services._2008._08._22.PhaseType;
 import https.ws_prh_fi.novus.ids.services._2008._08._22.RoleInCompanyType;
@@ -60,12 +61,11 @@ public class ActiveRolesService extends ServiceLogging {
             logRequest(OP + ":XRoadPersonActiveRoleInfo", startTime, System.currentTimeMillis());
             // return first
             return ((List<CompanyPerson>) response.get(CompanyPerson.TYPE)).get(0);
-        } catch (RuntimeException e) {
+        } catch (VirreException e) {
             logError(OP, "Failed to parse companyPerson: " + e.getMessage());
             throw new VIRREServiceException(e.getMessage(), e);
         }
     }
-
 
     private Map<String, List<?>> parseCompanies(PersonActiveRoleInfoResponse result) {
         if (result == null) {
