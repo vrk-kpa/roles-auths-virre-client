@@ -91,10 +91,10 @@ public class PrhResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/prh/rights")
-    public Response getRights(@QueryParam("socialsec") String socialSec,
-                        @QueryParam("businessid") String businessId,
-                        @QueryParam("rightlevel") String rightLevel) {
+    @Path("/prh/rights/{rightlevel}/{socialsec}/{businessid}")
+    public Response getRights(@PathParam("socialsec") String socialSec,
+                        @PathParam("businessid") String businessId,
+                        @PathParam("rightlevel") String rightLevel) {
         log.debug("Rights request received.");
         try {
             RepresentationRight right = rrs.getRights(socialSec, businessId, rightLevel);
