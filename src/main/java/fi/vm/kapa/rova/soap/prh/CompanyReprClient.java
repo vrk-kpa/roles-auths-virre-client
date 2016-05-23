@@ -35,6 +35,7 @@ import javax.xml.ws.Holder;
 
 @Component
 public class CompanyReprClient extends AbstractClient {
+
     private static Logger LOG = Logger.getLogger(CompanyReprClient.class);
 
     @Autowired

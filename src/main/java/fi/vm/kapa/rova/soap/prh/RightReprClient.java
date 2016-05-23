@@ -22,10 +22,6 @@
  */
 package fi.vm.kapa.rova.soap.prh;
 
-import eu.x_road.xsd.identifiers.ObjectFactory;
-import eu.x_road.xsd.identifiers.XRoadClientIdentifierType;
-import eu.x_road.xsd.identifiers.XRoadObjectType;
-import eu.x_road.xsd.identifiers.XRoadServiceIdentifierType;
 import fi.prh.virre.xroad.producer.righttorepresent.XRoadRightToRepresentPortType;
 import fi.prh.virre.xroad.producer.righttorepresent.XRoadRightToRepresentRequestType;
 import fi.prh.virre.xroad.producer.righttorepresent.XRoadRightToRepresentResponseType;
