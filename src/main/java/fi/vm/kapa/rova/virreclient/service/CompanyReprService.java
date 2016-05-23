@@ -67,9 +67,9 @@ public class CompanyReprService extends ServiceLogging {
 
         try {
             long startTime = System.currentTimeMillis();
-            CompanyRepresentInfoResponseType info = crc.getResponse(businessId);
+            CompanyRepresentInfoResponse info = crc.getResponse(businessId);
             logRequest(OP + "XRoadCompanyRepresentInfo", startTime, System.currentTimeMillis());
-            representations = parseRepresentations(info);
+            representations = parseRepresentations(info.getCompanyRepresentInfoResponseTypeDetails());
         } catch (JAXBException e) {
             logError(OP, "Failed to parse persons: " + e.getMessage());
             throw new VIRREServiceException(e.getMessage(), e);

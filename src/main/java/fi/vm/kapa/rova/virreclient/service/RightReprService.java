@@ -26,7 +26,7 @@ package fi.vm.kapa.rova.virreclient.service;
 import fi.vm.kapa.rova.external.model.virre.RepresentationRight;
 import fi.vm.kapa.rova.logging.Logger;
 import fi.vm.kapa.rova.soap.prh.RightReprClient;
-import https.ws_prh_fi.novus.ids.services._2008._08._22.RightToRepresentResponseType;
+import https.ws_prh_fi.novus.ids.services._2008._08._22.RightToRepresentResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -63,7 +63,7 @@ public class RightReprService extends ServiceLogging {
 
         try {
             long startTime = System.currentTimeMillis();
-            RightToRepresentResponseType result = rrc.getRights(socialsec, businessId, level);
+            RightToRepresentResponse result = rrc.getRights(socialsec, businessId, level);
             logRequest(OP + ":XRoadRightToRepresent", startTime, System.currentTimeMillis());
             right = parseRight(result);
         } catch (Exception e) {
@@ -74,9 +74,9 @@ public class RightReprService extends ServiceLogging {
         return right;
     }
 
-    private RepresentationRight parseRight(RightToRepresentResponseType result) {
+    private RepresentationRight parseRight(RightToRepresentResponse result) {
         RepresentationRight right = new RepresentationRight();
-        String code = result.getCode(); //msg.getCode();
+        String code = result.getRepresentation().getCode(); //msg.getCode();
         int num = Integer.parseInt(code);
         right.setCode(num);
         return right;

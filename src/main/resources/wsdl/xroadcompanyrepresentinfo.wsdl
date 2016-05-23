@@ -1,0 +1,106 @@
+<wsdl:definitions 
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:tns="http://xroad.virre.prh.fi/producer" 
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:xrd="http://x-road.eu/xsd/xroad.xsd" 
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:virre="https://ws.prh.fi/novus/ids/services/2008/08/22"
+	xmlns:id="http://x-road.eu/xsd/identifiers" 
+    name="XRoadCompanyRepresentInfoService"
+	targetNamespace="http://xroad.virre.prh.fi/producer">
+	<wsdl:types>
+        <xs:schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://xroad.virre.prh.fi/producer" elementFormDefault="qualified">
+            <xs:import id="virre" namespace="https://ws.prh.fi/novus/ids/services/2008/08/22" schemaLocation="IDSServices11.xsd" />
+            <xs:import id="xrd" namespace="http://x-road.eu/xsd/xroad.xsd" schemaLocation="xroad.xsd" />
+            <xs:element name="XRoadCompanyRepresentInfo">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="request" type="tns:XRoadCompanyRepresentInfoRequestType" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="XRoadCompanyRepresentInfoResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="request" type="tns:XRoadCompanyRepresentInfoRequestType" />
+                        <xs:element name="response" type="tns:XRoadCompanyRepresentInfoResponseType" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:complexType name="XRoadCompanyRepresentInfoRequestType">
+                <xs:sequence>
+                    <xs:element ref="virre:companyRepresentInfo" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="XRoadCompanyRepresentInfoResponseType">
+                <xs:choice>
+                    <xs:element ref="virre:companyRepresentInfoResponse" />
+                    <xs:sequence>
+                        <xs:element name="faultCode" type="xs:string" />
+                        <xs:element name="faultString" type="xs:string" />
+                    </xs:sequence>
+                </xs:choice>
+            </xs:complexType>
+        </xs:schema>
+	</wsdl:types>
+
+	<wsdl:message name="requestheader">
+		<wsdl:part name="client" element="xrd:client" />
+		<wsdl:part name="service" element="xrd:service" />
+		<wsdl:part name="userId" element="xrd:userId" />
+		<wsdl:part name="id" element="xrd:id" />
+		<wsdl:part name="protocolVersion" element="xrd:protocolVersion" />
+	</wsdl:message>
+
+	<wsdl:message name="XRoadCompanyRepresentInfo">
+		<wsdl:part name="body" element="tns:XRoadCompanyRepresentInfo" />
+	</wsdl:message>
+	<wsdl:message name="XRoadCompanyRepresentInfoResponse">
+		<wsdl:part name="body" element="tns:XRoadCompanyRepresentInfoResponse" />
+	</wsdl:message>
+
+	<wsdl:portType name="XRoadCompanyRepresentInfoPortType">
+		<wsdl:operation name="XRoadCompanyRepresentInfo">
+			<wsdl:input message="tns:XRoadCompanyRepresentInfo" />
+			<wsdl:output message="tns:XRoadCompanyRepresentInfoResponse" />
+		</wsdl:operation>
+	</wsdl:portType>
+
+	<wsdl:binding name="XRoadCompanyRepresentInfoBinding" type="tns:XRoadCompanyRepresentInfoPortType">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+
+		<wsdl:operation name="XRoadCompanyRepresentInfo">
+			<soap:operation soapAction="" style="document" />
+			<id:version>v1</id:version>
+			<wsdl:input>
+				<soap:body parts="body" use="literal" />
+				<soap:header message="tns:requestheader" part="client" use="literal" />
+				<soap:header message="tns:requestheader" part="service" use="literal" />
+				<soap:header message="tns:requestheader" part="userId"
+					use="literal" />
+				<soap:header message="tns:requestheader" part="id" use="literal" />
+				<soap:header message="tns:requestheader" part="protocolVersion"
+					use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body parts="body" use="literal" />
+				<soap:header message="tns:requestheader" part="client"
+					use="literal" />
+				<soap:header message="tns:requestheader" part="service"
+					use="literal" />
+				<soap:header message="tns:requestheader" part="userId"
+					use="literal" />
+				<soap:header message="tns:requestheader" part="id" use="literal" />
+				<soap:header message="tns:requestheader" part="protocolVersion"
+					use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<!-- comment -->
+	<wsdl:service name="XRoadCompanyRepresentInfoService">
+		<wsdl:port name="XRoadCompanyRepresentInfoPort" binding="tns:XRoadCompanyRepresentInfoBinding">
+			<soap:address location="http://WILLBEOVERWRITTENBYMULE"/>
+		</wsdl:port>
+	</wsdl:service>
+	
+</wsdl:definitions>

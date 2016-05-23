@@ -24,13 +24,14 @@ package fi.vm.kapa.rova.soap.prh;
 
 import eu.x_road.xsd.identifiers.ObjectFactory;
 import eu.x_road.xsd.identifiers.XRoadClientIdentifierType;
+import eu.x_road.xsd.identifiers.XRoadObjectType;
 import eu.x_road.xsd.identifiers.XRoadServiceIdentifierType;
-import fi.prh.virre.xroad.producer.righttorepresent.XRoadRightToRepresent;
 import fi.prh.virre.xroad.producer.righttorepresent.XRoadRightToRepresentPortType;
-import fi.prh.virre.xroad.producer.righttorepresent.XRoadRightToRepresentResponse;
+import fi.prh.virre.xroad.producer.righttorepresent.XRoadRightToRepresentRequestType;
+import fi.prh.virre.xroad.producer.righttorepresent.XRoadRightToRepresentResponseType;
 import fi.vm.kapa.rova.logging.Logger;
-import https.ws_prh_fi.novus.ids.services._2008._08._22.RightToRepresentParametersType;
-import https.ws_prh_fi.novus.ids.services._2008._08._22.RightToRepresentResponseType;
+import https.ws_prh_fi.novus.ids.services._2008._08._22.RightToRepresent;
+import https.ws_prh_fi.novus.ids.services._2008._08._22.RightToRepresentResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -54,7 +55,7 @@ public class RightReprClient extends AbstractPrhClient {
     public Holder<XRoadClientIdentifierType> getClientHeader() {
         Holder<XRoadClientIdentifierType> result = new Holder<>();
         result.value = identifierFactory.createXRoadClientIdentifierType();
-        result.value.setObjectType(clientObjectType);
+        result.value.setObjectType(XRoadObjectType.SUBSYSTEM);
         result.value.setXRoadInstance(clientSdsbInstance);
         result.value.setMemberClass(clientMemberClass);
         result.value.setMemberCode(clientMemberCode);
@@ -65,7 +66,7 @@ public class RightReprClient extends AbstractPrhClient {
     public Holder<XRoadServiceIdentifierType> getServiceHeader() {
         Holder<XRoadServiceIdentifierType> result = new Holder<>();
         result.value = identifierFactory.createXRoadServiceIdentifierType();
-        result.value.setObjectType(serviceObjectType);
+        result.value.setObjectType(XRoadObjectType.SERVICE);
         result.value.setXRoadInstance(serviceSdsbInstance);
         result.value.setMemberClass(serviceMemberClass);
         result.value.setMemberCode(serviceMemberCode);
@@ -74,18 +75,24 @@ public class RightReprClient extends AbstractPrhClient {
         return result;
     }
 
-    public RightToRepresentResponseType getRights(String socialSec, String businessId, String rightLevel) {
-        XRoadRightToRepresent request = producerFactory.createXRoadRightToRepresent();
-        RightToRepresentParametersType parametersType = novusFactory.createRightToRepresentParametersType();
-        parametersType.setBusinessId(businessId);
-        parametersType.setPersonId(socialSec);
-        parametersType.setLevel(rightLevel);
-        request.setRequest(parametersType);
+    public RightToRepresentResponse getRights(String socialSec, String businessId, String rightLevel) {
 
-        XRoadRightToRepresentResponse response = rightToRepresentClient.xRoadRightToRepresent(request, getClientHeader(),
-                getServiceHeader(), getUserIdHeader(), getIdHeader(), getIssueHeader(), getProtocolVersionHeader());
+        Holder<XRoadRightToRepresentRequestType> requestHolder = new Holder<XRoadRightToRepresentRequestType>();
+        XRoadRightToRepresentRequestType req = producerFactory.createXRoadRightToRepresentRequestType();
+        RightToRepresent rr = novusFactory.createRightToRepresent();
+        rr.setPersonId(socialSec);
+        rr.setBusinessId(businessId);
+        rr.setLevel(rightLevel);
 
+
+        req.getRightToRepresent().setBusinessId(businessId);
+        req.getRightToRepresent().setPersonId(socialSec);
+        Holder<XRoadRightToRepresentResponseType> responseHolder = new Holder<XRoadRightToRepresentResponseType>();
+
+        rightToRepresentClient.xRoadRightToRepresent(requestHolder, responseHolder);
+        RightToRepresentResponse response = responseHolder.value.getRightToRepresentResponse();
         LOG.debug("soap for right to represent succeeded");
-        return response.getResponse();
+
+        return response;
     }
 }

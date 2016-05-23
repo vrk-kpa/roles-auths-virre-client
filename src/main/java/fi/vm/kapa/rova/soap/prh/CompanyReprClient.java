@@ -24,13 +24,14 @@ package fi.vm.kapa.rova.soap.prh;
 
 import eu.x_road.xsd.identifiers.ObjectFactory;
 import eu.x_road.xsd.identifiers.XRoadClientIdentifierType;
+import eu.x_road.xsd.identifiers.XRoadObjectType;
 import eu.x_road.xsd.identifiers.XRoadServiceIdentifierType;
-import fi.prh.virre.xroad.producer.companyrepresent.XRoadCompanyRepresentInfo;
 import fi.prh.virre.xroad.producer.companyrepresent.XRoadCompanyRepresentInfoPortType;
-import fi.prh.virre.xroad.producer.companyrepresent.XRoadCompanyRepresentInfoResponse;
+import fi.prh.virre.xroad.producer.companyrepresent.XRoadCompanyRepresentInfoRequestType;
+import fi.prh.virre.xroad.producer.companyrepresent.XRoadCompanyRepresentInfoResponseType;
 import fi.vm.kapa.rova.logging.Logger;
 import https.ws_prh_fi.novus.ids.services._2008._08._22.CompanyBasicInfoType;
-import https.ws_prh_fi.novus.ids.services._2008._08._22.CompanyRepresentInfoResponseType;
+import https.ws_prh_fi.novus.ids.services._2008._08._22.CompanyRepresentInfoResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -56,7 +57,7 @@ public class CompanyReprClient extends AbstractPrhClient {
     public Holder<XRoadClientIdentifierType> getClientHeader(ObjectFactory factory) {
         Holder<XRoadClientIdentifierType> result = new Holder<>();
         result.value = factory.createXRoadClientIdentifierType();
-        result.value.setObjectType(clientObjectType);
+        result.value.setObjectType(XRoadObjectType.SUBSYSTEM);
         result.value.setXRoadInstance(clientSdsbInstance);
         result.value.setMemberClass(clientMemberClass);
         result.value.setMemberCode(clientMemberCode);
@@ -67,7 +68,7 @@ public class CompanyReprClient extends AbstractPrhClient {
     public Holder<XRoadServiceIdentifierType> getServiceHeader(ObjectFactory factory) {
         Holder<XRoadServiceIdentifierType> result = new Holder<>();
         result.value = factory.createXRoadServiceIdentifierType();
-        result.value.setObjectType(serviceObjectType);
+        result.value.setObjectType(XRoadObjectType.SERVICE);
         result.value.setXRoadInstance(serviceSdsbInstance);
         result.value.setMemberClass(serviceMemberClass);
         result.value.setMemberCode(serviceMemberCode);
@@ -76,21 +77,25 @@ public class CompanyReprClient extends AbstractPrhClient {
         return result;
     }
 
-    public CompanyRepresentInfoResponseType getResponse(String businessId) throws JAXBException {
+    public CompanyRepresentInfoResponse getResponse(String businessId) throws JAXBException {
 
-        XRoadCompanyRepresentInfo request = producerFactory.createXRoadCompanyRepresentInfo();
+        //XRoadCompanyRepresentInfo request = producerFactory.createXRoadCompanyRepresentInfo();
         CompanyBasicInfoType value = novusFactory.createCompanyBasicInfoType();
 
-        value.setBusinessId(businessId);
-        request.setRequest(value);
+        javax.xml.ws.Holder<XRoadCompanyRepresentInfoRequestType> request = new Holder();
+        javax.xml.ws.Holder<XRoadCompanyRepresentInfoResponseType> response = new Holder();
 
-        CompanyRepresentInfoResponseType result = null;
+
+
+        value.setBusinessId(businessId);
+        //request.setRequest(value);
+
+        CompanyRepresentInfoResponse result = null;
 
         try {
-            XRoadCompanyRepresentInfoResponse response = companyRepresentClient.xRoadCompanyRepresentInfo(request, getClientHeader(identifierFactory), getServiceHeader(identifierFactory), getUserIdHeader(), getIdHeader(), getIssueHeader(), getProtocolVersionHeader());
+            companyRepresentClient.xRoadCompanyRepresentInfo(request, response);
             LOG.debug("Soap request succeeded.");
-            result = response.getResponse();
-
+            result = response.value.getCompanyRepresentInfoResponse();
         } catch (RuntimeException e) {
             LOG.error("Failed to fetch company representation data: " + e.getMessage());
         }

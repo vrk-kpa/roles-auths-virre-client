@@ -24,17 +24,19 @@ package fi.vm.kapa.rova.soap.prh;
 
 import eu.x_road.xsd.identifiers.ObjectFactory;
 import eu.x_road.xsd.identifiers.XRoadClientIdentifierType;
+import eu.x_road.xsd.identifiers.XRoadObjectType;
 import eu.x_road.xsd.identifiers.XRoadServiceIdentifierType;
-import fi.prh.virre.xroad.producer.activeroleinfo.XRoadPersonActiveRoleInfo;
-import fi.prh.virre.xroad.producer.activeroleinfo.XRoadPersonActiveRoleInfoPortType;
-import fi.prh.virre.xroad.producer.activeroleinfo.XRoadPersonActiveRoleInfoResponse;
+import fi.prh.virre.xroad.producer.activeroleinfo.*;
 import fi.vm.kapa.rova.logging.Logger;
+import https.ws_prh_fi.novus.ids.services._2008._08._22.PersonActiveRoleInfoResponse;
 import https.ws_prh_fi.novus.ids.services._2008._08._22.PersonActiveRoleInfoResponseType;
 import https.ws_prh_fi.novus.ids.services._2008._08._22.PersonActiveRoleInfoType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import javax.xml.ws.Holder;
 
 @Component
@@ -56,7 +58,7 @@ public class ActiveRolesClient extends AbstractPrhClient {
     public Holder<XRoadClientIdentifierType> getClientHeader(ObjectFactory factory) {
         Holder<XRoadClientIdentifierType> result = new Holder<>();
         result.value = factory.createXRoadClientIdentifierType();
-        result.value.setObjectType(clientObjectType);
+        result.value.setObjectType(XRoadObjectType.SUBSYSTEM);
         result.value.setXRoadInstance(clientSdsbInstance);
         result.value.setMemberClass(clientMemberClass);
         result.value.setMemberCode(clientMemberCode);
@@ -67,7 +69,7 @@ public class ActiveRolesClient extends AbstractPrhClient {
     public Holder<XRoadServiceIdentifierType> getServiceHeader(ObjectFactory factory) {
         Holder<XRoadServiceIdentifierType> result = new Holder<>();
         result.value = factory.createXRoadServiceIdentifierType();
-        result.value.setObjectType(serviceObjectType);
+        result.value.setObjectType(XRoadObjectType.SERVICE);
         result.value.setXRoadInstance(serviceSdsbInstance);
         result.value.setMemberClass(serviceMemberClass);
         result.value.setMemberCode(serviceMemberCode);
@@ -76,18 +78,21 @@ public class ActiveRolesClient extends AbstractPrhClient {
         return result;
     }
 
-    public PersonActiveRoleInfoResponseType getResponse(String personId) {
-        XRoadPersonActiveRoleInfo request = producerFactory.createXRoadPersonActiveRoleInfo();
+    public PersonActiveRoleInfoResponse getResponse(String personId) {
         PersonActiveRoleInfoType value = novusFactory.createPersonActiveRoleInfoType();
         value.setSocialSecurityNumber(personId);
-        request.setRequest(value);
 
-        XRoadPersonActiveRoleInfoResponse response = personActiveRolesClient.xRoadPersonActiveRoleInfo(request,
-                getClientHeader(identifierFactory), getServiceHeader(identifierFactory),
-                getUserIdHeader(), getIdHeader(), getIssueHeader(), getProtocolVersionHeader());
+        Holder<XRoadPersonActiveRoleInfoRequestType> request = new Holder();
+        request.value = producerFactory.createXRoadPersonActiveRoleInfoRequestType();
+        request.value.setPersonActiveRoleInfo(value);
+        Holder<XRoadPersonActiveRoleInfoResponseType> response = new Holder();
+        response.value = producerFactory.createXRoadPersonActiveRoleInfoResponseType();
+        response.value.setPersonActiveRoleInfoResponse(novusFactory.createPersonActiveRoleInfoResponse());
+
+        personActiveRolesClient.xRoadPersonActiveRoleInfo(request, response);
+
         LOG.debug("soap for active role info succeeded");
-        
-        return response.getResponse();
+        return response.value.getPersonActiveRoleInfoResponse();
    }
 }
  
