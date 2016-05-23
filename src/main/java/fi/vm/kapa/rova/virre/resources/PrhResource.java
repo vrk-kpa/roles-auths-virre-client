@@ -100,6 +100,7 @@ public class PrhResource {
             RepresentationRight right = rrs.getRights(socialSec, businessId, rightLevel);
             return Response.ok().entity(right).build();
         } catch (VIRREServiceException e) {
+            e.printStackTrace();
             log.error("Returning error. Failed to get rights: " + e.getMessage());
             ResponseBuilder responseBuilder = Response.serverError();
             return responseBuilder.build();

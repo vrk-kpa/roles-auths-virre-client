@@ -98,6 +98,7 @@ public abstract class XroadHeaderHandler implements SOAPHandler<SOAPMessageConte
     public boolean handleMessage(SOAPMessageContext messageContext) {
         Boolean outboundProperty = (Boolean) messageContext.get(MessageContext.MESSAGE_OUTBOUND_PROPERTY);
 
+        System.out.println("XROAD HEADER HANDLER");
         if (outboundProperty.booleanValue()) {
             SOAPMessage soapMsg = messageContext.getMessage();
             SOAPEnvelope soapEnv;
@@ -122,7 +123,6 @@ public abstract class XroadHeaderHandler implements SOAPHandler<SOAPMessageConte
                 SOAPHeaderElement uidHeaderElement = header.addHeaderElement(userIdElement.getName());
                 uidHeaderElement.addTextNode(userIdElement.getValue());
 
-
                 String origRequestId = request.getHeader(RequestIdentificationFilter.ORIG_REQUEST_IDENTIFIER);
                 if (origRequestId == null || origRequestId.trim().isEmpty()) {
                     throw new IllegalArgumentException("Request identifier header missing");
@@ -133,6 +133,10 @@ public abstract class XroadHeaderHandler implements SOAPHandler<SOAPMessageConte
                 JAXBElement<String> issueElement = factory.createIssue(origRequestId);
                 SOAPHeaderElement issueHeaderElement = header.addHeaderElement(issueElement.getName());
                 issueHeaderElement.addTextNode(issueElement.getValue());
+
+                JAXBElement<String> protocolVersion = factory.createProtocolVersion("4.0");
+                SOAPHeaderElement protocolHeader = header.addHeaderElement(protocolVersion.getName());
+                protocolHeader.setTextContent("4.0");
 
                 XRoadClientIdentifierType client = new XRoadClientIdentifierType();
                 JAXBElement<XRoadClientIdentifierType> clientElement = factory.createClient(client);
@@ -154,7 +158,9 @@ public abstract class XroadHeaderHandler implements SOAPHandler<SOAPMessageConte
                 service.setMemberCode(this.serviceMemberCode);
                 service.setSubsystemCode(this.serviceSubsystemCode);
                 service.setServiceCode(getServiceServiceCode());
-                //service.setServiceVersion(getServiceVersion());
+                if (getServiceVersion() != null && 0 < getServiceVersion().length()) {
+                    service.setServiceVersion(getServiceVersion());
+                }
                 marshaller = JAXBContext.newInstance(XRoadServiceIdentifierType.class).createMarshaller();
                 marshaller.marshal(serviceElement, header);
 
