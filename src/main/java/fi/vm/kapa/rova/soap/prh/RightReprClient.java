@@ -44,8 +44,6 @@ public class RightReprClient {
     https.ws_prh_fi.novus.ids.services._2008._08._22.ObjectFactory novusFactory = new https.ws_prh_fi.novus.ids.services._2008._08._22.ObjectFactory();
 
     public RightToRepresentResponse getRights(String socialSec, String businessId, String rightLevel) {
-        System.out.println(socialSec + " " + businessId + " " + rightLevel);
-
         Holder<XRoadRightToRepresentRequestType> requestHolder = new Holder<XRoadRightToRepresentRequestType>();
         XRoadRightToRepresentRequestType req = producerFactory.createXRoadRightToRepresentRequestType();
         RightToRepresent rr = novusFactory.createRightToRepresent();

@@ -98,7 +98,6 @@ public abstract class XroadHeaderHandler implements SOAPHandler<SOAPMessageConte
     public boolean handleMessage(SOAPMessageContext messageContext) {
         Boolean outboundProperty = (Boolean) messageContext.get(MessageContext.MESSAGE_OUTBOUND_PROPERTY);
 
-        System.out.println("XROAD HEADER HANDLER");
         if (outboundProperty.booleanValue()) {
             SOAPMessage soapMsg = messageContext.getMessage();
             SOAPEnvelope soapEnv;
