@@ -30,6 +30,7 @@ import https.ws_prh_fi.novus.ids.services._2008._08._22.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.xml.bind.JAXBException;
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -69,7 +70,7 @@ public class CompanyReprService extends ServiceLogging {
             CompanyRepresentInfoResponseType info = crc.getResponse(businessId);
             logRequest(OP + "XRoadCompanyRepresentInfo", startTime, System.currentTimeMillis());
             representations = parseRepresentations(info);
-        } catch (Exception e) {
+        } catch (JAXBException e) {
             logError(OP, "Failed to parse persons: " + e.getMessage());
             throw new VIRREServiceException(e.getMessage(), e);
         }

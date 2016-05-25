@@ -22,32 +22,21 @@
  */
 package fi.vm.kapa.rova.virreclient.service;
 
+import fi.vm.kapa.rova.external.model.virre.*;
+import fi.vm.kapa.rova.logging.Logger;
+import fi.vm.kapa.rova.soap.prh.ActiveRolesClient;
 import https.ws_prh_fi.novus.ids.services._2008._08._22.PersonActiveRoleInfoResponseType;
 import https.ws_prh_fi.novus.ids.services._2008._08._22.PhaseType;
 import https.ws_prh_fi.novus.ids.services._2008._08._22.RoleInCompanyType;
-
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
-import javax.xml.datatype.XMLGregorianCalendar;
-
 import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import fi.vm.kapa.rova.external.model.virre.Company;
-import fi.vm.kapa.rova.external.model.virre.CompanyPerson;
-import fi.vm.kapa.rova.external.model.virre.CompanyRoleType;
-import fi.vm.kapa.rova.external.model.virre.PhaseNameType;
-import fi.vm.kapa.rova.external.model.virre.RoleNameType;
-import fi.vm.kapa.rova.logging.Logger;
-import fi.vm.kapa.rova.soap.prh.ActiveRolesClient;
+import javax.xml.datatype.XMLGregorianCalendar;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.*;
 
 /**
  * Created by Juha Korkalainen on 15.1.2016.
@@ -71,26 +60,10 @@ public class ActiveRolesService extends ServiceLogging {
             logRequest(OP + ":XRoadPersonActiveRoleInfo", startTime, System.currentTimeMillis());
             // return first
             return ((List<CompanyPerson>) response.get(CompanyPerson.TYPE)).get(0);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             logError(OP, "Failed to parse companyPerson: " + e.getMessage());
             throw new VIRREServiceException(e.getMessage(), e);
         }
-    }
-
-    @SuppressWarnings("unchecked")
-    public List<Company> getCompanies(String hetu) throws VIRREServiceException {
-        try {
-            long startTime = System.currentTimeMillis();
-            PersonActiveRoleInfoResponseType result = client.getResponse(hetu);
-            LOG.debug(result.toString());
-            Map<String, List<?>> response = parseCompanies(result);
-            logRequest(OP + ":RoVaListCompanies", startTime, System.currentTimeMillis());
-            return (List<Company>) response.get(Company.TYPE);
-        } catch (Exception e) {
-            logError(OP, "Failed to parse companies: " + e.getMessage());
-            throw new VIRREServiceException(e.getMessage(), e);
-        }
-
     }
 
     private Map<String, List<?>> parseCompanies(PersonActiveRoleInfoResponseType result) {

@@ -91,7 +91,7 @@ public class CompanyReprClient extends AbstractPrhClient {
             LOG.debug("Soap request succeeded.");
             result = response.getResponse();
 
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             LOG.error("Failed to fetch company representation data: " + e.getMessage());
         }
 
