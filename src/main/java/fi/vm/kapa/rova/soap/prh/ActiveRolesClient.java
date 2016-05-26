@@ -45,7 +45,7 @@ public class ActiveRolesClient {
     https.ws_prh_fi.novus.ids.services._2008._08._22.ObjectFactory novusFactory
             = new https.ws_prh_fi.novus.ids.services._2008._08._22.ObjectFactory();
 
-    public PersonActiveRoleInfoResponse getResponse(String personId) {
+    public PersonActiveRoleInfoResponse getResponse(String personId) throws VirreException {
         PersonActiveRoleInfoType value = novusFactory.createPersonActiveRoleInfoType();
         value.setSocialSecurityNumber(personId);
 
@@ -59,7 +59,9 @@ public class ActiveRolesClient {
         personActiveRolesClient.xRoadPersonActiveRoleInfo(request, response);
 
         PersonActiveRoleInfoResponse result = response.value.getPersonActiveRoleInfoResponse();
-
+        if (result.getError() != null) {
+            throw new VirreException(result.getError().getMessage());
+        }
         LOG.debug("soap for active role info succeeded");
         return result;
    }

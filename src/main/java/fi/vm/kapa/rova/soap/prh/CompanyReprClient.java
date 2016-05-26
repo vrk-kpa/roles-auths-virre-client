@@ -28,6 +28,7 @@ import fi.prh.virre.xroad.producer.companyrepresent.XRoadCompanyRepresentInfoRes
 import fi.vm.kapa.rova.logging.Logger;
 import https.ws_prh_fi.novus.ids.services._2008._08._22.CompanyBasicInfoType;
 import https.ws_prh_fi.novus.ids.services._2008._08._22.CompanyRepresentInfoResponse;
+import https.ws_prh_fi.novus.ids.services._2008._08._22.PersonActiveRoleInfoResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -44,7 +45,7 @@ public class CompanyReprClient {
     fi.prh.virre.xroad.producer.companyrepresent.ObjectFactory producerFactory = new fi.prh.virre.xroad.producer.companyrepresent.ObjectFactory();
     https.ws_prh_fi.novus.ids.services._2008._08._22.ObjectFactory novusFactory = new https.ws_prh_fi.novus.ids.services._2008._08._22.ObjectFactory();
 
-    public CompanyRepresentInfoResponse getResponse(String businessId) throws JAXBException {
+    public CompanyRepresentInfoResponse getResponse(String businessId) throws VirreException {
         javax.xml.ws.Holder<XRoadCompanyRepresentInfoRequestType> request = new Holder();
         javax.xml.ws.Holder<XRoadCompanyRepresentInfoResponseType> response = new Holder();
 
@@ -56,6 +57,9 @@ public class CompanyReprClient {
 
         companyRepresentClient.xRoadCompanyRepresentInfo(request, response);
         CompanyRepresentInfoResponse result = response.value.getCompanyRepresentInfoResponse();
+        if (result.getError() != null) {
+            throw new VirreException(result.getError().getMessage());
+        }
 
         LOG.debug("Soap request succeeded.");
         return result;
