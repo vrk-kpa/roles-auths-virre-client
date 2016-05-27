@@ -34,7 +34,7 @@ import org.springframework.stereotype.Component;
 import javax.xml.ws.Holder;
 
 @Component
-public class ActiveRolesClient {
+public class ActiveRolesClient extends AbstractClient {
     private static final Logger LOG = Logger.getLogger(ActiveRolesClient.class);
 
     @Autowired
@@ -48,7 +48,7 @@ public class ActiveRolesClient {
     public PersonActiveRoleInfoResponse getResponse(String personId) throws VirreException {
         PersonActiveRoleInfoType value = novusFactory.createPersonActiveRoleInfoType();
         value.setSocialSecurityNumber(personId);
-
+        value.setUserId(getEnduser());
         Holder<XRoadPersonActiveRoleInfoRequestType> request = new Holder();
         request.value = producerFactory.createXRoadPersonActiveRoleInfoRequestType();
         request.value.setPersonActiveRoleInfo(value);

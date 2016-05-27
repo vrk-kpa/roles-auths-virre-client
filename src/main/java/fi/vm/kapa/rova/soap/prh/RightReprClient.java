@@ -34,7 +34,7 @@ import org.springframework.stereotype.Component;
 import javax.xml.ws.Holder;
 
 @Component
-public class RightReprClient {
+public class RightReprClient extends AbstractClient {
     private static Logger LOG = Logger.getLogger(RightReprClient.class);
 
     @Autowired
@@ -50,6 +50,7 @@ public class RightReprClient {
         rr.setPersonId(socialSec);
         rr.setBusinessId(businessId);
         rr.setLevel(rightLevel);
+        rr.setUserId(getEnduser());
         req.setRightToRepresent(rr);
         requestHolder.value = req;
 

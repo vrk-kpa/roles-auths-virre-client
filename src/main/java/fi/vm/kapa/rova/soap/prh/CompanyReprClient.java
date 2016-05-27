@@ -36,7 +36,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.ws.Holder;
 
 @Component
-public class CompanyReprClient {
+public class CompanyReprClient extends AbstractClient {
     private static Logger LOG = Logger.getLogger(CompanyReprClient.class);
 
     @Autowired
@@ -53,6 +53,7 @@ public class CompanyReprClient {
 
         CompanyBasicInfoType req = novusFactory.createCompanyBasicInfoType();
         req.setBusinessId(businessId);
+        req.setUserId(getEnduser());
         request.value.setCompanyRepresentInfo(req);
 
         companyRepresentClient.xRoadCompanyRepresentInfo(request, response);
