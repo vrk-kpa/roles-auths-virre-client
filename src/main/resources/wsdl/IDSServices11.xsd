@@ -1,0 +1,4015 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- XSD description of the IDSServices 1.1 -->
+<!-- Date 22.10.2015 TTY-2101 Added getFoundationRegisterEntryInfoPdf  -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="https://ws.prh.fi/novus/ids/services/2008/08/22" xmlns:prh="https://ws.prh.fi/novus/ids/services/2008/08/22" targetNamespace="https://ws.prh.fi/novus/ids/services/2008/08/22" elementFormDefault="unqualified" attributeFormDefault="unqualified" version="1.1">
+	<xsd:element name="rightToRepresent">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="businessId" type="xsd:string" minOccurs="1">
+					<xs:annotation>
+						<xs:documentation>YTunnus</xs:documentation>
+					</xs:annotation>
+				</xsd:element>
+				<xsd:element name="personId" type="xsd:string" minOccurs="1">
+					<xs:annotation>
+						<xs:documentation>HenkiloTunnus</xs:documentation>
+					</xs:annotation>
+				</xsd:element>
+				<xsd:element name="level" type="xsd:string" minOccurs="1">
+					<xs:annotation>
+						<xs:documentation>Oikeustaso</xs:documentation>
+					</xs:annotation>
+				</xsd:element>
+				<xs:element name="userId" minOccurs="1">
+					<xs:annotation>
+						<xs:documentation>Käyttäjätunnus</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="128"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="rightToRepresentResponse">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="timestamp" type="xsd:string">
+					<xs:annotation>
+						<xs:documentation>Paivitetty</xs:documentation>
+					</xs:annotation>
+				</xsd:element>
+				<xsd:element name="representation" type="prh:RightToRepresentType" minOccurs="0"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:complexType name="RightToRepresentType">
+		<xs:annotation>
+			<xs:documentation>Edustusoikeus</xs:documentation>
+		</xs:annotation>
+		<xsd:sequence>
+			<xsd:element name="code" type="xsd:string">
+				<xs:annotation>
+					<xs:documentation>VastausKoodi</xs:documentation>
+				</xs:annotation>
+			</xsd:element>
+			<xsd:element name="description" type="xsd:string">
+				<xs:annotation>
+					<xs:documentation>Selite</xs:documentation>
+				</xs:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xs:element name="companyBasicInfo" type="tns:companyBasicInfoType"/>
+	<xs:element name="companyBasicInfoResponse">
+		<xs:annotation>
+			<xs:documentation>Yrityksen perustiedot</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:choice>
+				<xs:element name="companyBasicInfoResponseDetails" type="tns:companyBasicInfoResponseType"/>
+				<xs:element name="Error" type="tns:errorDetailsType"/>
+			</xs:choice>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="companyExtendedInfo" type="tns:companyBasicInfoType"/>
+	<xs:element name="companyExtendedInfoResponse">
+		<xs:annotation>
+			<xs:documentation>Yrityksen laajennetut perustiedot</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:choice>
+				<xs:element name="companyExtendedInfoResponseDetails" type="tns:companyExtendedInfoResponseType"/>
+				<xs:element name="Error" type="tns:errorDetailsType"/>
+			</xs:choice>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="tradeRegisterEntryInfo" type="tns:companyBasicInfoType"/>
+	<xs:element name="tradeRegisterEntryInfoResponse">
+		<xs:annotation>
+			<xs:documentation>Kaikki voimassa olevat rekisterimerkinnät</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:choice>
+				<xs:element name="tradeRegisterEntryInfoResponseDetails" type="tns:registerEntryInfoResponseType">
+					<xs:annotation>
+						<xs:documentation>Rekisterimerkintä</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Error" type="tns:errorDetailsType"/>
+			</xs:choice>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="tradeRegisterTranslation" type="tns:tradeRegisterTranslationType"/>
+	<xs:element name="tradeRegisterTranslationResponse">
+		<xs:annotation>
+			<xs:documentation>Käännös kaikista voimassa olevat rekisterimerkinnät</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:choice>
+				<xs:element name="tradeRegisterTranslationResponseDetails" type="tns:tradeRegisterTranslationResponseType"/>
+				<xs:element name="Error" type="tns:errorDetailsType"/>
+			</xs:choice>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="electronicEncumbrance" type="tns:electronicEncumbranceType"/>
+	<xs:element name="electronicEncumbranceResponse">
+		<xs:annotation>
+			<xs:documentation>Sähköinen rasitustodistus</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:choice>
+				<xs:element name="electronicEncumbranceResponseDetails" type="tns:electronicEncumbranceResponseType"/>
+				<xs:element name="Error" type="tns:errorDetailsType"/>
+			</xs:choice>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="statuteInfo" type="tns:companyBasicInfoType"/>
+	<xs:element name="statuteInfoV2" type="tns:companyBasicInfoType"/>
+	<xs:element name="statuteInfoResponse">
+		<xs:annotation>
+			<xs:documentation>Yhteisösäännöt</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:choice>
+				<xs:element name="statuteInfoResponseTypeDetails" type="tns:statuteInfoResponseType"/>
+				<xs:element name="Error" type="tns:errorDetailsType"/>
+			</xs:choice>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="companyNoticeInfo" type="tns:companyNoticeInfoType"/>
+	<xs:element name="companyNoticeInfoResponse">
+		<xs:annotation>
+			<xs:documentation>Vireillä olevat ilmoitukset</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:choice>
+				<xs:element name="companyNoticeInfoResponseTypeDetails" type="tns:companyNoticeInfoResponseType">
+					<xs:annotation>
+						<xs:documentation>Ilmoitus</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Error" type="tns:errorDetailsType"/>
+			</xs:choice>
+		</xs:complexType>
+	</xs:element>
+	<!-- get companies -->
+	<xs:element name="getCompaniesRequest" type="tns:getCompaniesRequestType"/>
+	<xs:element name="getCompaniesResponse">
+		<xs:complexType>
+			<xs:choice>
+				<xs:element name="getCompaniesResponseType" type="tns:getCompaniesResponseType"/>
+				<xs:element name="Error" type="tns:errorDetailsType"/>
+			</xs:choice>
+		</xs:complexType>
+	</xs:element>
+	<!-- handled notifications -->
+	<xs:element name="handledNotifications" type="tns:handledNotificationsType"/>
+	<xs:element name="handledNotificationsResponse">
+		<xs:complexType>
+			<xs:choice>
+				<xs:element name="handledNotificationsResponseType" type="tns:handledNotificationsResponseType"/>
+				<xs:element name="Error" type="tns:errorDetailsType"/>
+			</xs:choice>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="companyRepresentInfo" type="tns:companyBasicInfoType"/>
+	<xs:element name="companyRepresentInfoResponse">
+		<xs:annotation>
+			<xs:documentation>Edustamistiedot</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:choice>
+				<xs:element name="companyRepresentInfoResponseTypeDetails" type="tns:companyRepresentInfoResponseType"/>
+				<xs:element name="Error" type="tns:errorDetailsType"/>
+			</xs:choice>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="personActiveRoleInfo" type="tns:personActiveRoleInfoType"/>
+	<xs:element name="personActiveRoleInfoResponse">
+		<xs:annotation>
+			<xs:documentation>Voimassa olevat roolit</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:choice>
+				<xs:element name="personActiveRoleInfoResponseTypeDetails" type="tns:personActiveRoleInfoResponseType"/>
+				<xs:element name="Error" type="tns:errorDetailsType"/>
+			</xs:choice>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="personRoleInfo" type="tns:personActiveRoleInfoType"/>
+	<xs:element name="personRoleInfoResponse">
+		<xs:annotation>
+			<xs:documentation>Kaikki roolit</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:choice>
+				<xs:element name="personRoleInfoResponseTypeDetails" type="tns:personRoleInfoResponseType"/>
+				<xs:element name="Error" type="tns:errorDetailsType"/>
+			</xs:choice>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="foundationRegisterEntryInfo" type="tns:foundationRegisterEntryInfoType"/>
+	<xs:element name="foundationRegisterEntryInfoResponse">
+		<xs:annotation>
+			<xs:documentation>Säätiöt</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:choice>
+				<xs:element name="foundationRegisterEntryInfoResponseDetails" type="tns:foundationRegisterEntryInfoResponseType"/>
+				<xs:element name="Error" type="tns:errorDetailsType"/>
+			</xs:choice>
+		</xs:complexType>
+	</xs:element>
+	<!-- TTY-2101 Foundation register entries in PDF format -->
+	<xs:element name="foundationRegisterEntryInfoPdf" type="tns:foundationRegisterEntryInfoPdfType"/>
+	<xs:element name="foundationRegisterEntryInfoPdfResponse">
+		<xs:annotation>
+			<xs:documentation>Säätiöt</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:choice>
+				<xs:element name="foundationRegisterEntryInfoPdfResponseDetails" type="tns:foundationRegisterEntryInfoPdfResponseType"/>
+				<xs:element name="Error" type="tns:errorDetailsType"/>
+			</xs:choice>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="foundationRegisterRulesInfo" type="tns:foundationRegisterRulesInfoType"/>
+	<xs:element name="foundationRegisterRulesInfoResponse">
+		<xs:annotation>
+			<xs:documentation>Säätiöt</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:choice>
+				<xs:element name="foundationRegisterRulesInfoResponseDetails" type="tns:foundationRegisterRulesInfoResponseType"/>
+				<xs:element name="Error" type="tns:errorDetailsType"/>
+			</xs:choice>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="companyYTJInfo" type="tns:companyYTJInfoType"/>
+	<xs:element name="companyYTJInfoV2" type="tns:companyYTJInfoType"/>
+	<xs:element name="companyYTJInfoResponse">
+		<xs:annotation>
+			<xs:documentation>YTJ -peruspoiminta</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:choice>
+				<xs:element name="companyYTJInfoResponseTypeDetails" type="tns:companyYTJInfoResponseType"/>
+				<xs:element name="Error" type="tns:errorDetailsType"/>
+			</xs:choice>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="mortgageRegistryQuery" type="tns:mortgageRegistryBaseQueryType"/>
+	<xs:element name="mortgageRegistryQueryV2" type="tns:mortgageRegistryBaseQueryType"/>
+	<xs:element name="mortgageRegistryQueryResponse">
+		<xs:complexType>
+			<xs:choice>
+				<xs:element name="mortgageRegistryQueryResponseType" type="tns:mortgageRegistryQueryResponseTypeType"/>
+				<xs:element name="Error" type="tns:errorDetailsType"/>
+			</xs:choice>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="error" type="tns:errorDetailsType"/>
+	<xs:complexType name="companyPrimaryNameType">
+		<xs:sequence>
+			<xs:element name="name">
+				<xs:annotation>
+					<xs:documentation>Toiminimi</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="1024"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="lineOfBusiness" type="tns:lineOfBusinessType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Yrityksen toimiala</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="historicalNames" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Historialliset päätoiminimet</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="name">
+							<xs:annotation>
+								<xs:documentation>Historiallinen nimi</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:maxLength value="1024"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element name="registrationDate" type="xs:dateTime">
+							<xs:annotation>
+								<xs:documentation>Voimassaolon alkupäivämäärä</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="expirationDate" type="xs:dateTime">
+							<xs:annotation>
+								<xs:documentation>Voimassaolon loppupäivämäärä</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="parallelCompanyName" type="tns:translatedCompanyNameType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Rinnakkaistoiminimet</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="registrationDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Rekisteröintipvm</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="expirationDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Voimassaolon loppupvm</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="companyPrimaryNameTypeYTJ">
+		<xs:sequence>
+			<xs:element name="name">
+				<xs:annotation>
+					<xs:documentation>Toiminimi</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="1024"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="lineOfBusiness" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Yrityksen toimiala</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16384"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="parallelCompanyName" type="tns:translatedCompanyNameTypeYTJ" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Rinnakkaistoiminimet</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="companyNameType">
+		<xs:sequence>
+			<xs:element name="name">
+				<xs:annotation>
+					<xs:documentation>Aputoiminimi</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="1024"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="lineOfBusiness" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Toimiala</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16384"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="translationOfTheAuxiliaryCompanyName" type="tns:translatedCompanyNameType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Aputoiminimen käännökset</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="registrationDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Rekisteröinti pvm</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="expirationDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Voimassaolon loppuvm</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="nameTypeCode" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Name Type Code</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="nameStateCode" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Name State Code</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="companyNameTypeYTJ">
+		<xs:sequence>
+			<xs:element name="name">
+				<xs:annotation>
+					<xs:documentation>Aputoiminimi</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="1024"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="lineOfBusiness" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Toimiala</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16384"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="translationOfTheAuxiliaryCompanyName" type="tns:translatedCompanyNameTypeYTJ" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Aputoiminimen käännökset</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="addressType">
+		<xs:sequence>
+			<xs:element name="co" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>co</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="128"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="streetAddress" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Katuosoite</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="128"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="zipCode" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Postinumero</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="city" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Kaupunki</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="64"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="country" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Valtio</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="phoneType">
+		<xs:sequence>
+			<xs:element name="number" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Numero</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="64"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="phaseType">
+		<xs:sequence>
+			<xs:element name="name">
+				<xs:annotation>
+					<xs:documentation>Tilanteen koodi</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="registrationDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Rekisteröintipvm</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="expirationDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Voimassaolon loppupvm</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="phaseTypeYTJ">
+		<xs:sequence>
+			<xs:element name="name">
+				<xs:annotation>
+					<xs:documentation>Tilanteen koodi</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="registrationDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Rekisteröintipvm</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="companyExtendedInfoResponseType">
+		<xs:complexContent>
+			<xs:extension base="tns:companyBasicInfoResponseType">
+				<xs:sequence>
+					<xs:element name="deliveryDateOfLastFinancialStatement" type="xs:date" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Viimeisimmän tilinpäätöksen toimittamispäivämäärä</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="shareCapital" type="tns:shareCapitalType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Osakepääoma</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="body" type="tns:bodyType" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>Toimielin</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="shareCapitalLost" type="tns:shareCapitalLostType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Osakepääoma menetetty</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="companyExtendedInfoResponseTypeYTJ">
+		<xs:complexContent>
+			<xs:extension base="tns:companyBasicInfoResponseTypeYTJ">
+				<xs:sequence>
+					<xs:element name="body" type="tns:bodyTypeYTJ" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>Toimielin</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="contactInformationType">
+		<xs:sequence>
+			<xs:element name="visitation" type="tns:addressType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Käyntiosoite</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="postal" type="tns:addressType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Postiosoite</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="homepage" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Kotisivuosoite</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="256"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="phone" type="tns:phoneType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Puhelin</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="fax" type="tns:phoneType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Faksi</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="email" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Sähköpostiosoite</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="64"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="registrationDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Rekisteröinti pvm</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="expirationDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Voimassaolon loppupvm</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="bodyType">
+		<xs:sequence>
+			<xs:element name="type">
+				<xs:annotation>
+					<xs:documentation>Lajikoodi</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:choice minOccurs="0" maxOccurs="unbounded">
+				<xs:element name="naturalPerson" type="tns:naturalPersonType">
+					<xs:annotation>
+						<xs:documentation>Luonnollinen henkilö</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="juristicPerson" type="tns:juristicPersonType">
+					<xs:annotation>
+						<xs:documentation>Juridinen henkilö</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:choice>
+			<xs:element name="registrationDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Rekisteröintipvm</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="expirationDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Voimassaolon loppuvm</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="bodyFRType">
+		<xs:sequence>
+			<xs:element name="type">
+				<xs:annotation>
+					<xs:documentation>Lajikoodi</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:choice minOccurs="0" maxOccurs="unbounded">
+				<xs:element name="naturalPerson" type="tns:naturalPersonFRType">
+					<xs:annotation>
+						<xs:documentation>Luonnollinen henkilö</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="juristicPerson" type="tns:juristicPersonFRType">
+					<xs:annotation>
+						<xs:documentation>Juridinen henkilö</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:choice>
+			<xs:element name="registrationDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Rekisteröintipvm</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="expirationDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Voimassaolon loppuvm</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="bodyTypeYTJ">
+		<xs:sequence>
+			<xs:element name="type">
+				<xs:annotation>
+					<xs:documentation>Lajikoodi</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:choice minOccurs="0" maxOccurs="unbounded">
+				<xs:element name="naturalPerson" type="tns:naturalPersonTypeYTJ">
+					<xs:annotation>
+						<xs:documentation>Luonnollinen henkilö</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="juristicPerson" type="tns:juristicPersonTypeYTJ">
+					<xs:annotation>
+						<xs:documentation>Juridinen henkilö</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:choice>
+			<xs:element name="registrationDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Rekisteröintipvm</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="memberMax" type="xs:integer" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Varsinaisten jäsenten maksimi lukumäärä</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="memberMin" type="xs:integer" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Varsinaisten jäsenten minimi lukumäärä</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="deputyMemberMax" type="xs:integer" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Varajäsenten maksimilukumäärä</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="deputyMemberMin" type="xs:integer" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Varajäsenten minimi lukumäärä</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="retiredPersons" type="xs:integer" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Tehtävästä eronnoiden lukumäärä</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="accountingPeriodTypeYTJ">
+		<xs:sequence>
+			<xs:element name="startDate" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Alkamispäivämäärä</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="endDate" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Loppupvm</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="registrationDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Rekisteröintipvm</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="exceptionalAccountingPeriodTypeYTJ">
+		<xs:sequence>
+			<xs:element name="startDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Alkamispäivämäärä</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="endDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Loppupvm</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="shareCapitalLostType">
+		<xs:sequence>
+			<xs:element name="registrationDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Rekisteröintipvm</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="expirationDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Voimassaolon loppupvm</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="shareCapitalType">
+		<xs:sequence>
+			<xs:element name="currency">
+				<xs:annotation>
+					<xs:documentation>Valuuttakoodi</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="value" type="xs:double" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Arvo</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="paidValue" type="xs:double" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Maksettu arvo</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="nominalValue" type="xs:double" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Nimellisarvo</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="shareType" type="tns:shareTypeType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Osakelajit</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="amountOfShares" type="xs:integer" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Osakkeiden lukumäärä</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="registrationDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Rekisteröintipvm</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="expirationDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Voimassaolon loppupvm</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="registerEntryType">
+		<xs:sequence>
+			<xs:element name="headerText">
+				<xs:annotation>
+					<xs:documentation>Rekisterimerkinnän otsikko</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="256"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="bodyText">
+				<xs:annotation>
+					<xs:documentation>Rekisterimerkinnän teksti</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16384"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="registrationDateDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Voimassaolon alkupvm</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="expirationDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Voimassaolon loppupvm</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="noticeType">
+		<xs:sequence>
+			<xs:element name="recordNumber">
+				<xs:annotation>
+					<xs:documentation>Diaarinumero</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="type">
+				<xs:annotation>
+					<xs:documentation>Ilmoituksen tyyppikoodi</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="latestPhaseName">
+				<xs:annotation>
+					<xs:documentation>Viimeisen vaiheen koodi</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="latestPhaseArrivalDate" type="xs:dateTime">
+				<xs:annotation>
+					<xs:documentation>Viimeisen vaiheen alkamispäivämäärä</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="arrivalDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Ilmoituksen saapumispvm</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="companyBasicInfoResponseType">
+		<xs:sequence>
+			<xs:element name="registrationDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Rekisteröinti päivämäärä</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="businessId" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Y-tunnus</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="registrationNumber" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Kaupparekisterinumero</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="dissolutionDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Lakkaamispäivä</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="domicile" type="tns:domicileType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Kotipaikka</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="companyName" type="tns:companyPrimaryNameType">
+				<xs:annotation>
+					<xs:documentation>Toiminimi</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="auxiliaryCompanyName" type="tns:companyNameType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Yrityksen aputoiminimet</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="phase" type="tns:phaseType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Yrityksen tilanne</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="contactInformation" type="tns:contactInformationType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Yhteystiedot</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="form" type="tns:formType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Yritysmuoto</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="state" type="tns:stateType">
+				<xs:annotation>
+					<xs:documentation>Yrityksen tila</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="companyBasicInfoResponseTypeYTJ">
+		<xs:sequence>
+			<xs:element name="registrationDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Rekisteröinti päivämäärä</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="businessId" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Y-tunnus</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="dissolutionDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Lakkaamispäivä</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="domicile" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Kotipaikka</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="companyName" type="tns:companyPrimaryNameTypeYTJ">
+				<xs:annotation>
+					<xs:documentation>Toiminimi</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="auxiliaryCompanyName" type="tns:companyNameTypeYTJ" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Yrityksen aputoiminimet</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="phase" type="tns:phaseTypeYTJ" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Yrityksen tilanne</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="form" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Yritysmuoto</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="state" type="tns:stateTypeYTJ">
+				<xs:annotation>
+					<xs:documentation>Yrityksen tila</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="companyExtendedInfoType"/>
+	<xs:complexType name="roleInCompanyType">
+		<xs:sequence>
+			<xs:element name="companyName">
+				<xs:annotation>
+					<xs:documentation>Päätoiminimi</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="1024"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="registrationDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Rekisteröintipäivämäärä</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="expirationDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Voimassaolon loppupvm</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="businessId" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Y-tunnus</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="registrationNumber" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Kaupparekisterinumero</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="state">
+				<xs:annotation>
+					<xs:documentation>Tila</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="phase" type="tns:phaseType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Tilanne</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="roleBasicInfo" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Roolit yrityksessä</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="bodyType">
+							<xs:annotation>
+								<xs:documentation>Toimielin</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:maxLength value="16"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element name="name">
+							<xs:annotation>
+								<xs:documentation>Roolikoodi</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:maxLength value="16"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element name="startDate" type="xs:dateTime">
+							<xs:annotation>
+								<xs:documentation>Alkamispäivämäärä</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="roleInCompanyExtendedType">
+		<xs:sequence>
+			<xs:element name="companyName">
+				<xs:annotation>
+					<xs:documentation>Päätoiminimi</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="1024"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="registrationDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Voimassaolon alkamispäivämäärä</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="expirationDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Voimassaolon loppupvm</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="businessId" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Y-tunnus</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="registrationNumber" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Kaupparekisterinumero</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="state">
+				<xs:annotation>
+					<xs:documentation>Tila</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="currentPhase" type="tns:phaseType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Nykyinen tilanne</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="roleExtendedInfo" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Roolit yrityksessä</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="bodyType">
+							<xs:annotation>
+								<xs:documentation>Toimielin</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:maxLength value="16"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element name="name">
+							<xs:annotation>
+								<xs:documentation>Roolikoodi</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:maxLength value="16"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element name="registrationDate" type="xs:dateTime">
+							<xs:annotation>
+								<xs:documentation>Voimassaolon alkupäivämäärä</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="expirationDate" type="xs:dateTime" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Voimassaolon loppupäivämäärä</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="companyBasicInfoType">
+		<xs:sequence>
+			<xs:choice>
+				<xs:element name="businessId">
+					<xs:annotation>
+						<xs:documentation>Y-tunnus</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="16"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="registrationNumber">
+					<xs:annotation>
+						<xs:documentation>Kaupparekisterinumero</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:annotation>
+							<xs:documentation>Kaupparekisterinumero</xs:documentation>
+						</xs:annotation>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="16"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+			</xs:choice>
+			<xs:element name="userId">
+				<xs:annotation>
+					<xs:documentation>Käyttäjätunnus</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="128"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="date" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Kysely pvm</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tradeRegisterTranslationType">
+		<xs:sequence>
+			<xs:element name="userId">
+				<xs:annotation>
+					<xs:documentation>Käyttäjätunnus</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="128"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:choice>
+				<xs:element name="registrationNumber">
+					<xs:annotation>
+						<xs:documentation>Kaupparekisterinumero</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="16"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="businessId">
+					<xs:annotation>
+						<xs:documentation>Y-tunnus</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="16"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+			</xs:choice>
+			<xs:element name="language" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="electronicEncumbranceType">
+		<xs:sequence>
+			<xs:element name="userId">
+				<xs:annotation>
+					<xs:documentation>Käyttäjätunnus</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="128"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:choice>
+				<xs:element name="registrationNumber">
+					<xs:annotation>
+						<xs:documentation>Kaupparekisterinumero</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="16"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="businessId">
+					<xs:annotation>
+						<xs:documentation>Y-tunnus</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="16"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+			</xs:choice>
+			<xs:element name="language" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="companyYTJInfoType">
+		<xs:sequence>
+			<xs:element name="businessId">
+				<xs:annotation>
+					<xs:documentation>Y-tunnus</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:annotation>
+						<xs:documentation>Kaupparekisterinumero</xs:documentation>
+					</xs:annotation>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="userId">
+				<xs:annotation>
+					<xs:documentation>Käyttäjätunnus</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="128"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="foundationRegisterEntryInfoResponseType">
+		<xs:sequence>
+			<xs:element name="name">
+				<xs:annotation>
+					<xs:documentation>Nimi</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="256"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="businessId" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Y-tunnus</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="registrationNumber" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Säätiörekisterinumero</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="20"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="establishPermissionGranted" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Perustamislupa annettu</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="registrationDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Rekisteröintipäivämäärä</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="dissolutionDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Lakkaamispvm</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="domicile" type="tns:domicileType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Kotipaikka</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="contactInformation" type="tns:contactInformationType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Yhteystiedot</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="registerEntry" type="tns:registerEntryType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Rekisterimerkinnät</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="body" type="tns:bodyFRType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Henkilötiedot</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="nameHistory" type="tns:nameHistoryType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Nimihistoria</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="creationTime" type="xs:dateTime">
+				<xs:annotation>
+					<xs:documentation>Sisällön ajankohta</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- TTY-2101 -->
+	<xs:complexType name="foundationRegisterEntryInfoPdfResponseType">
+		<xs:sequence>
+			<xs:element name="businessId" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Y-tunnus</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="registrationNumber" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Säätiörekisterinumero</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="20"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="name">
+				<xs:annotation>
+					<xs:documentation>Nimi</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="256"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="extract" type="xs:base64Binary">
+				<xs:annotation>
+					<xs:documentation>Ote</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="creationDate" type="xs:dateTime">
+				<xs:annotation>
+					<xs:documentation>Luontipäivämäärä</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="foundationRegisterRulesInfoResponseType">
+		<xs:sequence>
+			<xs:element name="name">
+				<xs:annotation>
+					<xs:documentation>Nimi</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="256"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="businessId" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Y-tunnus</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="registrationNumber" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Säätiörekisterinumero</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="20"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="companyName">
+				<xs:annotation>
+					<xs:documentation>Päätoiminimi</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="type">
+				<xs:annotation>
+					<xs:documentation>Tyyppikoodi</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="statute" type="xs:base64Binary">
+				<xs:annotation>
+					<xs:documentation>Viittaus liitteenä olevaan statuuttiin</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="validFromDate" type="xs:dateTime">
+				<xs:annotation>
+					<xs:documentation>Voimassaolon alkupvm</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="validUntilDate" type="xs:dateTime" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Voimassaolon loppupvm</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="establishPermissionGranted" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Perustamislupa annettu</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="registrationDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Rekisteröintipäivämäärä</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="dissolutionDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Lakkaamispvm</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="domicile" type="tns:domicileType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Kotipaikka</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="contactInformation" type="tns:contactInformationType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Yhteystiedot</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="registerEntry" type="tns:registerEntryType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Rekisterimerkinnät</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="body" type="tns:bodyFRType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Henkilötiedot</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="nameHistory" type="tns:nameHistoryType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Nimihistoria</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="creationTime" type="xs:dateTime">
+				<xs:annotation>
+					<xs:documentation>Sisällön ajankohta</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="statuteInfoResponseType">
+		<xs:sequence>
+			<xs:element name="businessId" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Y-tunnus</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="registrationNumber" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Kaupparekisterinumero</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="companyName">
+				<xs:annotation>
+					<xs:documentation>Päätoiminimi</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="type">
+				<xs:annotation>
+					<xs:documentation>Tyyppikoodi</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="statute" type="xs:base64Binary">
+				<xs:annotation>
+					<xs:documentation>Viittaus liitteenä olevaan statuuttiin</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="validFromDate" type="xs:dateTime">
+				<xs:annotation>
+					<xs:documentation>Voimassaolon alkupvm</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="validUntilDate" type="xs:dateTime" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Voimassaolon loppupvm</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="attachment" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Liite</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="companyNoticeInfoResponseType">
+		<xs:sequence>
+			<xs:element name="businessId" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Y-tunnus</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="registrationNumber" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Kaupparekisterinumero</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="companyName">
+				<xs:annotation>
+					<xs:documentation>Päätoiminimi</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="1024"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="notice" type="tns:noticeType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Ilmoitus</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="registrationDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Rekisteröintipvm</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="dissolutionDate" type="xs:date">
+				<xs:annotation>
+					<xs:documentation>Lakkaamispvm</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="companyRepresentInfoResponseType">
+		<xs:sequence>
+			<xs:element name="registrationDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Rekisteröintipäivämäärä</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="businessId" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Y-tunnus</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="registrationNumber">
+				<xs:annotation>
+					<xs:documentation>Kaupparekisterinumero</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="dissolutionDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Lakkaamispäivä</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="domicile" type="tns:domicileType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Kotipaikka</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="phase" type="tns:phaseType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Yrityksen tilanne</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="contactInformation" type="tns:contactInformationType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Yhteystiedot</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="representation" type="tns:representationType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Edustamistiedot</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="companyName" type="tns:companyNameRepresentationType">
+				<xs:annotation>
+					<xs:documentation>Päätoiminimi</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="lineOfBusiness" type="tns:lineOfBusinessType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Yrityksen toimiala</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="form" type="tns:formType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Yrityksen muoto</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="state" type="tns:stateType">
+				<xs:annotation>
+					<xs:documentation>Yrityksen tila</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="body" type="tns:bodyType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Toimielin</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="legalRepresentation" type="tns:legalRepresentationType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Edustamislausekkeet</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="personActiveRoleInfoResponseType">
+		<xs:sequence>
+			<xs:element name="firstname" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Etunimi</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="64"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="surname">
+				<xs:annotation>
+					<xs:documentation>Sukunimi</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="64"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="socialSecurityNumber" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Henkilötunnus</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="status" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Tila</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="32"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="roleInCompany" type="tns:roleInCompanyType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Yritykset joissa rooleja</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="personRoleInfoResponseType">
+		<xs:sequence>
+			<xs:element name="firstname" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Etunimi</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="64"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="surname">
+				<xs:annotation>
+					<xs:documentation>Sukunimi</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="64"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="socialSecurityNumber" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Henkilötunnus</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="status" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Tila</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="32"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="roleInCompanyExtended" type="tns:roleInCompanyExtendedType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Yritykset joissa rooleja</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="personActiveRoleInfoType">
+		<xs:sequence>
+			<xs:element name="socialSecurityNumber">
+				<xs:annotation>
+					<xs:documentation>Henkilötunnus</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="userId">
+				<xs:annotation>
+					<xs:documentation>Käyttäjätunnus</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="128"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="foundationRegisterEntryInfoType">
+		<xs:sequence>
+			<xs:choice>
+				<xs:element name="businessId">
+					<xs:annotation>
+						<xs:documentation>Y-tunnus</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="16"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="registrationNumber">
+					<xs:annotation>
+						<xs:documentation>Kaupparekisterinumero</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="16"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+			</xs:choice>
+			<xs:element name="date" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Päivämäärä</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="userId">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="128"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- TTY-2101 -->
+	<xs:complexType name="foundationRegisterEntryInfoPdfType">
+		<xs:sequence>
+			<xs:choice>
+				<xs:element name="businessId">
+					<xs:annotation>
+						<xs:documentation>Y-tunnus</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="16"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="registrationNumber">
+					<xs:annotation>
+						<xs:documentation>Kaupparekisterinumero</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="16"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+			</xs:choice>
+			<xs:element name="date" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Päivämäärä</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="userId">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="128"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="foundationRegisterRulesInfoType">
+		<xs:sequence>
+			<xs:choice>
+				<xs:element name="businessId">
+					<xs:annotation>
+						<xs:documentation>Y-tunnus</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="16"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="registrationNumber">
+					<xs:annotation>
+						<xs:documentation>Kaupparekisterinumero</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="16"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+			</xs:choice>
+			<xs:element name="userId">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="128"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="companyNoticeInfoType">
+		<xs:sequence>
+			<xs:element name="userId">
+				<xs:annotation>
+					<xs:documentation>Käyttäjätunnus</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="128"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:choice>
+				<xs:element name="registrationNumber">
+					<xs:annotation>
+						<xs:documentation>Kaupparekisterinumero</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="16"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="businessId">
+					<xs:annotation>
+						<xs:documentation>Y-tunnus</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="16"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- get companies -->
+	<xs:complexType name="getCompaniesRequestType">
+		<xs:sequence>
+			<xs:element name="userId">
+				<xs:annotation>
+					<xs:documentation>Käyttäjätunnus</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="128"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="companyName">
+				<xs:annotation>
+					<xs:documentation>Päätoiminimi</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="1024"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="companyStateCode" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Tilanteen koodi</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="getCompaniesResponseType">
+		<xs:sequence>
+			<xs:element name="company" type="tns:getCompaniesCompanyType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Company</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="getCompaniesCompanyType">
+		<xs:sequence>
+			<xs:element name="businessId" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Y-tunnus</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="registrationNumber" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Kaupparekisterinumero</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="companyPrimaryName" type="tns:companyPrimaryNameType">
+				<xs:annotation>
+					<xs:documentation>Company Primary Name</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="form" type="tns:formType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Company Form</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="postal" type="tns:addressType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Company Postal Info</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="searchedName" type="tns:companyNameType" minOccurs="1" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Company Postal Info</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- handled notifications -->
+	<xs:complexType name="handledNotificationsType">
+		<xs:sequence>
+			<xs:element name="userId">
+				<xs:annotation>
+					<xs:documentation>Käyttäjätunnus</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="128"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:choice>
+				<xs:element name="registrationNumber">
+					<xs:annotation>
+						<xs:documentation>Kaupparekisterinumero</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="16"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="businessId">
+					<xs:annotation>
+						<xs:documentation>Y-tunnus</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="16"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+			</xs:choice>
+			<xs:element name="startDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="endDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="language" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="handledNotificationsResponseType">
+		<xs:sequence>
+			<xs:element name="businessId" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Y-tunnus</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="registrationNumber" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Kaupparekisterinumero</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="companyName">
+				<xs:annotation>
+					<xs:documentation>Päätoiminimi</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="1024"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="notice" type="tns:handledNoticeType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Ilmoitus</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="handledNoticeType">
+		<xs:sequence>
+			<xs:element name="recordNumber">
+				<xs:annotation>
+					<xs:documentation>Diaarinumero</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="typeCode" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Ilmoitustyyppi</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="typeName" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Type Name</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="arrivalDate" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Ilmoituksen saapumispvm</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="closingDate" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Ilmoituksen loppuunkäsiteltypäivä</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="latestStatusCode" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Ilmoituksen viimeisin vaihe</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="latestStatusName" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Ilmoituksen viimeisin vaihe</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tradeLicenseType">
+		<xs:sequence>
+			<xs:element name="type">
+				<xs:annotation>
+					<xs:documentation>Tyyppikoodi</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="class">
+				<xs:annotation>
+					<xs:documentation>Tekstikoodi</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="validFromDate" type="xs:date">
+				<xs:annotation>
+					<xs:documentation>Voimassaolon alkupäivämäärä</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="validToDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Voimassaolon loppupäivämäärä</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="authority" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Viranomainen</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="dateOfIssue" type="xs:date">
+				<xs:annotation>
+					<xs:documentation>Luvan antopäivämäärä</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="companyYTJInfoResponseType">
+		<xs:complexContent>
+			<xs:extension base="tns:companyExtendedInfoResponseTypeYTJ">
+				<xs:sequence>
+					<xs:element name="accountingPeriod" type="tns:accountingPeriodTypeYTJ" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Tilikausi</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="exceptionalAccountingPeriod" type="tns:exceptionalAccountingPeriodTypeYTJ" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Poikkeava tilikausi</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="tradeLicense" type="tns:tradeLicenseType" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>Elinkeinolupa</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="aoyLawApplied" type="xs:boolean">
+						<xs:annotation>
+							<xs:documentation>Sovellettu asunto-osakeyhtiölakia</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="accountantNotNominated" type="xs:boolean" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Tilintarkastaja ei valittu</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="representation" type="tns:representationTypeYTJ" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>Edustamistiedot</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="hasMortgageRegisterEntry" type="xs:boolean">
+						<xs:annotation>
+							<xs:documentation>Yrityskiinnitys</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="shareTypeType">
+		<xs:sequence>
+			<xs:element name="type">
+				<xs:annotation>
+					<xs:documentation>Laji</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="amount" type="xs:integer">
+				<xs:annotation>
+					<xs:documentation>Lukumäärä</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="registrationDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Rekisteröintipvm</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="expirationDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Voimassaolon loppuvm</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="representationType">
+		<xs:sequence>
+			<xs:element name="group">
+				<xs:annotation>
+					<xs:documentation>Ryhmä</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="naturalPerson" type="tns:naturalPersonTypeRepresentation" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Luonnollinen henkilö</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="rule">
+				<xs:annotation>
+					<xs:documentation>Nimenkirjoitustapa</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="1024"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="additionalGroup" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Toinen ryhmä</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="naturalPerson" type="tns:naturalPersonTypeRepresentation" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Luonnollinen henkilö</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="registrationDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Rekisteröintipvm</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="expirationDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Voimassaolon loppupvm</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="representationTypeYTJ">
+		<xs:sequence>
+			<xs:element name="group">
+				<xs:annotation>
+					<xs:documentation>Ryhmä</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="naturalPerson" type="tns:naturalPersonTypeRepresentationYTJ" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Luonnollinen henkilö</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="rule">
+				<xs:annotation>
+					<xs:documentation>Nimenkirjoitustapa</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="1024"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="additionalGroup" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Toinen ryhmä</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="naturalPerson" type="tns:naturalPersonTypeRepresentationYTJ" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Luonnollinen henkilö</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="registrationDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Rekisteröintipvm</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="naturalPersonType">
+		<xs:sequence>
+			<xs:element name="role">
+				<xs:annotation>
+					<xs:documentation>Roolikoodi</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="firstname" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Etunimi</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="64"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="surname">
+				<xs:annotation>
+					<xs:documentation>Sukunimi</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="64"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="socialSecurityNumber" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Henkilötunnus</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="dateOfBirth" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Syntymäpäivä</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="status" type="tns:personStatusType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Tila</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="stakeOfSilentPartner" type="tns:stakeOfSilentPartnerType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Äänettömän yhtiömiehen panos</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="expirationDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Roolin voimassaolon loppupvm</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="naturalPersonFRType">
+		<xs:sequence>
+			<xs:element name="role">
+				<xs:annotation>
+					<xs:documentation>Roolikoodi</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="firstname" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Etunimi</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="64"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="surname">
+				<xs:annotation>
+					<xs:documentation>Sukunimi</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="64"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="socialSecurityNumber" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Henkilötunnus</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="dateOfBirth" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Syntymäpäivä</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="status" type="tns:personStatusType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Tila</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="expirationDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Roolin voimassaolon loppupvm</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="naturalPersonTypeYTJ">
+		<xs:sequence>
+			<xs:element name="role">
+				<xs:annotation>
+					<xs:documentation>Roolikoodi</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="firstname" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Etunimi</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="64"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="surname">
+				<xs:annotation>
+					<xs:documentation>Sukunimi</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="64"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="socialSecurityNumber" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Henkilötunnus</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="dateOfBirth" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Syntymäpäivä</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="status" type="tns:personStatusTypeYTJ" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Tila</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="stakeOfSilentPartner" type="tns:stakeOfSilentPartnerType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Äänettömän yhtiömiehen panos</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="personContactInfo" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Henkilön yhteystiedot</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="visitation" type="tns:addressType" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Käyntiosoite</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="nationality" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Kansalaisuus</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="domicile" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Kotipaikka</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="homeCountry" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Asuinmaa</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="expirationDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Roolin voimassaolon loppupvm</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="naturalPersonTypeRepresentationYTJ">
+		<xs:sequence>
+			<xs:element name="bodyType">
+				<xs:annotation>
+					<xs:documentation>Toimielin</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="role">
+				<xs:annotation>
+					<xs:documentation>Roolikoodi</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="firstname" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Etunimi</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="64"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="surname">
+				<xs:annotation>
+					<xs:documentation>Sukunimi</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="64"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="socialSecurityNumber" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Henkilötunnus</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="dateOfBirth" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Syntymäpäivä</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="status" type="tns:personStatusTypeYTJ" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Tila</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="personContactInfo" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Henkilön yhteystiedot</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="visitation" type="tns:addressType" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Käyntiosoite</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="nationality" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Kansalaisuus</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="domicile" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Kotipaikka</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="homeCountry" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Asuinmaa</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="naturalPersonTypeRepresentation">
+		<xs:sequence>
+			<xs:element name="bodyType">
+				<xs:annotation>
+					<xs:documentation>Toimielin</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="role">
+				<xs:annotation>
+					<xs:documentation>Roolikoodi</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="firstname" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Etunimi</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="64"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="surname">
+				<xs:annotation>
+					<xs:documentation>Sukunimi</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="64"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="socialSecurityNumber" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Henkilötunnus</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="dateOfBirth" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Syntymäpäivä</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="status" type="tns:personStatusType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Tila</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="stakeOfSilentPartner" type="tns:stakeOfSilentPartnerType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Äänettömän yhtiömiehen panos</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="expirationDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Roolin voimassaolon loppupvm</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="juristicPersonType">
+		<xs:sequence>
+			<xs:element name="role">
+				<xs:annotation>
+					<xs:documentation>Roolikoodi</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="name">
+				<xs:annotation>
+					<xs:documentation>Nimi</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="256"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="businessId" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Y-tunnus</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="registrationNumber" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Rekisterinumero</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="register">
+				<xs:annotation>
+					<xs:documentation>Rekisteritunniste</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="state" type="tns:stateType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Tila</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="phase" type="tns:phaseType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Tilanne</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="stakeOfSilentPartner" type="tns:stakeOfSilentPartnerType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Äänettömän yhtiömiehen panos</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="registrationDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Roolin rekisteröintipvm</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="expirationDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Roolin voimassaolon loppupvm</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="juristicPersonFRType">
+		<xs:sequence>
+			<xs:element name="role">
+				<xs:annotation>
+					<xs:documentation>Roolikoodi</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="name">
+				<xs:annotation>
+					<xs:documentation>Nimi</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="256"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="businessId" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Y-tunnus</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="registrationNumber" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Rekisterinumero</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="register">
+				<xs:annotation>
+					<xs:documentation>Rekisteritunniste</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="state" type="tns:stateType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Tila</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="phase" type="tns:phaseType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Tilanne</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="registrationDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Roolin rekisteröintipvm</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="expirationDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Roolin voimassaolon loppupvm</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="juristicPersonTypeYTJ">
+		<xs:sequence>
+			<xs:element name="role">
+				<xs:annotation>
+					<xs:documentation>Roolikoodi</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="name">
+				<xs:annotation>
+					<xs:documentation>Nimi</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="256"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="businessId" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Y-tunnus</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="registrationNumber" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Rekisterinumero</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="register">
+				<xs:annotation>
+					<xs:documentation>Rekisteritunniste</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="registerCountryCode" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Rekisterin maa</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="domicile" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Kotipaikka</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="legalForm" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Oikeudellinen muoto</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="state" type="tns:stateTypeYTJ" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Tila</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="phase" type="tns:phaseTypeYTJ" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Tilanne</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="stakeOfSilentPartner" type="tns:stakeOfSilentPartnerType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Äänettömän yhtiömiehen panos</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="expirationDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Roolin voimassaolon loppupvm</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="naturalPerson" type="tns:naturalPersonTypeRepresentationYTJ" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Tilintarkastusyhteisöön liittyvä henkilö</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="errorDetailsType">
+		<xs:annotation>
+			<xs:documentation>Vastaustiedot</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Type" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Javan virhetyyppi</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Message" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Selkokeilinen virheviesti</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Trace" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Javan stacktrace</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="translatedCompanyNameType">
+		<xs:sequence>
+			<xs:element name="name">
+				<xs:annotation>
+					<xs:documentation>Toiminimen käännös</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="1024"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="language">
+				<xs:annotation>
+					<xs:documentation>Käännöksen kieli</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="registrationDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Rekisteröintipvm</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="expirationDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Voimassaolon loppupvm</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="translatedCompanyNameTypeYTJ">
+		<xs:sequence>
+			<xs:element name="name">
+				<xs:annotation>
+					<xs:documentation>Toiminimen käännös</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="1024"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="language">
+				<xs:annotation>
+					<xs:documentation>Käännöksen kieli</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="formType">
+		<xs:sequence>
+			<xs:element name="type">
+				<xs:annotation>
+					<xs:documentation>Yritysmuodon tyyppi</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="registrationDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Rekisteröintipäivämäärä</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="expirationDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Voimassaolon loppupvm</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="stateType">
+		<xs:sequence>
+			<xs:element name="type">
+				<xs:annotation>
+					<xs:documentation>Yrityksen tila</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="registrationDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Rekisteröintipäivämäärä</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="expirationDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Voimassaolon loppupvm</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="stateTypeYTJ">
+		<xs:sequence>
+			<xs:element name="type">
+				<xs:annotation>
+					<xs:documentation>Yrityksen tila</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="registrationDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Rekisteröintipäivämäärä</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="domicileType">
+		<xs:sequence>
+			<xs:element name="code">
+				<xs:annotation>
+					<xs:documentation>Kotipaikkakoodi</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="registrationDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Rekisteröintipvm</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="expirationDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Voimassaolon loppupvm</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="lineOfBusinessType">
+		<xs:sequence>
+			<xs:element name="value">
+				<xs:annotation>
+					<xs:documentation>Yrityksen toimiala</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16384"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="registrationDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Rekisteröintipäivämäärä</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="expirationDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Voimassaolon loppupvm</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="mortgageRegistryBaseQueryType">
+		<xs:sequence>
+			<xs:element name="startDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="endDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="businessId" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="userId">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="128"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="mortgageRegistryQueryResponseTypeType">
+		<xs:sequence>
+			<xs:element name="company" type="tns:EMRCompanyType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Yritys</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="nextBusinessId" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Y-tunnus jatkohakua varten</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="numberOfCompanies" type="xs:integer">
+				<xs:annotation>
+					<xs:documentation>Yritysten kokonaismäärä tai jäljellä olevien määrä</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="EMRCompanyType">
+		<xs:sequence>
+			<xs:element name="registrationDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Rekisteröintipäivämäärä</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="businessId" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Y-tunnus</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="registrationNumber" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Kaupparekisterinumero</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="name">
+				<xs:annotation>
+					<xs:documentation>Päätoiminimi</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="1024"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="notice" type="tns:EMRNoticeType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Ilmoitus</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="EMRNoticeType">
+		<xs:sequence>
+			<xs:element name="arrivalDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Saapumispäivämäärä</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="numberOfOriginalEntry" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Asianumero</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="privilegeStartDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Etuoikeuden alkamispvm</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="bond" type="tns:EMRBondType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Panttivelkakirja</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="solution" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Ratkaisu</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="solutionDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Ratkaisupvm = ilmoituksen rekisteröinti pvm</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="registrationDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Rekisteröinti pvm</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="descriptionOfIssue">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="typeOfIssue" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Asian laatu</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:maxLength value="16"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<!-- The "description" element below contains free-format data, collected from 1..N of related registered entries. The upper limit of field size cannot be strictly determined, as there's no limit for the count of related registered entries. -->
+						<xs:element name="description" type="xs:string" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>AsianLaadun mukaan määräytyvä teksti</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="EMRBondType">
+		<xs:sequence>
+			<xs:element name="number" type="xs:integer" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Numero</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="capital" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Pääoma</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="value" type="xs:double">
+							<xs:annotation>
+								<xs:documentation>Pääoma</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="currency">
+							<xs:annotation>
+								<xs:documentation>Valuuttakoodi</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:maxLength value="16"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="interest" type="xs:double">
+				<xs:annotation>
+					<xs:documentation>Korko-%</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="collectionExpenses" type="xs:double">
+				<xs:annotation>
+					<xs:documentation>Perimiskulut</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="bondOwner" type="tns:EMRBondOwnerType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Haltija</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="bondOwnerSecondary" type="tns:EMRBondOwnerType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Jälkipantin haltija</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="EMRBondOwnerType">
+		<xs:sequence>
+			<xs:element name="name" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Nimi</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="128"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="postalAddress" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Katuosoite</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="128"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="city" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Postitoimipaikka</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="64"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="zipCode" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Postinumero</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="country" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Maa</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="phone" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Puhelinnumero</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="64"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="registerEntryInfoResponseType">
+		<xs:sequence>
+			<xs:element name="businessId" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Y-tunnus</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="registrationNumber" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Kaupparekisterinumero</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="companyName">
+				<xs:annotation>
+					<xs:documentation>Päätoiminimi</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="1024"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="extract" type="xs:base64Binary">
+				<xs:annotation>
+					<xs:documentation>Ote</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="creationDate" type="xs:dateTime">
+				<xs:annotation>
+					<xs:documentation>Luontipäivämäärä</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="tradeRegisterTranslationResponseType">
+		<xs:sequence>
+			<xs:element name="businessId" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Y-tunnus</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="registrationNumber" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Kaupparekisterinumero</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="companyName">
+				<xs:annotation>
+					<xs:documentation>Päätoiminimi</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="1024"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="extract" type="xs:base64Binary">
+				<xs:annotation>
+					<xs:documentation>Ote</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="creationDate" type="xs:dateTime">
+				<xs:annotation>
+					<xs:documentation>Luontipäivämäärä</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="language" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="electronicEncumbranceResponseType">
+		<xs:sequence>
+			<xs:element name="businessId" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Y-tunnus</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="registrationNumber" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Kaupparekisterinumero</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="companyName">
+				<xs:annotation>
+					<xs:documentation>Päätoiminimi</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="1024"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="extract" type="xs:base64Binary">
+				<xs:annotation>
+					<xs:documentation>Ote</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="language">
+				<xs:annotation>
+					<xs:documentation>Kieli</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="creationDate" type="xs:dateTime">
+				<xs:annotation>
+					<xs:documentation>Luontipäivämäärä</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="companyNameRepresentationType">
+		<xs:sequence>
+			<xs:element name="name">
+				<xs:annotation>
+					<xs:documentation>Nimi</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="1024"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="registrationDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Rekisteröintipvm</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="expirationDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Voimassaolon loppupvm</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="stakeOfSilentPartnerType">
+		<xs:sequence>
+			<xs:element name="value" type="xs:double">
+				<xs:annotation>
+					<xs:documentation>Määrä</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="currency" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Valuuttakoodi</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="legalRepresentationType">
+		<xs:sequence>
+			<xs:element name="header">
+				<xs:annotation>
+					<xs:documentation>Otsikko</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="256"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="text">
+				<xs:annotation>
+					<xs:documentation>Rekisterimerkintä</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="1024"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="signingCode">
+				<xs:annotation>
+					<xs:documentation>Signing Code</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="registrationDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Rekisteröintipvm</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="expireDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Voimassaolon loppupvm</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="personStatusType">
+		<xs:sequence>
+			<xs:element name="value">
+				<xs:annotation>
+					<xs:documentation>Tila</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="32"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="startDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Alkupvm</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="endDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Loppupvm</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="personStatusTypeYTJ">
+		<xs:sequence>
+			<xs:element name="value">
+				<xs:annotation>
+					<xs:documentation>Tila</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="32"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="startDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Alkupvm</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="expirationDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Loppupvm</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="nameHistoryType">
+		<xs:sequence>
+			<xs:element name="name">
+				<xs:annotation>
+					<xs:documentation>Nimi</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="256"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="registrationDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Rekisteröintipvm</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="expirationDate" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Voimassaolon loppupvm</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

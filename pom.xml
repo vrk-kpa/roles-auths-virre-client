@@ -226,7 +226,7 @@
                             <sourceRoot>${project.build.directory}/generated-sources/wsimport</sourceRoot>
                             <wsdlOptions>
                                 <wsdlOption>
-                                    <wsdl>${basedir}/src/main/resources/wsdl/XRoadPersonActiveRoleInfo.wsdl</wsdl>
+                                    <wsdl>${basedir}/src/main/resources/wsdl/xroadpersonactiveroleinfo.wsdl</wsdl>
                                     <extraargs>
                                         <extraarg>-client</extraarg>
                                         <extraarg>-verbose</extraarg>
@@ -235,7 +235,7 @@
                                     </extraargs>
                                 </wsdlOption>
                                 <wsdlOption>
-                                    <wsdl>${basedir}/src/main/resources/wsdl/XRoadRightToRepresent.wsdl</wsdl>
+                                    <wsdl>${basedir}/src/main/resources/wsdl/xroadrighttorepresent.wsdl</wsdl>
                                     <extraargs>
                                         <extraarg>-client</extraarg>
                                         <extraarg>-verbose</extraarg>
@@ -244,7 +244,7 @@
                                     </extraargs>
                                 </wsdlOption>
                                 <wsdlOption>
-                                    <wsdl>${basedir}/src/main/resources/wsdl/XRoadCompanyRepresentInfo.wsdl</wsdl>
+                                    <wsdl>${basedir}/src/main/resources/wsdl/xroadcompanyrepresentinfo.wsdl</wsdl>
                                     <extraargs>
                                         <extraarg>-client</extraarg>
                                         <extraarg>-verbose</extraarg>

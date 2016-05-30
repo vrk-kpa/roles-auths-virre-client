@@ -25,13 +25,19 @@ package fi.vm.kapa.rova.config;
 import fi.prh.virre.xroad.producer.activeroleinfo.XRoadPersonActiveRoleInfoPortType;
 import fi.prh.virre.xroad.producer.companyrepresent.XRoadCompanyRepresentInfoPortType;
 import fi.prh.virre.xroad.producer.righttorepresent.XRoadRightToRepresentPortType;
+import fi.vm.kapa.rova.soap.prh.handlers.ActiveRolesHeaderHandler;
+import fi.vm.kapa.rova.soap.prh.handlers.CompanyReprHeaderHandler;
+import fi.vm.kapa.rova.soap.prh.handlers.RightReprHeaderHandler;
+import fi.vm.kapa.rova.soap.prh.handlers.XroadHeaderHandler;
 import org.apache.cxf.clustering.LoadDistributorFeature;
 import org.apache.cxf.clustering.RandomStrategy;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.xml.ws.handler.Handler;
 import java.util.Arrays;
 import java.util.List;
 
@@ -45,22 +51,32 @@ public class SoapConfiguration {
     @Value("${xroad_endpoint}")
     String xroadEndpoint;
 
+    @Autowired
+    ActiveRolesHeaderHandler activeRolesHeaderHandler;
+
+    @Autowired
+    CompanyReprHeaderHandler companyReprHeaderHandler;
+
+    @Autowired
+    RightReprHeaderHandler rightReprHeaderHandler;
+
+
     @Bean
     XRoadPersonActiveRoleInfoPortType personActiveRolesClient() {
-        return (XRoadPersonActiveRoleInfoPortType) jaxWsProxyFactoryBean(XRoadPersonActiveRoleInfoPortType.class).create();
+        return (XRoadPersonActiveRoleInfoPortType) jaxWsProxyFactoryBean(XRoadPersonActiveRoleInfoPortType.class, activeRolesHeaderHandler).create();
     }
 
     @Bean
     XRoadCompanyRepresentInfoPortType companyRepresentClient() {
-        return (XRoadCompanyRepresentInfoPortType) jaxWsProxyFactoryBean(XRoadCompanyRepresentInfoPortType.class).create();
+        return (XRoadCompanyRepresentInfoPortType) jaxWsProxyFactoryBean(XRoadCompanyRepresentInfoPortType.class, companyReprHeaderHandler).create();
     }
 
     @Bean
     XRoadRightToRepresentPortType rightToRepresentClient() {
-        return (XRoadRightToRepresentPortType) jaxWsProxyFactoryBean(XRoadRightToRepresentPortType.class).create();
+        return (XRoadRightToRepresentPortType) jaxWsProxyFactoryBean(XRoadRightToRepresentPortType.class, rightReprHeaderHandler).create();
     }
 
-    private JaxWsProxyFactoryBean jaxWsProxyFactoryBean(Class target) {
+    private JaxWsProxyFactoryBean jaxWsProxyFactoryBean(Class target, XroadHeaderHandler handler) {
         JaxWsProxyFactoryBean factory = new JaxWsProxyFactoryBean();
         // load distribution
         LoadDistributorFeature loadDistributorFeature = new LoadDistributorFeature();
@@ -68,6 +84,7 @@ public class SoapConfiguration {
         ldStrategy.setAlternateAddresses(getEndpoints());
         loadDistributorFeature.setStrategy(ldStrategy);
         factory.getFeatures().add(loadDistributorFeature);
+        factory.getHandlers().add(handler);
         factory.setServiceClass(target);
         return factory;
     }

@@ -25,7 +25,8 @@ package fi.vm.kapa.rova.virreclient.service;
 import fi.vm.kapa.rova.external.model.virre.*;
 import fi.vm.kapa.rova.logging.Logger;
 import fi.vm.kapa.rova.soap.prh.ActiveRolesClient;
-import https.ws_prh_fi.novus.ids.services._2008._08._22.PersonActiveRoleInfoResponseType;
+import fi.vm.kapa.rova.soap.prh.VirreException;
+import https.ws_prh_fi.novus.ids.services._2008._08._22.PersonActiveRoleInfoResponse;
 import https.ws_prh_fi.novus.ids.services._2008._08._22.PhaseType;
 import https.ws_prh_fi.novus.ids.services._2008._08._22.RoleInCompanyType;
 import org.hibernate.service.spi.ServiceException;
@@ -48,40 +49,40 @@ public class ActiveRolesService extends ServiceLogging {
     private static final Logger LOG = Logger.getLogger(ActiveRolesService.class);
 
     @Autowired
-    private ActiveRolesClient client;
+    private ActiveRolesClient activeRolesClient;
 
     @SuppressWarnings("unchecked")
     public CompanyPerson getCompanyPerson(String hetu) throws VIRREServiceException {
         try {
             long startTime = System.currentTimeMillis();
-            PersonActiveRoleInfoResponseType result = client.getResponse(hetu);
+            PersonActiveRoleInfoResponse result = activeRolesClient.getResponse(hetu);
             LOG.debug(result.toString());
             Map<String, List<?>> response = parseCompanies(result);
             logRequest(OP + ":XRoadPersonActiveRoleInfo", startTime, System.currentTimeMillis());
             // return first
             return ((List<CompanyPerson>) response.get(CompanyPerson.TYPE)).get(0);
-        } catch (RuntimeException e) {
+        } catch (VirreException e) {
             logError(OP, "Failed to parse companyPerson: " + e.getMessage());
             throw new VIRREServiceException(e.getMessage(), e);
         }
     }
 
-    private Map<String, List<?>> parseCompanies(PersonActiveRoleInfoResponseType result) {
+    private Map<String, List<?>> parseCompanies(PersonActiveRoleInfoResponse result) {
         if (result == null) {
             throw new ServiceException("Parsing failed because of null result (PersonActiveRoleInfoResponseType)");
         }
         
         CompanyPerson person = new CompanyPerson();
-        person.setFirstName(result.getFirstname());
-        person.setLastName(result.getSurname());
-        person.setSocialSec(result.getSocialSecurityNumber());
-        person.setStatus(result.getStatus());
+        person.setFirstName(result.getPersonActiveRoleInfoResponseTypeDetails().getFirstname());
+        person.setLastName(result.getPersonActiveRoleInfoResponseTypeDetails().getSurname());
+        person.setSocialSec(result.getPersonActiveRoleInfoResponseTypeDetails().getSocialSecurityNumber());
+        person.setStatus(result.getPersonActiveRoleInfoResponseTypeDetails().getStatus());
 
         List<CompanyPerson> persons = new ArrayList<>(); // list of one person into return map
         persons.add(person);
         
         List<Company> companies = new ArrayList<>(); // list of companies into return map
-        for (RoleInCompanyType roleInCompany : result.getRoleInCompany()) {
+        for (RoleInCompanyType roleInCompany : result.getPersonActiveRoleInfoResponseTypeDetails().getRoleInCompany()) {
             Company company = new Company();
             company.setBusinessId(roleInCompany.getBusinessId());
             company.setCompanyName(roleInCompany.getCompanyName());
