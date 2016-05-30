@@ -22,13 +22,15 @@
  */
 package fi.vm.kapa.rova.virre.resources;
 
-import fi.vm.kapa.rova.external.model.virre.Company;
 import fi.vm.kapa.rova.external.model.virre.CompanyPerson;
 import fi.vm.kapa.rova.external.model.virre.CompanyRepresentations;
 import fi.vm.kapa.rova.external.model.virre.RepresentationRight;
 import fi.vm.kapa.rova.logging.Logger;
-
-import java.util.List;
+import fi.vm.kapa.rova.virreclient.service.ActiveRolesService;
+import fi.vm.kapa.rova.virreclient.service.CompanyReprService;
+import fi.vm.kapa.rova.virreclient.service.RightReprService;
+import fi.vm.kapa.rova.virreclient.service.VIRREServiceException;
+import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -38,11 +40,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
-
-import fi.vm.kapa.rova.virreclient.service.*;
-import org.springframework.stereotype.Service;
-
-import javax.ws.rs.QueryParam;
 
 @Service
 @Path("/rest")
