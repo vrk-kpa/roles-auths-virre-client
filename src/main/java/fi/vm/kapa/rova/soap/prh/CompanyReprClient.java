@@ -55,10 +55,12 @@ public class CompanyReprClient extends AbstractClient {
         request.value.setCompanyRepresentInfo(req);
 
         companyRepresentClient.xRoadCompanyRepresentInfo(request, response);
-        CompanyRepresentInfoResponse result = response.value.getCompanyRepresentInfoResponse();
-        if (result.getError() != null) {
-            throw new VirreException(result.getError().getMessage());
+
+        if (response.value.getFaultCode() != null) {
+            throw new VirreException(response.value.getFaultCode() + " " + response.value.getFaultString());
         }
+
+        CompanyRepresentInfoResponse result = response.value.getCompanyRepresentInfoResponse();
 
         LOG.debug("Soap request succeeded.");
         return result;
