@@ -58,10 +58,12 @@ public class ActiveRolesClient extends AbstractClient {
 
         personActiveRolesClient.xRoadPersonActiveRoleInfo(request, response);
 
-        PersonActiveRoleInfoResponse result = response.value.getPersonActiveRoleInfoResponse();
-        if (result.getError() != null) {
-            throw new VirreException(result.getError().getMessage());
+        if (response.value.getFaultCode() != null) {
+            throw new VirreException(response.value.getFaultCode() + " " + response.value.getFaultString());
         }
+
+        PersonActiveRoleInfoResponse result = response.value.getPersonActiveRoleInfoResponse();
+
         LOG.debug("soap for active role info succeeded");
         return result;
    }
