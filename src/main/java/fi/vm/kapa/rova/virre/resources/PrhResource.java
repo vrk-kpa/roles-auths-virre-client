@@ -65,7 +65,7 @@ public class PrhResource {
             CompanyPerson person = arc.getCompanyPerson(socialsec);
             return Response.ok().entity(person).build();
         } catch (VIRREServiceException e) {
-            log.error("Returning error. Failed to get companies: " + e.getMessage());
+            log.error("Returning error. Failed to get companies: " + e.getMessage(), e);
             ResponseBuilder responseBuilder = Response.serverError();
             return responseBuilder.build();
         }
@@ -80,7 +80,7 @@ public class PrhResource {
             CompanyRepresentations reprs = crs.getRepresentations(businessid);
             return Response.ok().entity(reprs).build();
         } catch (VIRREServiceException e) {
-            log.error("Returning error. Failed to get persons: " + e.getMessage());
+            log.error("Returning error. Failed to get persons: " + e.getMessage(), e);
             ResponseBuilder responseBuilder = Response.serverError();
             return responseBuilder.build();
         }
@@ -97,8 +97,7 @@ public class PrhResource {
             RepresentationRight right = rrs.getRights(socialSec, businessId, rightLevel);
             return Response.ok().entity(right).build();
         } catch (VIRREServiceException e) {
-            e.printStackTrace();
-            log.error("Returning error. Failed to get rights: " + e.getMessage());
+            log.error("Returning error. Failed to get rights: " + e.getMessage(), e);
             ResponseBuilder responseBuilder = Response.serverError();
             return responseBuilder.build();
         }

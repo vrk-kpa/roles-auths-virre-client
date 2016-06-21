@@ -97,7 +97,7 @@ public class ActiveRolesService extends ServiceLogging {
                 String roleName = roleInfo.getName();
                 try {
                     type = RoleNameType.valueOf(roleName);
-                } catch (IllegalArgumentException e) {
+                } catch (IllegalArgumentException e) { // NOSONAR Ollaan kiinnostuneita vain tietyistä rooleista
                     logWarning(OP, "Unable to parse role: " + roleName);
                 }
                 role.setType(type);

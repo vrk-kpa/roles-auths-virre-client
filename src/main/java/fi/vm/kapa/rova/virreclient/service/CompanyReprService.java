@@ -31,7 +31,6 @@ import https.ws_prh_fi.novus.ids.services._2008._08._22.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.xml.bind.JAXBException;
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -119,7 +118,7 @@ public class CompanyReprService extends ServiceLogging {
         RoleNameType rnt = null;
         try {
             rnt = RoleNameType.valueOf(r);
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) { //NOSONAR Ainoastaan tunnetut kiinnostaa
             logWarning(OP, "Unable to parse role: " + r);
         }
         role.setType(rnt);
