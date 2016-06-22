@@ -37,10 +37,12 @@ public class ActiveRolesHeaderHandler extends XroadHeaderHandler {
     @Value(SERVICE_COMPANIES_SERVICE_VERSION)
     String serviceVersion;
 
+    @Override
     public String getServiceServiceCode() {
         return serviceCode;
     }
 
+    @Override
     public String getServiceVersion() {
         return serviceVersion;
     }

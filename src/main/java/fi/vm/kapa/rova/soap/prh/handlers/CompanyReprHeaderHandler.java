@@ -38,10 +38,12 @@ public class CompanyReprHeaderHandler extends XroadHeaderHandler {
     @Value(SERVICE_REPRESENTATIONS_SERVICE_VERSION)
     String serviceVersion;
 
+    @Override
     public String getServiceServiceCode() {
         return serviceCode;
     }
 
+    @Override
     public String getServiceVersion() {
         return serviceVersion;
     }
