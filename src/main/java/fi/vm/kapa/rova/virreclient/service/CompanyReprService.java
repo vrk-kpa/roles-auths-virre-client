@@ -27,14 +27,12 @@ import fi.vm.kapa.rova.external.model.virre.CompanyPerson;
 import fi.vm.kapa.rova.external.model.virre.CompanyRepresentations;
 import fi.vm.kapa.rova.external.model.virre.CompanyRoleType;
 import fi.vm.kapa.rova.external.model.virre.RoleNameType;
-import fi.vm.kapa.rova.logging.Logger;
 import fi.vm.kapa.rova.soap.prh.CompanyReprClient;
 import fi.vm.kapa.rova.soap.prh.VirreException;
 import https.ws_prh_fi.novus.ids.services._2008._08._22.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.List;
 
