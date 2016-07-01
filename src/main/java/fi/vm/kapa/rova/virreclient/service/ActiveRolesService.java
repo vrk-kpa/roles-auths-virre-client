@@ -35,10 +35,7 @@ import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Juha Korkalainen on 15.1.2016.
@@ -48,12 +45,13 @@ public class ActiveRolesService extends AbstractCompanyService {
     public static final String OP = "ActiveRolesService";
 
     private static final Logger LOG = Logger.getLogger(ActiveRolesService.class);
+    private static final String ERRORCODE_NO_EXCEPTION = "TTUI_0001";
 
     @Autowired
     private ActiveRolesClient activeRolesClient;
 
     @SuppressWarnings("unchecked")
-    public CompanyPerson getCompanyPerson(String hetu) throws VIRREServiceException {
+    public Optional<CompanyPerson> getCompanyPerson(String hetu) throws VIRREServiceException {
         try {
             long startTime = System.currentTimeMillis();
             PersonActiveRoleInfoResponse result = activeRolesClient.getResponse(hetu);
@@ -61,10 +59,14 @@ public class ActiveRolesService extends AbstractCompanyService {
             Map<String, List<?>> response = parseCompanies(result);
             logRequest(OP + ":XRoadPersonActiveRoleInfo", startTime, System.currentTimeMillis());
             // return first
-            return ((List<CompanyPerson>) response.get(CompanyPerson.TYPE)).get(0);
+            return Optional.of(((List<CompanyPerson>) response.get(CompanyPerson.TYPE)).get(0));
         } catch (VirreException e) {
-            logError(OP, "Failed to parse companyPerson: " + e.getMessage());
-            throw new VIRREServiceException(e.getMessage(), e);
+            if (ERRORCODE_NO_EXCEPTION.equals(e.getFaultCode())) {
+                return Optional.empty();
+            } else {
+                logError(OP, "Failed to parse companyPerson: " + e.getMessage());
+                throw new VIRREServiceException(e.getMessage(), e);
+            }
         }
     }
 

@@ -33,16 +33,14 @@ import fi.vm.kapa.rova.virreclient.service.VIRREServiceException;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
+import javax.ws.rs.core.Response.Status;
 
 @Service
-@Path("/rest")
+@Path("/")
 public class PrhResource {
 
     private static final Logger log = Logger.getLogger(PrhResource.class);
@@ -62,7 +60,8 @@ public class PrhResource {
     public Response getCompanyPerson(@PathParam("socialsec") String socialsec) {
         log.debug("CompanyPerson request received.");
         try {
-            CompanyPerson person = arc.getCompanyPerson(socialsec);
+            CompanyPerson person = arc.getCompanyPerson(socialsec)
+                    .orElseThrow(() -> new WebApplicationException(Status.NOT_FOUND));
             return Response.ok().entity(person).build();
         } catch (VIRREServiceException e) {
             log.error("Returning error. Failed to get companies: " + e.getMessage(), e);

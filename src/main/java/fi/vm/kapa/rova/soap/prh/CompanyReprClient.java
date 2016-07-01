@@ -44,8 +44,8 @@ public class CompanyReprClient extends AbstractClient {
     https.ws_prh_fi.novus.ids.services._2008._08._22.ObjectFactory novusFactory = new https.ws_prh_fi.novus.ids.services._2008._08._22.ObjectFactory();
 
     public CompanyRepresentInfoResponse getResponse(String businessId) throws VirreException {
-        javax.xml.ws.Holder<XRoadCompanyRepresentInfoRequestType> request = new Holder();
-        javax.xml.ws.Holder<XRoadCompanyRepresentInfoResponseType> response = new Holder();
+        javax.xml.ws.Holder<XRoadCompanyRepresentInfoRequestType> request = new Holder<>();
+        javax.xml.ws.Holder<XRoadCompanyRepresentInfoResponseType> response = new Holder<>();
 
         request.value = producerFactory.createXRoadCompanyRepresentInfoRequestType();
 
@@ -57,7 +57,8 @@ public class CompanyReprClient extends AbstractClient {
         companyRepresentClient.xRoadCompanyRepresentInfo(request, response);
 
         if (response.value.getFaultCode() != null) {
-            throw new VirreException(response.value.getFaultCode() + " " + response.value.getFaultString());
+            // the fault code/fault string seem to be mixed up in the return value
+            throw new VirreException(response.value.getFaultString(), response.value.getFaultCode());
         }
 
         CompanyRepresentInfoResponse result = response.value.getCompanyRepresentInfoResponse();
