@@ -44,8 +44,8 @@ public class CompanyReprClient extends AbstractClient {
     https.ws_prh_fi.novus.ids.services._2008._08._22.ObjectFactory novusFactory = new https.ws_prh_fi.novus.ids.services._2008._08._22.ObjectFactory();
 
     public CompanyRepresentInfoResponse getResponse(String businessId) throws VirreException {
-        javax.xml.ws.Holder<XRoadCompanyRepresentInfoRequestType> request = new Holder();
-        javax.xml.ws.Holder<XRoadCompanyRepresentInfoResponseType> response = new Holder();
+        javax.xml.ws.Holder<XRoadCompanyRepresentInfoRequestType> request = new Holder<>();
+        javax.xml.ws.Holder<XRoadCompanyRepresentInfoResponseType> response = new Holder<>();
 
         request.value = producerFactory.createXRoadCompanyRepresentInfoRequestType();
 

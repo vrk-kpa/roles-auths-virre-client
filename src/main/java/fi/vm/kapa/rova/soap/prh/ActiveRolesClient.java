@@ -49,10 +49,10 @@ public class ActiveRolesClient extends AbstractClient {
         PersonActiveRoleInfoType value = novusFactory.createPersonActiveRoleInfoType();
         value.setSocialSecurityNumber(personId);
         value.setUserId(getEnduser());
-        Holder<XRoadPersonActiveRoleInfoRequestType> request = new Holder();
+        Holder<XRoadPersonActiveRoleInfoRequestType> request = new Holder<>();
         request.value = producerFactory.createXRoadPersonActiveRoleInfoRequestType();
         request.value.setPersonActiveRoleInfo(value);
-        Holder<XRoadPersonActiveRoleInfoResponseType> response = new Holder();
+        Holder<XRoadPersonActiveRoleInfoResponseType> response = new Holder<>();
         response.value = producerFactory.createXRoadPersonActiveRoleInfoResponseType();
         response.value.setPersonActiveRoleInfoResponse(novusFactory.createPersonActiveRoleInfoResponse());
 
