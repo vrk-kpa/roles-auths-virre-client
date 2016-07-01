@@ -22,16 +22,29 @@
  */
 package fi.vm.kapa.rova.soap.prh;
 
-/**
- * Created by Juha Korkalainen on 26.5.2016.
- */
 public class VirreException extends Exception {
-
-    public VirreException(String msg) {
-        super(msg);
+    private static final long serialVersionUID = 1L;
+    
+    private String faultCode;
+    private String faultString;
+    
+    public VirreException(String faultCode, String faultString) {
+        super(faultCode + " " + faultString);
+        this.faultCode = faultCode;
+        this.faultString = faultString;
     }
 
-    public VirreException(String msg, Throwable t) {
-        super(msg, t);
+    public VirreException(String faultCode, String faultString, Throwable t) {
+        super(faultCode + " " + faultString, t);
+        this.faultCode = faultCode;
+        this.faultString = faultString;
+    }
+
+    public String getFaultCode() {
+        return faultCode;
+    }
+
+    public String getFaultString() {
+        return faultString;
     }
 }

@@ -60,7 +60,8 @@ public class PrhResource {
     public Response getCompanyPerson(@PathParam("socialsec") String socialsec) {
         log.debug("CompanyPerson request received.");
         try {
-            CompanyPerson person = arc.getCompanyPerson(socialsec);
+            CompanyPerson person = arc.getCompanyPerson(socialsec)
+                    .orElseThrow(() -> new WebApplicationException(Status.NOT_FOUND));
             return Response.ok().entity(person).build();
         } catch (VIRREServiceException e) {
             log.error("Returning error. Failed to get companies: " + e.getMessage(), e);
