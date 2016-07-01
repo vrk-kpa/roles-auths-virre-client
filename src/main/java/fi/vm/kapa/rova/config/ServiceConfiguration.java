@@ -34,7 +34,7 @@ import fi.vm.kapa.rova.rest.validation.ValidationContainerRequestFilter;
 import fi.vm.kapa.rova.virre.resources.PrhResource;
 
 @Configuration
-@ApplicationPath("/")
+@ApplicationPath("/rest")
 public class ServiceConfiguration extends ResourceConfig {
 
     @Value("${api_key}")
