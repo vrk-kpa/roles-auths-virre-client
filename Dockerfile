@@ -4,6 +4,8 @@ FROM docker-registry.kapa.ware.fi/roles-auths-java-base@sha256:84db8eb95099600b8
 RUN mkdir -p /opt/rova/roles-auths-virre-client/
 ADD target/roles-auths-virre-client.jar /opt/rova/roles-auths-virre-client/
 ADD service.properties.template /opt/rova/roles-auths-virre-client/
+ADD LICENSE /opt/rova/roles-auths-virre-client/license/LICENSE
+ADD target/site /opt/rova/roles-auths-virre-client/license/dependency-report
 WORKDIR /opt/rova/roles-auths-virre-client/
 
 EXPOSE 8080
