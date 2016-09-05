@@ -31,7 +31,12 @@ import fi.vm.kapa.rova.soap.prh.handlers.RightReprHeaderHandler;
 import fi.vm.kapa.rova.soap.prh.handlers.XroadHeaderHandler;
 import org.apache.cxf.clustering.LoadDistributorFeature;
 import org.apache.cxf.clustering.RandomStrategy;
+import org.apache.cxf.clustering.SequentialStrategy;
+import org.apache.cxf.interceptor.Interceptor;
+import org.apache.cxf.interceptor.LoggingInInterceptor;
+import org.apache.cxf.interceptor.LoggingOutInterceptor;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
+import org.apache.cxf.message.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -78,13 +83,14 @@ public class SoapConfiguration {
     private JaxWsProxyFactoryBean jaxWsProxyFactoryBean(Class target, XroadHeaderHandler handler) {
         JaxWsProxyFactoryBean factory = new JaxWsProxyFactoryBean();
         // load distribution
-        LoadDistributorFeature loadDistributorFeature = new LoadDistributorFeature();
+        LoadDistributorFeature loadDistributorFeature = new RovaLoadDistributorFeature();
         RandomStrategy ldStrategy = new RandomStrategy();
         ldStrategy.setAlternateAddresses(getEndpoints());
         loadDistributorFeature.setStrategy(ldStrategy);
         factory.getFeatures().add(loadDistributorFeature);
         factory.getHandlers().add(handler);
         factory.setServiceClass(target);
+        
         return factory;
     }
 
