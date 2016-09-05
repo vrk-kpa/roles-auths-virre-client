@@ -43,8 +43,6 @@ public class RightReprService extends ServiceLogging {
 
     private static final Logger log = Logger.getLogger(RightReprService.class);
 
-    private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ");
-
     @Autowired
     private RightReprClient rrc;
 
@@ -56,27 +54,22 @@ public class RightReprService extends ServiceLogging {
      * @return RepresentationRight 
      * @throws VIRREServiceException 
      */
-    public RepresentationRight getRights(String socialsec, String businessId, String level) throws VIRREServiceException {
+    public RepresentationRight getRights(String socialsec, String businessId, String level) {
         log.debug("service received: "+ socialsec +" - "+ businessId +" - "+ level);
 
-        RepresentationRight right = null;
+        RepresentationRight right;
 
-        try {
-            long startTime = System.currentTimeMillis();
-            RightToRepresentResponse result = rrc.getRights(socialsec, businessId, level);
-            logRequest(OP + ":XRoadRightToRepresent", startTime, System.currentTimeMillis());
-            right = parseRight(result);
-        } catch (Exception e) {
-            logError(OP, "Failed to parse rights: " + e.getMessage());
-            throw new VIRREServiceException(e.getMessage(), e);
-        }
+        long startTime = System.currentTimeMillis();
+        RightToRepresentResponse result = rrc.getRights(socialsec, businessId, level);
+        logRequest(OP + ":XRoadRightToRepresent", startTime, System.currentTimeMillis());
+        right = parseRight(result);
 
         return right;
     }
 
     private RepresentationRight parseRight(RightToRepresentResponse result) {
         RepresentationRight right = new RepresentationRight();
-        String code = result.getRepresentation().getCode(); //msg.getCode();
+        String code = result.getRepresentation().getCode();
         int num = Integer.parseInt(code);
         right.setCode(num);
         return right;

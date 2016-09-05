@@ -54,21 +54,12 @@ public class CompanyReprService extends AbstractCompanyService {
      * @return List of organizations for given Y-tunnus
      * @throws VIRREServiceException 
      */
-    public CompanyRepresentations getRepresentations(String businessId) throws VIRREServiceException {
+    public CompanyRepresentations getRepresentations(String businessId) throws VirreException {
 
-        CompanyRepresentations representations = null;
-
-        try {
-            long startTime = System.currentTimeMillis();
-            CompanyRepresentInfoResponse info = crc.getResponse(businessId);
-            logRequest(OP + "XRoadCompanyRepresentInfo", startTime, System.currentTimeMillis());
-            representations = parseRepresentations(info.getCompanyRepresentInfoResponseTypeDetails());
-        } catch (VirreException e) {
-            logError(OP, "Failed to parse persons: " + e.getMessage());
-            throw new VIRREServiceException(e.getMessage(), e);
-        }
-
-        return representations;
+        long startTime = System.currentTimeMillis();
+        CompanyRepresentInfoResponse info = crc.getResponse(businessId);
+        logRequest(OP + "XRoadCompanyRepresentInfo", startTime, System.currentTimeMillis());
+        return parseRepresentations(info.getCompanyRepresentInfoResponseTypeDetails());
     }
 
     private CompanyRepresentations parseRepresentations(CompanyRepresentInfoResponseType info) {

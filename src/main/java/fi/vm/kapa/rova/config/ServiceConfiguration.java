@@ -25,6 +25,8 @@ package fi.vm.kapa.rova.config;
 import javax.annotation.PostConstruct;
 import javax.ws.rs.ApplicationPath;
 
+import fi.vm.kapa.rova.rest.exception.ExceptionMapper;
+import fi.vm.kapa.rova.rest.exception.WebApplicationExceptionMapper;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -71,7 +73,13 @@ public class ServiceConfiguration extends ResourceConfig {
     @PostConstruct
     public void init() {
         SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
-        register(new ValidationContainerRequestFilter(apiKey, requestAliveSeconds, apiPathPrefix));
+
+        register(
+                new ValidationContainerRequestFilter(apiKey, requestAliveSeconds, apiPathPrefix));
+        registerClasses(
+                WebApplicationExceptionMapper.class,
+                ExceptionMapper.class);
+
         System.setProperty("javax.net.ssl.keyStoreType", sslKeyStoreType);
         System.setProperty("javax.net.ssl.keyStore", sslKeyStore);
         System.setProperty("javax.net.ssl.keyStorePassword", sslKeyStorePassword);
