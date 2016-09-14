@@ -26,17 +26,15 @@ import fi.vm.kapa.rova.external.model.virre.CompanyPerson;
 import fi.vm.kapa.rova.external.model.virre.CompanyRepresentations;
 import fi.vm.kapa.rova.external.model.virre.RepresentationRight;
 import fi.vm.kapa.rova.logging.Logger;
+import fi.vm.kapa.rova.soap.prh.VirreException;
 import fi.vm.kapa.rova.virreclient.service.ActiveRolesService;
 import fi.vm.kapa.rova.virreclient.service.CompanyReprService;
 import fi.vm.kapa.rova.virreclient.service.RightReprService;
-import fi.vm.kapa.rova.virreclient.service.VIRREServiceException;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.Response.Status;
 
 @Service
@@ -57,49 +55,28 @@ public class PrhResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/prh/companies/{socialsec}")
-    public Response getCompanyPerson(@PathParam("socialsec") String socialsec) {
+    public CompanyPerson getCompanyPerson(@PathParam("socialsec") String socialsec) throws VirreException {
         log.debug("CompanyPerson request received.");
-        try {
-            CompanyPerson person = arc.getCompanyPerson(socialsec)
-                    .orElseThrow(() -> new WebApplicationException(Status.NOT_FOUND));
-            return Response.ok().entity(person).build();
-        } catch (VIRREServiceException e) {
-            log.error("Returning error. Failed to get companies: " + e.getMessage(), e);
-            ResponseBuilder responseBuilder = Response.serverError();
-            return responseBuilder.build();
-        }
+        return arc.getCompanyPerson(socialsec)
+                .orElseThrow(() -> new WebApplicationException(Status.NOT_FOUND));
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/prh/representations/{businessid}")
-    public Response getRepresentations(@PathParam("businessid") String businessid) {
+    public CompanyRepresentations getRepresentations(@PathParam("businessid") String businessid) throws VirreException {
         log.debug("Representations request received.");
-        try {
-            CompanyRepresentations reprs = crs.getRepresentations(businessid);
-            return Response.ok().entity(reprs).build();
-        } catch (VIRREServiceException e) {
-            log.error("Returning error. Failed to get persons: " + e.getMessage(), e);
-            ResponseBuilder responseBuilder = Response.serverError();
-            return responseBuilder.build();
-        }
+        return crs.getRepresentations(businessid);
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/prh/rights/{rightlevel}/{socialsec}/{businessid}")
-    public Response getRights(@PathParam("socialsec") String socialSec,
-                        @PathParam("businessid") String businessId,
-                        @PathParam("rightlevel") String rightLevel) {
+    public RepresentationRight getRights(@PathParam("socialsec") String socialSec,
+                                         @PathParam("businessid") String businessId,
+                                         @PathParam("rightlevel") String rightLevel) {
         log.debug("Rights request received.");
-        try {
-            RepresentationRight right = rrs.getRights(socialSec, businessId, rightLevel);
-            return Response.ok().entity(right).build();
-        } catch (VIRREServiceException e) {
-            log.error("Returning error. Failed to get rights: " + e.getMessage(), e);
-            ResponseBuilder responseBuilder = Response.serverError();
-            return responseBuilder.build();
-        }
+        return rrs.getRights(socialSec, businessId, rightLevel);
     }
 
 }

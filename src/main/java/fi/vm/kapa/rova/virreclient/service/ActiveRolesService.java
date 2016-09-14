@@ -51,23 +51,25 @@ public class ActiveRolesService extends AbstractCompanyService {
     private ActiveRolesClient activeRolesClient;
 
     @SuppressWarnings("unchecked")
-    public Optional<CompanyPerson> getCompanyPerson(String hetu) throws VIRREServiceException {
+    public Optional<CompanyPerson> getCompanyPerson(String hetu) throws VirreException {
+        long startTime = System.currentTimeMillis();
+
+        PersonActiveRoleInfoResponse result;
         try {
-            long startTime = System.currentTimeMillis();
-            PersonActiveRoleInfoResponse result = activeRolesClient.getResponse(hetu);
-            LOG.debug(result.toString());
-            Map<String, List<?>> response = parseCompanies(result);
-            logRequest(OP + ":XRoadPersonActiveRoleInfo", startTime, System.currentTimeMillis());
-            // return first
-            return Optional.of(((List<CompanyPerson>) response.get(CompanyPerson.TYPE)).get(0));
+            result = activeRolesClient.getResponse(hetu);
         } catch (VirreException e) {
             if (ERRORCODE_NO_EXCEPTION.equals(e.getFaultCode())) {
                 return Optional.empty();
             } else {
-                logError(OP, "Failed to parse companyPerson: " + e.getMessage());
-                throw new VIRREServiceException(e.getMessage(), e);
+                throw e;
             }
         }
+
+        LOG.debug(result.toString());
+        Map<String, List<?>> response = parseCompanies(result);
+        logRequest(OP + ":XRoadPersonActiveRoleInfo", startTime, System.currentTimeMillis());
+        // return first
+        return Optional.of(((List<CompanyPerson>) response.get(CompanyPerson.TYPE)).get(0));
     }
 
     private Map<String, List<?>> parseCompanies(PersonActiveRoleInfoResponse result) {
