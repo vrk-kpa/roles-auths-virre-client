@@ -1,5 +1,8 @@
 /target/
 
+*~
+/roles-auths-virre-client.iml
+
 /.settings/
 .classpath
 .project
