@@ -30,51 +30,60 @@ import fi.vm.kapa.rova.soap.prh.VirreException;
 import fi.vm.kapa.rova.virreclient.service.ActiveRolesService;
 import fi.vm.kapa.rova.virreclient.service.CompanyReprService;
 import fi.vm.kapa.rova.virreclient.service.RightReprService;
-import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.inject.Inject;
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response.Status;
 
-@Service
-@Path("/")
+@Configuration
+@RestController
+@RequestMapping("/rest")
 public class PrhResource {
 
     private static final Logger log = Logger.getLogger(PrhResource.class);
 
-    @Inject
+    @Autowired
     private ActiveRolesService arc;
 
-    @Inject
+    @Autowired
     private CompanyReprService crs;
 
-    @Inject
+    @Autowired
     private RightReprService rrs;
 
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("/prh/companies/{socialsec}")
-    public CompanyPerson getCompanyPerson(@PathParam("socialsec") String socialsec) throws VirreException {
+    @RequestMapping(
+            value = "/prh/companies/{socialsec}",
+            method = RequestMethod.GET,
+            produces = "application/json"
+    )
+    public CompanyPerson getCompanyPerson(@PathVariable("socialsec") String socialsec) throws VirreException {
         log.debug("CompanyPerson request received.");
-        return arc.getCompanyPerson(socialsec)
-                .orElseThrow(() -> new WebApplicationException(Status.NOT_FOUND));
+        return arc.getCompanyPerson(socialsec).orElseThrow(() -> new WebApplicationException(Status.NOT_FOUND));
     }
 
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("/prh/representations/{businessid}")
-    public CompanyRepresentations getRepresentations(@PathParam("businessid") String businessid) throws VirreException {
+    @RequestMapping(
+            value = "/prh/representations/{businessid}",
+            method = RequestMethod.GET,
+            produces = "application/json"
+    )
+    public CompanyRepresentations getRepresentations(@PathVariable("businessid") String businessid) throws VirreException {
         log.debug("Representations request received.");
         return crs.getRepresentations(businessid);
     }
 
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("/prh/rights/{rightlevel}/{socialsec}/{businessid}")
-    public RepresentationRight getRights(@PathParam("socialsec") String socialSec,
-                                         @PathParam("businessid") String businessId,
-                                         @PathParam("rightlevel") String rightLevel) {
+    @RequestMapping(
+            value = "/prh/rights/{rightlevel}/{socialsec}/{businessid}",
+            method = RequestMethod.GET,
+            produces = "application/json"
+    )
+    public RepresentationRight getRights(@PathVariable("socialsec") String socialSec,
+                                         @PathVariable("businessid") String businessId,
+                                         @PathVariable("rightlevel") String rightLevel) {
         log.debug("Rights request received.");
         return rrs.getRights(socialSec, businessId, rightLevel);
     }
