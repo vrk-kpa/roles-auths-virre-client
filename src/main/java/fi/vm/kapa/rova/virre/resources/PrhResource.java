@@ -38,6 +38,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response.Status;
 
 @Configuration
@@ -59,7 +60,7 @@ public class PrhResource {
     @RequestMapping(
             value = "/prh/companies/{socialsec}",
             method = RequestMethod.GET,
-            produces = "application/json"
+            produces = MediaType.APPLICATION_JSON
     )
     public CompanyPerson getCompanyPerson(@PathVariable("socialsec") String socialsec) throws VirreException {
         log.debug("CompanyPerson request received.");
@@ -69,7 +70,7 @@ public class PrhResource {
     @RequestMapping(
             value = "/prh/representations/{businessid}",
             method = RequestMethod.GET,
-            produces = "application/json"
+            produces = MediaType.APPLICATION_JSON
     )
     public CompanyRepresentations getRepresentations(@PathVariable("businessid") String businessid) throws VirreException {
         log.debug("Representations request received.");
@@ -79,7 +80,7 @@ public class PrhResource {
     @RequestMapping(
             value = "/prh/rights/{rightlevel}/{socialsec}/{businessid}",
             method = RequestMethod.GET,
-            produces = "application/json"
+            produces = MediaType.APPLICATION_JSON
     )
     public RepresentationRight getRights(@PathVariable("socialsec") String socialSec,
                                          @PathVariable("businessid") String businessId,
