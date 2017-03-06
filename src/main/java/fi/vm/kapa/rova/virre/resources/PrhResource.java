@@ -31,10 +31,9 @@ import fi.vm.kapa.rova.virreclient.service.ActiveRolesService;
 import fi.vm.kapa.rova.virreclient.service.CompanyReprService;
 import fi.vm.kapa.rova.virreclient.service.RightReprService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.ws.rs.WebApplicationException;
@@ -56,9 +55,8 @@ public class PrhResource {
     @Autowired
     private RightReprService rrs;
 
-    @RequestMapping(
+    @GetMapping(
             value = "/prh/companies/{socialsec}",
-            method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON
     )
     public CompanyPerson getCompanyPerson(@PathVariable("socialsec") String socialsec) throws VirreException {
@@ -66,9 +64,8 @@ public class PrhResource {
         return arc.getCompanyPerson(socialsec).orElseThrow(() -> new WebApplicationException(Status.NOT_FOUND));
     }
 
-    @RequestMapping(
+    @GetMapping(
             value = "/prh/representations/{businessid}",
-            method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON
     )
     public CompanyRepresentations getRepresentations(@PathVariable("businessid") String businessid) throws VirreException {
@@ -76,9 +73,8 @@ public class PrhResource {
         return crs.getRepresentations(businessid);
     }
 
-    @RequestMapping(
+    @GetMapping(
             value = "/prh/rights/{rightlevel}/{socialsec}/{businessid}",
-            method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON
     )
     public RepresentationRight getRights(@PathVariable("socialsec") String socialSec,
