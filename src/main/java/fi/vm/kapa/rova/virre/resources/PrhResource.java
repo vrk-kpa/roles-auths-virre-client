@@ -26,23 +26,21 @@ import fi.vm.kapa.rova.external.model.virre.CompanyPerson;
 import fi.vm.kapa.rova.external.model.virre.CompanyRepresentations;
 import fi.vm.kapa.rova.external.model.virre.RepresentationRight;
 import fi.vm.kapa.rova.logging.Logger;
+import fi.vm.kapa.rova.rest.exception.WebApplicationException;
 import fi.vm.kapa.rova.soap.prh.VirreException;
+import fi.vm.kapa.rova.virre.Virre;
 import fi.vm.kapa.rova.virreclient.service.ActiveRolesService;
 import fi.vm.kapa.rova.virreclient.service.CompanyReprService;
 import fi.vm.kapa.rova.virreclient.service.RightReprService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response.Status;
 
 @RestController
-@RequestMapping("/rest")
-public class PrhResource {
+public class PrhResource implements Virre {
 
     private static final Logger log = Logger.getLogger(PrhResource.class);
 
@@ -55,26 +53,48 @@ public class PrhResource {
     @Autowired
     private RightReprService rrs;
 
+    /* (non-Javadoc)
+     * @see fi.vm.kapa.rova.virre.resources.PRH#getCompanyPerson(java.lang.String)
+     */
+    @Override
     @GetMapping(
-            value = "/prh/companies/{socialsec}",
+            value = GET_COMPANY_PERSON_PATH,
             produces = MediaType.APPLICATION_JSON
     )
-    public CompanyPerson getCompanyPerson(@PathVariable("socialsec") String socialsec) throws VirreException {
+    public CompanyPerson getCompanyPerson(@PathVariable("socialsec") String socialsec) throws WebApplicationException {
         log.debug("CompanyPerson request received.");
-        return arc.getCompanyPerson(socialsec).orElseThrow(() -> new WebApplicationException(Status.NOT_FOUND));
+        try {
+            return arc.getCompanyPerson(socialsec)
+                    .orElseThrow(() -> new WebApplicationException("Company person not found.", 404));
+        } catch (VirreException e) {
+            throw new WebApplicationException(e);
+        }
     }
 
+    /* (non-Javadoc)
+     * @see fi.vm.kapa.rova.virre.resources.PRH#getRepresentations(java.lang.String)
+     */
+    @Override
     @GetMapping(
-            value = "/prh/representations/{businessid}",
+            value = GET_REPRESENTATIONS_PATH,
             produces = MediaType.APPLICATION_JSON
     )
-    public CompanyRepresentations getRepresentations(@PathVariable("businessid") String businessid) throws VirreException {
+    public CompanyRepresentations getRepresentations(@PathVariable("businessid") String businessid)
+            throws WebApplicationException {
         log.debug("Representations request received.");
-        return crs.getRepresentations(businessid);
+        try {
+            return crs.getRepresentations(businessid);
+        } catch (VirreException e) {
+            throw new WebApplicationException(e);
+        }
     }
 
+    /* (non-Javadoc)
+     * @see fi.vm.kapa.rova.virre.resources.PRH#getRights(java.lang.String, java.lang.String, java.lang.String)
+     */
+    @Override
     @GetMapping(
-            value = "/prh/rights/{rightlevel}/{socialsec}/{businessid}",
+            value = GET_RIGHTS_PATH,
             produces = MediaType.APPLICATION_JSON
     )
     public RepresentationRight getRights(@PathVariable("socialsec") String socialSec,
