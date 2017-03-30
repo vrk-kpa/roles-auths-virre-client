@@ -22,6 +22,10 @@
  */
 package fi.vm.kapa.rova.config;
 
+import fi.vm.kapa.rova.ribbon.MetadataAwarePredicate;
+import fi.vm.kapa.rova.virre.Virre;
+import org.springframework.cloud.commons.util.InetUtils;
+import org.springframework.cloud.netflix.eureka.EurekaInstanceConfigBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -30,7 +34,7 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
 @Configuration
 @PropertySources(value = {
-    @PropertySource("classpath:application.properties"),
+    @PropertySource("classpath:application.yml"),
     @PropertySource(value = "file:/opt/rova/roles-auths-virre-client/config/service.properties", ignoreResourceNotFound = true)})
 public class AppConfiguration {
 
@@ -39,4 +43,10 @@ public class AppConfiguration {
         return new PropertySourcesPlaceholderConfigurer();
     }
 
+    @Bean
+    public EurekaInstanceConfigBean eurekaInstanceConfig(InetUtils inetUtils) {
+        EurekaInstanceConfigBean b = new EurekaInstanceConfigBean(inetUtils);
+        b.getMetadataMap().put(MetadataAwarePredicate.API_VERSION_METADATA_FIELD, Virre.API_VERSION);
+        return b;
+    }
 }
