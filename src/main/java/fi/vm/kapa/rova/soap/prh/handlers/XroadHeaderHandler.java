@@ -44,7 +44,6 @@ import javax.xml.soap.SOAPMessage;
 import javax.xml.ws.handler.MessageContext;
 import javax.xml.ws.handler.soap.SOAPHandler;
 import javax.xml.ws.handler.soap.SOAPMessageContext;
-
 import java.util.Collections;
 import java.util.Set;
 import java.util.UUID;
@@ -125,9 +124,8 @@ public abstract class XroadHeaderHandler implements SOAPHandler<SOAPMessageConte
                 String origRequestId = request.getHeader(RequestIdentificationInterceptor.ORIG_REQUEST_IDENTIFIER);
                 if (origRequestId == null || origRequestId.trim().isEmpty()) {
                     throw new IllegalArgumentException("Request identifier header missing");
-                } else {
-                    origRequestId = origRequestId.replaceAll(";", "|");
                 }
+                origRequestId = origRequestId.replaceAll(";", "|");
 
                 JAXBElement<String> issueElement = factory.createIssue(origRequestId);
                 SOAPHeaderElement issueHeaderElement = header.addHeaderElement(issueElement.getName());

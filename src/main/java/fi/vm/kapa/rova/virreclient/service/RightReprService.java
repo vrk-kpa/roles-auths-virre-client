@@ -30,8 +30,6 @@ import https.ws_prh_fi.novus.ids.services._2008._08._22.RightToRepresentResponse
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.format.DateTimeFormatter;
-
 /**
  * Service for loading Companies from PRH
  * @author mtom

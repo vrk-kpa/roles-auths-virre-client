@@ -91,7 +91,6 @@ public class CompanyReprService extends AbstractCompanyService {
                 }
             }
 
-        
             repr.setCompanyPersons(persons);
         }
         return repr;

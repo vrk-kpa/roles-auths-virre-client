@@ -24,10 +24,8 @@
 package fi.vm.kapa.rova.virreclient.service;
 
 import fi.vm.kapa.rova.logging.Logger;
-import static fi.vm.kapa.rova.logging.Logger.Field.DURATION;
-import static fi.vm.kapa.rova.logging.Logger.Field.ERRORSTR;
-import static fi.vm.kapa.rova.logging.Logger.Field.WARNINGSTR;
-import static fi.vm.kapa.rova.logging.Logger.Field.OPERATION;
+
+import static fi.vm.kapa.rova.logging.Logger.Field.*;
 
 public class ServiceLogging {
 
