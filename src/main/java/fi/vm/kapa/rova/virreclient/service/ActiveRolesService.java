@@ -22,10 +22,7 @@
  */
 package fi.vm.kapa.rova.virreclient.service;
 
-import fi.vm.kapa.rova.external.model.virre.Company;
-import fi.vm.kapa.rova.external.model.virre.CompanyPerson;
-import fi.vm.kapa.rova.external.model.virre.CompanyRoleType;
-import fi.vm.kapa.rova.external.model.virre.RoleNameType;
+import fi.vm.kapa.rova.external.model.virre.*;
 import fi.vm.kapa.rova.logging.Logger;
 import fi.vm.kapa.rova.soap.prh.ActiveRolesClient;
 import fi.vm.kapa.rova.soap.prh.VirreException;
@@ -106,7 +103,16 @@ public class ActiveRolesService extends AbstractCompanyService {
                     logWarning(OP, "Unable to parse role: " + roleName);
                 }
                 role.setType(type);
-                
+
+                BodyType bodyType = null;
+                String bodyTypeName = roleInfo.getBodyType();
+                try {
+                    bodyType = BodyType.valueOf(bodyTypeName);
+                } catch (IllegalArgumentException e) { // NOSONAR Ollaan kiinnostuneita vain tietyistä rooleista
+                    logWarning(OP, "Unable to parse body type: " + bodyTypeName);
+                }
+                role.setBodyType(bodyType);
+
                 roles.add(role);
             }
             company.setRoles(roles);
