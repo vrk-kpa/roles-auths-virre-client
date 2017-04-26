@@ -65,7 +65,7 @@ public class PrhResource implements Virre {
         log.debug("CompanyPerson request received.");
         try {
             return arc.getCompanyPerson(socialsec)
-                    .orElseThrow(() -> new WebApplicationException("Company person not found.", 404));
+                    .orElseThrow(() -> new WebApplicationException("Company person not found.", 204));
         } catch (VirreException e) {
             throw new WebApplicationException(e);
         }
